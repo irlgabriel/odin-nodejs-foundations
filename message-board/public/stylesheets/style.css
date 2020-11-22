@@ -1,0 +1,83 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: black;
+  color: white;
+}
+
+a {
+  color: #00B7FF;
+}
+
+h1 {
+  margin: .25rem 0;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
+  margin: 0 auto;
+  height: 90vh;
+  border-radius: 4px;
+}
+
+#message-app {
+  margin: .5rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  flex: 1;
+}
+
+.message-container {
+  width: 100%;
+  max-width: 600px;
+  margin: .5rem auto;
+  padding: .5rem 1rem;
+  border-radius: 4px;
+}
+
+.message-content {
+  padding-left: 1rem;
+}
+.message-author {
+  color: lightcoral;
+}
+#message-form-wrapper {
+  width: 100%;
+}
+#message-form-container {
+  margin: 0 auto;
+  width: 70%;
+}
+form {
+  display: flex;
+  align-items: center;
+}
+input {
+  padding: .5rem;
+  border-radius: 4px;
+  outline: 0;
+  border: 0;
+  width: 100px;
+}
+textarea {
+  padding: .5rem;
+  max-width: 90%;
+  width: 70%;
+  resize: none;
+  margin: 0 .25rem;
+}
+button {
+  padding: .5rem 1rem;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  color: white;
+  background-color: lightcoral;
+  transition: .25s ease; 
+  margin: 0 .25rem;
+}
+button:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}

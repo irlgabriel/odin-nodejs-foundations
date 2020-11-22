@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div class="container">
+      <h1 style="text-align: center"><%= title %></h1>
+      <div id="message-app">
+        <% messages.forEach(message => { %>
+          <div class="message-container">
+            <h3 class="message-author"><%= message.user %></h3>
+            <p class="message-content"><%= message.content %></p>
+          </div>
+        <% }) %>
+      </div>
+      <div id="message-form-wrapper">
+        <div id="message-form-container">
+          <form method="POST" action="/message" id="message-form">
+            <input name="user" placeholder="Username..." type="text" id="author" />
+            <textarea name="message" placeholder="Message..." type="text" id="content"></textarea>
+            <button type="submit">Post Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="javascripts/scrollToBottom.js"></script>
+  </body>
+</html>
