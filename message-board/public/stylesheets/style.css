@@ -21,7 +21,7 @@ h1 {
 }
 
 #message-app {
-  margin: .5rem;
+  margin: 0 .5rem;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
@@ -34,6 +34,8 @@ h1 {
   margin: .5rem auto;
   padding: .5rem 1rem;
   border-radius: 4px;
+  background: darkgray;
+
 }
 
 .message-content {
@@ -43,18 +45,21 @@ h1 {
   color: lightcoral;
 }
 #message-form-wrapper {
-  width: 100%;
+  margin: 0 .5rem;
+  height: 50px;
+  
 }
 #message-form-container {
   margin: 0 auto;
-  width: 70%;
+  width: 600px;
 }
 form {
   display: flex;
   align-items: center;
 }
 input {
-  padding: .5rem;
+  height: 40px;
+  padding: 0 .5rem;
   border-radius: 4px;
   outline: 0;
   border: 0;
