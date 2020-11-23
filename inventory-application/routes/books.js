@@ -11,6 +11,9 @@ router.get('/', async (req, res, next) => {
     res.json(err);
   }
 })
+router.get('/new', (req, res, next) => {
+  res.render('bookform', { title: "Create new book" })
+})
 // GET book by id
 router.get('/:book_id', async (req, res, next) => {
   try {
@@ -46,7 +49,7 @@ router.put('/:book_id', (req, res, next) => {
   console.log(updatedProps)
 })
 
-.router.delete('/:book_id', async (req, res, next) => {
+router.delete('/:book_id', async (req, res, next) => {
   try {
     const deletedBook = Book.findOneAndDelete({_id: req.params.book_id});
     res.json(deletedBook);
@@ -54,3 +57,5 @@ router.put('/:book_id', (req, res, next) => {
     res.json(err);
   }
 })
+
+module.exports = router;

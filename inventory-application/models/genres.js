@@ -13,3 +13,5 @@ GenreSchema.post('findOneAndDelete', {document: true, query: false}, async (genr
     book.save();
   })
 })
+
+module.exports = mongoose.model("Genre", GenreSchema);

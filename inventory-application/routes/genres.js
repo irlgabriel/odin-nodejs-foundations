@@ -48,3 +48,5 @@ router.delete('/:genre_id', async (req, res, next) => {
     res.json(err);
   }
 })
+
+module.exports = router;

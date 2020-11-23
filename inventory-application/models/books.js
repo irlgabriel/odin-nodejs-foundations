@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const BookSchema = Schema({
   title: {type: String, required: true},
   author: {type: String, required: true},
-  isbn: {type: Number, required: true},
+  description: {type: String, required: true},
   genre: {type: String, ref: "Genre"},
   price: {type: Number, required: true},
   pages: {type: Number, required: true},
@@ -12,4 +12,4 @@ const BookSchema = Schema({
 
 }, {timestamps: true})
 
-module.exports = mongoose.Model('Book', BookSchema);
+module.exports = mongoose.model('Book', BookSchema);
