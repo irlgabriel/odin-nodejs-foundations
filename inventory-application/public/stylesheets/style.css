@@ -1,8 +1,22 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
-
-a {
-  color: #00B7FF;
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #dae0e6;
+}
+.row {
+  border: 1px solid black;
+  flex: 1;
+}
+#sidebar {
+  border-right: 1px solid black;
+}
+#footer {
+  margin-top: auto;
+  height: 50px;
 }
