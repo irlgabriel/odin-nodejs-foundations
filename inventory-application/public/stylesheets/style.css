@@ -3,20 +3,39 @@
   padding: 0;
   margin: 0;
 }
+a {
+  color: royalblue;
+}
+a:hover {
+  text-decoration: none;
+}
 body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #dae0e6;
+}
+.container-fluid{ 
+  flex: 1;
+  background-color: black;
+  color: white;
 }
 .row {
-  border: 1px solid black;
-  flex: 1;
+  height: 100%;
+}
+#navbar {
+  background-color: #dae0e6;
 }
 #sidebar {
-  border-right: 1px solid black;
+  border-right: 1px solid #dae0e6;
 }
 #footer {
   margin-top: auto;
   height: 50px;
+  padding: 1rem;
+  background-color: #dae0e6;
+  display: flex;
+  /*align-items: center;*/
+}
+#footer p, #footer a {
+  margin-right: 1rem;
 }
