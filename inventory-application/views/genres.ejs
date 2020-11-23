@@ -1,0 +1,16 @@
+<%- include header %>
+<%- include navbar %>
+<div class="container-fluid" style="flex: 1;">
+  <div class="row">
+    <%- include sidebar %>
+    <div class="col">
+      <ul>
+        <p>Genres:</p>
+        <% genres.forEach(genre => { %>
+        <li><a href=<%=`/genres/${genre.name}`%>><%=genre.name%></a></li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+</div>
+<%- include footer %>

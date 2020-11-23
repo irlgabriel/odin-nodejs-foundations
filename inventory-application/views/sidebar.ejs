@@ -1,15 +1,12 @@
 <div class="col-3 col-lg-2" id="sidebar">
-  <h4 class="text-shadow-white">Sidebar</h4>
   <ul>
     <h4 class="text-shadow-white role-button" data-toggle="collapse" data-target="#books-list">Books</h4>
     <!-- Book list collapsable-->
     <ul class="collapse" id="books-list">
       <li class="list-title"><a href="/books/new">Create new Book</a></li>
-      <li><a href="/books/fiction">Fiction</a></li>
-      <li><a href="/books/romance">Romance</a></li>
-      <li><a href="/books/philosophy">Philosophy</a></li>
-      <li><a href="/books/crime">Crime</a></li>
-      <li><a href="/books/psychology">Psychology</a></li>
+      <% genres.forEach(genre => { %>
+        <li><a href=<%=`/books/genres/${genre.name}`%> ><%=genre.name%></a></li>
+      <% }) %>
     </ul>
   </ul>
 
@@ -17,11 +14,9 @@
     <h4 class="text-shadow-white role-button" data-toggle="collapse" data-target="#genres-list">Genres</h4>
     <ul class="collapse" id="genres-list">
       <li class="list-title"><a href="/genres/new">Create new Genre</a></li>
-      <li><a href="/genres">Fiction</a></li>
-      <li><a href="/genres">Romance</a></li>
-      <li><a href="/genres">Philosophy</a></li>
-      <li><a href="/genres">Crime</a></li>
-      <li><a href="/genres">Psychology</a></li>
+      <% genres.forEach(genre => { %>
+        <li><a href=<%=`/genres/${genre.name}`%> ><%=genre.name%></a></li>
+      <% }) %>
     </ul>
   </ul>
 </div>

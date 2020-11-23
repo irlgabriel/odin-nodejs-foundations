@@ -1,0 +1,13 @@
+<%- include header %>
+<%- include navbar %>
+<div class='container-fluid' style="flex: 1;">
+  <div class="row">
+    <%- include sidebar %>
+    <div class="col">
+      <h3><%= genre.name %></h3>
+      <h3><a href=<%=`/books/genres/${genre.name}`%>>See books in <%=genre.name %></h3>
+    </div>
+  </div>
+</div>
+
+<%- include footer %>

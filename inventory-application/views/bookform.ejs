@@ -1,6 +1,7 @@
 <%- include header %>
 <%- include navbar %>
-<div id="book-form-container" class="container">
+<div id="book-form-container" class="container-fluid">
+  <div class="px-0 container-fluid" style="display: flex;"><a href="/"><h5>Home</h5></a></div>
   <h4 style="text-align: center;">Create a new Book!</h4>
   <form id="book-form" action="/books" method="POST">
   <div class="form-group">
@@ -10,14 +11,14 @@
     <input minlength="3" maxlength="200" placeholder="Author.." class="form-control" type="text" name="author" required />
   </div>
   <div class="form-group">
-    <textarea minlength="20" maxlength="1000" placeholder="Description.." class="form-control" required name="description"></textarea>
+    <textarea name="description" minlength="20" maxlength="1000" placeholder="Description.." class="form-control" required></textarea>
   </div>
   <div class="form-group">
     <label>Genre</label>
     <select class="form-control" name="genre">
-      <option value="Fiction">Fiction</option>
-      <option value="Romance">Romance</option>
-      <option value="Philosophy">Philosophy</option>
+      <% genres.forEach(genre => { %>
+        <option value=<%=genre.name%>><%= genre.name %></option>
+      <% }) %>
     </select>
   </div>
   <div class="form-group">

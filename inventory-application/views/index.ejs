@@ -1,9 +1,11 @@
 <%- include header %>
 <%- include navbar %>
-<div class="container-fluid">
+<div class="container-fluid" style="flex: 1;">
   <div class="row">
     <%- include sidebar %>
-    <%- include main %>
+    <div class="col-9 col-lg-10" id="main">
+      <h2 class="text-shadow-white">Express Book Shop!</h2>
+    </div>
   </div>
 </div>
 <%- include footer %>
