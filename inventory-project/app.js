@@ -1,4 +1,4 @@
-require('dotenv').config
+require('dotenv').config()
 var helmet = require('helmet');
 var compression = require('compression');
 var express = require('express');
@@ -7,9 +7,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 
-mongoose.connect(process.env.DB_STRING, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true});
+mongoose.connect(process.env.DB_STRING, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true});
 var db = mongoose.connection;
-db.once('open', () => "Connected to mongoDB");
+db.once('open', () => console.log("Connected to mongoDB"));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
