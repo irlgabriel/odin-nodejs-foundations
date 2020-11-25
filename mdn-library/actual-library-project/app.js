@@ -1,8 +1,21 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose');
+
+// set up mongoDB connection
+mongoose.connect(process.env.DB_STRING, { useNewUrlParser: true, useUnifiedTopology: true});
+
+// get default connection obj
+var db = mongoose.connection;
+db.once('open', () => console.log("Connected to mongoDB"))
+
+// bind connection to error event
+db.on('error', console.error.bind(console, 'MongoDB connection error'));
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
