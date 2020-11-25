@@ -126,10 +126,21 @@ exports.author_delete_post = function(req, res, next) {
 
 // Display Author update form on GET.
 exports.author_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Author update GET');
+    Author.findById(req.params.id, function(err, author) {
+        if(err) return next(err);
+        res.render('author_form', {title: "Update Author", author: author})
+    })
 };
 
 // Handle Author update on POST.
-exports.author_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Author update POST');
-};
+exports.author_update_post = [
+    body('first_name', 'First name field must be specified').trim().isLength({min: 1}).escape(),
+    body('family_name', 'Family name must be specified').trim().isLength({min: 1}).escape(),
+    (req, res, next) => {
+        Author.findByIdAndUpdate(req.params.id, {family_name: req.body.family_name, first_name: req.body.first_name})
+        .exec(function(err) {
+            if(err) return next(err);
+            res.redirect('/catalog/authors');
+        })
+    }
+]
