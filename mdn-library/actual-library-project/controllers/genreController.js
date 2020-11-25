@@ -1,6 +1,5 @@
 const async = require('async');
 const { body, validationResult } = require("express-validator");
-const { render } = require('pug');
 
 var Book = require('../models/book');
 var Genre = require('../models/genre');
@@ -87,10 +86,19 @@ exports.genre_delete_post = function(req, res, next) {
 
 // Display Genre update form on GET.
 exports.genre_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre update GET');
+    Genre.findById(req.params.id, function(err, genre) {
+        res.render('genre_form', {title: "Update Genre", genre: genre})
+    })
+    
 };
 
 // Handle Genre update on POST.
-exports.genre_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre update POST');
-};
+exports.genre_update_post = [
+    body('name', "Name field must be specified").trim().isLength({min: 1}).escape(),
+    (req, res, next) => {
+        Genre.findByIdAndUpdate(req.params.id, {name: req.body.name}, function(err, genre) {
+            if(err) return next(err);
+            res.redirect('/catalog/genres')
+        })
+    }
+]
