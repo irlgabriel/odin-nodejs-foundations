@@ -1,4 +1,5 @@
 require('dotenv').config();
+var compression = require('compression');
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -32,6 +33,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(compression());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
