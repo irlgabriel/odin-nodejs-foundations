@@ -1,3 +1,5 @@
+const { DateTime } = require('luxon');
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -18,6 +20,22 @@ AuthorSchema
 .virtual('lifespan')
 .get(function() {
   return this.date_of_death - this.date_of_birth;
+})
+
+AuthorSchema
+.virtual('lifespan_formatted')
+.get(function() {
+  const birth = DateTime.fromJSDate(this.date_of_birth).toLocaleString(DateTime.DATE_MED)
+  const death = DateTime.fromJSDate(this.date_of_death).toLocaleString(DateTime.DATE_MED);
+  if(this.date_of_birth) {
+    if(this.date_of_death) {
+      return birth + ' - ' + death;
+    } else {
+      return birth;
+    }
+  } else {
+    return "no birth info";
+  }
 })
 
 AuthorSchema
