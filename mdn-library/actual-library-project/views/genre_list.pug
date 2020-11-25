@@ -4,9 +4,9 @@ block content
   h1= title
   
   ul
-    each genre in genre_list
+    each gen in genre_list
       li 
-        a(href=genre.url) #{genre.name}
+        a(href=gen.url) #{gen.name}
 
     else
       li There are no authors.
