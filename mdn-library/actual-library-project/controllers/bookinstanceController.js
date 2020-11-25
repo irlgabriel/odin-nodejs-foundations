@@ -3,6 +3,7 @@ var async = require('async')
 
 var BookInstance = require('../models/bookinstance');
 var Book = require('../models/book');
+const book = require('../models/book');
 
 exports.bookinstance_list = function(req, res, next) {
   BookInstance.find()
@@ -122,27 +123,27 @@ exports.bookinstance_update_post = [
     
     (req, res, next) => {
         const errors = validationResult(req);
+        
+        console.log(req.body.due_back)
 
-        BookInstance.findById(req.params.id)
+        BookInstance.findByIdAndUpdate(req.params.id, {status: req.body.status, due_back: req.body.due_back, imprint: req.body.imprint })
         .exec(function(err, bookinstance) {
             if(err) return next(err);
             
-            var updatedbookinstance = {
-                status: req.body.status,
-                due_date: req.body.due_date,
-                imprint: req.body.imprint,
-                ...bookinstance
-            }
-
             if(!errors.isEmpty()) {
                 res.render('bookinstance_form', {title: 'Update Book instance', errors: errors.array()})
             }
 
-            bookinstance.save()
+
+            console.log(bookinstance);
+            res.redirect('/catalog/bookinstances')
+
+            /*
             .exec(function(err) {
                 if(err) return next(err);
                 res.redirect(`/catalog/bookinstances/${req.params.id}`)
             })
+            */
         })
     }
 ]
