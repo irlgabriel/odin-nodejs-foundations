@@ -11,3 +11,5 @@ GenreSchema
 .get(function() {
   return `/genre/${genre._id}`
 })
+
+module.exports = mongoose.model('Genre', GenreSchema);
