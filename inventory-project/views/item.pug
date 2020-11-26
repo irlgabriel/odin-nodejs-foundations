@@ -1,0 +1,15 @@
+extends layout
+
+block content
+
+  h3= item.name
+  em= item.brand
+  i= item.category
+  p= item.description
+  strong= item.price
+  p= item.stock
+
+  a(href=item.url + "/delete")
+    p Delete Item
+  a(href=item.url + "/edit")
+    p Edit Item

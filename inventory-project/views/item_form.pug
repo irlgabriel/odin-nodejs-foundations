@@ -1,0 +1,28 @@
+extends layout
+
+block content
+
+  a(href="/items")
+    p Go Back
+  
+  div#form-wrapper
+    form(action="" method="POST")
+      label(for="name") Name
+      input(type="text" name="name" required)
+
+      label(for="description") Description
+      textarea(type="text" name="description" required)
+
+      label(for="brand") Brand
+      input(type="text" name="brand" required)
+
+      label(for="category") Category
+      input(type="text" name="category" required)
+
+      label(for="price") Price
+      input(type="number" name="price" required)
+
+      label(for="stock") Stock
+      input(type="number" name="stock" required)
+
+      button(type='submit' style="margin-top: 10px; margin-left: 10px;") Submit

@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
     const itemsCount = await Item.countDocuments();
     const categoriesCount = await Category.countDocuments();
     const brandsCount = await Brand.countDocuments();
-    res.render('index', {title: "Odin Shop", itemsCount, categoriesCount, brandsCount});
+    res.render('index', {title: "Odin Marketplace", itemsCount, categoriesCount, brandsCount});
   } catch(err) {
     return next(err);
   }
