@@ -1,7 +1,8 @@
-var { body,validationResult } = require('express-validator');
+var { body, validationResult } = require('express-validator');
 var async = require('async')
 
 var BookInstance = require('../models/bookinstance');
+var Book = require('../models/book');
 
 exports.bookinstance_list = function(req, res, next) {
   BookInstance.find()
@@ -103,11 +104,45 @@ exports.bookinstance_delete_post = function(req, res) {
 };
 
 // Display BookInstance update form on GET.
-exports.bookinstance_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: BookInstance update GET');
+exports.bookinstance_update_get = function(req, res, next) {
+
+    BookInstance.findById(req.params.id)
+    .populate('book')
+    .exec(function(err, bookinstance) {
+        if(err) return next(err);
+        res.render('bookinstance_form', {title: 'Update Book instance', bookinstance: bookinstance, book: bookinstance.book})
+    })
 };
 
 // Handle bookinstance update on POST.
-exports.bookinstance_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: BookInstance update POST');
-};
+exports.bookinstance_update_post = [
+    body('imprint').trim().isLength({min: 1}).escape(),
+    body('date', 'Date needs to be specified').escape(),
+    body('status', 'Status needs to be specified').escape(),
+    
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        BookInstance.findById(req.params.id)
+        .exec(function(err, bookinstance) {
+            if(err) return next(err);
+            
+            var updatedbookinstance = {
+                status: req.body.status,
+                due_date: req.body.due_date,
+                imprint: req.body.imprint,
+                ...bookinstance
+            }
+
+            if(!errors.isEmpty()) {
+                res.render('bookinstance_form', {title: 'Update Book instance', errors: errors.array()})
+            }
+
+            bookinstance.save()
+            .exec(function(err) {
+                if(err) return next(err);
+                res.redirect(`/catalog/bookinstances/${req.params.id}`)
+            })
+        })
+    }
+]
