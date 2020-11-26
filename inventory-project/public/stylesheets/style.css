@@ -3,3 +3,17 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+body {
+  background: #dae0e6;
+}
+
+nav {
+  height: 50px;
+  display: grid;
+  place-items: center;
+  background: white;
+}
+nav h3 {
+  margin: 0;
+}

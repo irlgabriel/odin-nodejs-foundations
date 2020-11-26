@@ -1,7 +1,9 @@
 extends layout
 
 block content
-
-  p Items #{itemsCount}
-  p Brands #{brandsCount}
-  p Categories #{categoriesCount}
+  a(href="/items")
+    p Items (#{itemsCount})
+  a(href="/brands")
+    p Brands (#{brandsCount})
+  a(href="/categories")
+    p Categories (#{categoriesCount})

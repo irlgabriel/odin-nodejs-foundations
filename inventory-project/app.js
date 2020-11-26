@@ -6,6 +6,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var itemsRouter = require('./routes/items')
+var brandsRouter = require('./routes/brands');
+var categoriesRouter = require('./routes/categories');
 
 mongoose.connect(process.env.DB_STRING, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true});
 var db = mongoose.connection;
@@ -28,6 +31,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+app.use('/items', itemsRouter);
+app.use('/brands', brandsRouter);
+app.use('/categories', categoriesRouter);
 
 app.use(compression());
 

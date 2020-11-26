@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  a(href="/")
+    p Go back
+  h1 Categories
+  
+  ul.category_list
+    each category in categories
+      li
+        a(href=`/categorys/${category._id}`)
+          p #{category.name}

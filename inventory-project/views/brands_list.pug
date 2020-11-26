@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  a(href="/")
+    p Go back
+  h1 Brands
+  
+  ul.brands_list
+    each brand in brands
+      li
+        a(href=`/brands/${brand._id}`)
+          p #{brand.name}

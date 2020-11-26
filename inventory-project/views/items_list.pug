@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  a(href="/")
+    p Go back
+  h1 Items
+  
+  ul.item_list
+    each item in items
+      li
+        a(href=`/items/${item._id}`)
+          p #{item.name}
