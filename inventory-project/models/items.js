@@ -9,3 +9,5 @@ var ItemSchema = new Schema({
   price: {type: String, required: true},
   stock: {type: String, required: true},
 })
+
+module.exports = mongoose.model('Item', ItemSchema);
