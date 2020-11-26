@@ -10,4 +10,8 @@ var ItemSchema = new Schema({
   stock: {type: String, required: true},
 })
 
+ItemSchema.virtual('url', function(){
+  return "/item/" + this._id;
+})
+
 module.exports = mongoose.model('Item', ItemSchema);

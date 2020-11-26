@@ -5,4 +5,8 @@ var BrandSchema = new Schema({
   name: {type: String, required: true, minlength: 1},
 })
 
+BrandSchema.virtual('url', function(){
+  return '/brand/' + this._id;
+})
+
 module.exports = mongoose.model('Brand', BrandSchema);
