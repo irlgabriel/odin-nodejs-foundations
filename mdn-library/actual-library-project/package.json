@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "startDev": "nodemon ./bin/www",
-    "serverDev": "DEBUG=actual-mdn-library npm run startDev"
+    "serverDev": "DEBUG=actual-mdn-library npm run startDev",
+    "serverDevWindows": "set DEBUG=* & npm run startDev"
   },
   "dependencies": {
     "async": "^3.2.0",

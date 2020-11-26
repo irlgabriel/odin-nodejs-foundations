@@ -8,7 +8,7 @@ var GenreSchema = new Schema({
 GenreSchema
 .virtual('url')
 .get(function() {
-  return `/genre/${this._id}`
+  return `/catalog/genre/${this._id}`
 })
 
 module.exports = mongoose.model('Genre', GenreSchema);
