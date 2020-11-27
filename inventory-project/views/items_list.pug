@@ -9,5 +9,5 @@ block content
   ul.item_list
     each item in items
       li
-        a(href=`/items/${item._id}`)
+        a(href=item.url)
           p #{item.name}

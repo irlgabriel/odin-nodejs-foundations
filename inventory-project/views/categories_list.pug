@@ -8,5 +8,5 @@ block content
   ul.category_list
     each category in categories
       li
-        a(href=`/categorys/${category._id}`)
+        a(href=category.url)
           p #{category.name}

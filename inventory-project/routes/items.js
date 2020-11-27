@@ -21,13 +21,15 @@ router.get('/new', async(req, res, next) => {
   res.render('item_form', {title: "Create new Item"})
 })
 // GET one item
-router.get('/:id', async(req, res, next) => {
-  try {
-    const item = Item.findById(req.params.id);
+router.get('/:id', (req, res, next) => {
+  Item.findById(req.params.id)
+  .populate('brand')
+  .populate('category')
+  .exec((err, item) => {
+    if(err) return next(err);
+    console.log(item);
     res.render('item', {title: item.name, item})
-  } catch(err) {
-    return next(err);
-  } 
+  })
 })
 // POST item form
 router.post('/new', [
@@ -37,65 +39,70 @@ router.post('/new', [
   body('description').trim().isLength({min: 1}).escape(),
   body('price').trim().isLength({min: 1}).isNumeric().withMessage("Price must be a number!").escape(),
   body('stock').trim().isLength({min: 1}).isNumeric().withMessage("Stock must be a number!").escape(),
-  async(req, res, next) => {
+  (req, res, next) => {
     const errors = validationResult(req);
-    const item = new Item({
-      brand: req.body.brand,
-      category: req.body.category,
-      description: req.body.description,
-      name: req.body.name,
-      price: req.body.price,
-      stock: req.body.stock,
-    })
-
-    // if there are any validation errors we render this page again and show them
+    const item = new Item({...req.body, brand: null, category: null})
+    // if there are any validation errors we render this page again and show them.
     // sending the item param so the input fields stay populated after re-render.
     if(!errors.isEmpty()) return res.render('item_form', {title: "Create new Item", errors: errors.array(), item})
 
     // else validation is successful
     // now check if the brand and category specified actually exist, if not then create them
- 
     async.parallel(
       [
-        async () => {
-          let brand = await Brand.findOne({name: item.brand})
-          // if brand doesn't exist we create it and attach its id to the item
-          if(!brand) {
-            brand = Brand.create({name: req.body.brand}, (err, brand) => {
-              if(err) return next(err);
-              item.brand = brand._id;
-          })
-          // else we just find the brand and attach its id to the item 
-          } else {
-            item.brand = brand._id;
-          }
-        },
-        async () => {
-          let category = await Category.find({name: item.category})
-          // if category does not exist we create it and attach its id to the item
-          if(!category) {
-            category = Category.create({name: req.body.category}, (err, category) => {
-              if(err) return next(err);
-              item.category = category._id;
+        function(callback) {
+          Brand.findOne({name: req.body.brand}, (err, brand) => {
+            if(err) return next(err);
+            // if brand doesn't exist we create it and attach its id to the item
+            if(!brand) {
+              brand = Brand.create({name: req.body.brand}, (err, brand) => {
+                if(err) return next(err);
+                item.brand = brand._id;
             })
-          // else we just find it by name and attach the id to the newly created item
-          } else {
-            item.category = category._id;
-          }
-          
+            // else we just find the brand and attach its id to the item 
+            } else {
+              item.brand = brand._id;
+            }
+            callback(null, item);
+          })
+        },
+        function(callback) {
+          Category.findOne({name: req.body.category}, (err, category) => {
+            if(err) return next(err);
+            // if category does not exist we create it and attach its id to the item
+            if(!category) {
+              category = Category.create({name: req.body.category}, (err, category) => {
+                if(err) return next(err);
+                item.category = category._id;
+              })
+            // else we just find it by name and attach the id to the newly created item
+            } else {
+              item.category = category._id;
+            }
+            callback(null, item);
+          })
         }
       ],
-      function() {
+      function(err, results) {
         item.save((err, item) => {
           if(err) return next(err);
           res.redirect('/items/' + item._id);
         })
       }
     )
-    
-
   }
 ])
+// GET item edit form 
+router.get('/:id/edit', (req, res, next) => {
+  Item.findById(req.params.id)
+  .populate('brand')
+  .populate('category')
+  .exec((err, item) => {
+    if(err) return next(err);
+    res.render('item_form', {title: "Edit Item", item})
+  })
+  
+})
 // PUT item form (EDIT)
 router.put('/:id/edit', [
   body('brand').trim().isLength({min: 1}).escape(),
