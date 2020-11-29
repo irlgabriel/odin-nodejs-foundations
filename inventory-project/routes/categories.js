@@ -1,6 +1,29 @@
 const { body, validationResult } = require('express-validator');
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './uploads/');
+  },
+  filename: function(req, file, cb) {
+    cb(null, Date.now() + file.originalname)
+  }
+})
+const fileFilter = (req, file, cb) => {
+  if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+}
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  },
+  fileFilter: fileFilter
+});
 
 const Category = require('../models/categories');
 const Item = require('../models/items');
@@ -32,10 +55,12 @@ router.get('/new', (req, res, next) => {
 })
 // POST Category form
 router.post('/new',[
+  upload.single('image'),
   body('name').trim().isLength({min: 1}).escape(),
   (req, res, next) => {
     //Category.findOne() check first if the category already exists
-    Category.create({name: req.body.name}, (err, category) => {
+    Category.create({name: req.body.name, image: req.file ? req.file.path : 'uploads/no_image.png'}, (err) => {
+      if(err) return next(err);
       res.redirect('/categories');
     })
   }
@@ -47,17 +72,19 @@ router.get('/:id/edit', (req, res, next) => {
   })
 })
 router.post('/:id/edit', [
+  upload.single('image'),
   body('name').trim().isLength({min: 1}).escape(),
   (req, res, next) => {
-    Category.findByIdAndUpdate(req.params.id, {name: req.body.name}, (err, category) => {
+    Category.findByIdAndUpdate(req.params.id, {name: req.body.name, image: req.file ? req.file.path : 'uploads/no_image.png'}, (err, doc) => {
       if(err) return next(err);
+      console.log(doc);
       res.redirect('/categories');
     })
   }
 ])
 router.get('/:id/delete', (req, res, next) => {
   Category.findOneAndDelete({_id: req.params.id}, (err) => {
-    res.redirect('/brands')
+    res.redirect('/categories')
   })
 })
 

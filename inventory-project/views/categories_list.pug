@@ -3,13 +3,17 @@ extends layout
 block content
   a(href="/")
     p Go Back
-  h1 Categories
+  div.d-flex.align-items-center
+    h1 Categories
+    a.mb-0(href="/categories/new")
+      button.ml-3.btn.btn-primary.mb-0 Create new Category
   
   ul.category_list
     each category in categories
       li
         a(href=category.url + '/items')
-          p #{category.name}
+          div.category-listing
+            p.mb-0 #{category.name}
+            img(src='/' + category.image style='max-width: 100%;')
   
-  a(href="/categories/new")
-    p Create New Category
+

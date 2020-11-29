@@ -2,6 +2,29 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const async = require('async');
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './uploads/');
+  },
+  filename: function(req, file, cb) {
+    cb(null, Date.now() + file.originalname)
+  }
+})
+const fileFilter = (req, file, cb) => {
+  if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+}
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  },
+  fileFilter: fileFilter
+});
 
 const Item = require('../models/items')
 const Brand = require('../models/brands');
@@ -33,6 +56,7 @@ router.get('/:id', (req, res, next) => {
 })
 // POST item form
 router.post('/new', [
+  upload.single('image'),
   body('brand').trim().isLength({min: 1}).escape(),
   body('category').trim().isLength({min: 1}).escape(),
   body('name').trim().isLength({min: 1}).escape(),
@@ -42,6 +66,9 @@ router.post('/new', [
   (req, res, next) => {
     const errors = validationResult(req);
     const item = new Item({...req.body, brand: null, category: null})
+    // check if file was sent
+    if(req.file) item.image = req.file.pathname;
+
     // if there are any validation errors we render this page again and show them.
     // sending the item param so the input fields stay populated after re-render.
     if(!errors.isEmpty()) return res.render('item_form', {title: "Create new Item", errors: errors.array(), item})
@@ -58,7 +85,7 @@ router.post('/new', [
               brand = Brand.create({name: req.body.brand}, (err, brand) => {
                 if(err) return next(err);
                 item.brand = brand._id;
-            })
+              })
             // else we just find the brand and attach its id to the item 
             } else {
               item.brand = brand._id;
@@ -83,7 +110,8 @@ router.post('/new', [
           })
         }
       ],
-      function(err, results) {
+      function(err) {
+        if(err) return next(err)
         item.save((err, item) => {
           if(err) return next(err);
           res.redirect('/items/' + item._id);
@@ -105,18 +133,19 @@ router.get('/:id/edit', (req, res, next) => {
 })
 // POST item form (EDIT)
 router.post('/:id/edit', [
+  upload.single('image'),
   body('brand').trim().isLength({min: 1}).escape(),
   body('category').trim().isLength({min: 1}).escape(),
   body('name').trim().isLength({min: 1}).escape(),
   body('description').trim().isLength({min: 1}).escape(),
   body('price').trim().isLength({min: 1}).isNumeric().withMessage("Price must be a number!").escape(),
   body('stock').trim().isLength({min: 1}).isNumeric().withMessage("Stock must be a number!").escape(),
-  async (req, res, next) => {
-
-    const item = await Item.findById(req.params.id);
-    const updatedItem = {...req.body, brand: null, category: null};
+  (req, res, next) => {
+    const updatedItem = {...req.body, image: 'uploads/no_image.png'};
+    if(req.file) updatedItem.image = req.file.path;
+    console.log(req.body, req.file);
     const errors = validationResult(req);
-    if(!errors.isEmpty()) return res.render('item_form', {title: "Edit Item", errors: errors.array(), item})
+    if(!errors.isEmpty()) return res.render('item_form', {title: "Edit Item", errors: errors.array(), item: updatedItem})
 
     // Find Category and Brand by their names
     async.parallel([
@@ -150,20 +179,18 @@ router.post('/:id/edit', [
         updatedItem.brand = results[1].id
       }
       // else validation is successful and we update the item
-      item.update(updatedItem, (err) => {
-        if(err) return next(err);
-        res.redirect('/items');
+      Item.findOneAndUpdate({_id: req.params.id}, updatedItem, (err) => {
+        res.redirect('/items/' + req.params.id)
       })
     })
   }
 ])
 // DELETE item
-router.delete('/:id', async(req, res, next) => {
-  try{
-    await Item.deleteOne({_id: req.params.id})
-  } catch(err) {
-    return next(err);
-  }
+router.get('/:id/delete', (req, res, next) => {
+  Item.findOneAndDelete({_id: req.params.id}, (err) => {
+    if(err) return next(err);
+    res.redirect('/items')
+  })
 })
 
 module.exports = router;

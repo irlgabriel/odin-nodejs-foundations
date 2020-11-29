@@ -7,14 +7,17 @@ block content
   div.d-flex.align-items-center
     h3= category.name
     a(href=category.url + '/delete')
-      p(style="margin: 0; margin-left: 1rem; color: red") Delete this Category
+      p(style="margin: 0; margin-left: 1rem; color: red") Delete
+    a(href=category.url + '/edit')
+      p(style="margin: 0; margin-left: 1rem; color: orange") Edit 
 
   div.d-flex.container-fluid
     each item in items
       div.item-listing
+        img(src= '/' + item.image style='max-width: 100%;')
         h4= item.brand.name
         h5= item.name
         em= item.description
-        div.d-flex.justify-content-between
+        div.item-footer
           p Stock: #{item.stock}pcs
           strong $#{item.price}.99

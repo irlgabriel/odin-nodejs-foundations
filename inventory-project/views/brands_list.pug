@@ -3,13 +3,20 @@ extends layout
 block content
   a(href="/")
     p Go back
-  h1 Brands
+  div.d-flex.align-items-center
+    h1 Brands
+    a(href='/brands/new')
+      button.btn.btn-primary.ml-3 Create new Brand
   
   ul.brands_list
     each brand in brands
-      li
+      li.d-flex.align-items-center
         a(href=`/brands/${brand._id}/items`)
-          p #{brand.name}
+          p.mb-0 #{brand.name}
+        a.ml-3(href=brand.url + '/delete')
+          button.btn-sm.btn-warning Delete
+        a.ml-3(href=brand.url +'/edit')
+          button.btn-sm.btn-danger Edit
 
   a(href="/brands/new")
     p Create new Brand

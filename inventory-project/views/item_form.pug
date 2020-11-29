@@ -5,26 +5,33 @@ block content
   a(href="/items")
     p Go Back
   
-  div#form-wrapper
-    each erorr in errors
-      p= erorr
-    form(action="" method="POST")
+  div.form-wrapper
+    h3= title
+    form(action="" method="POST" enctype='multipart/form-data')
       label(for="name") Name
-      input(type="text" value=item ? item.name : "" name="name" required)
+      input.form-control(type="text" value=item ? item.name : "" name="name" placeholder='Name...' required)
 
       label(for="description") Description
-      textarea(type="text" placeholder="Description.." name="description" required) #{item ? item.description : "" }
+      textarea.form-control(type="text" placeholder="Description.." name="description" required) #{item ? item.description : "" }
 
       label(for="brand") Brand
-      input(type="text" name="brand" value=item ? item.brand.name : "" required)
+      input.form-control(type="text" name="brand" value=item ? item.brand.name : "" placeholder='Brand..' required)
 
       label(for="category") Category
-      input(type="text" value=item ? item.category.name : "" name="category" required)
+      input.form-control(type="text" value=item ? item.category.name : "" name="category" placeholder='Category..' required)
 
       label(for="price") Price
-      input(type="number" value=item ? item.price : 0 name="price" required)
+      input.form-control(type="number" value=item ? item.price : 0 name="price" required)
 
       label(for="stock") Stock
-      input(type="number" value=item ? item.stock : 0 name="stock" required)
+      input.form-control(type="number" value=item ? item.stock : 0 name="stock" required)
 
+      label(for="image") Product Image
+      input.form-control-file(type='file' name='image')
+
+      if errors 
+          ul
+            for error in errors
+              li!= error.msg
       button(type='submit' style="margin-top: 10px; margin-left: 10px;") Submit
+  

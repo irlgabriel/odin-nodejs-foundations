@@ -17,8 +17,9 @@ nav {
 nav h3 {
   margin: 0;
 }
-#form-wrapper{
+.form-wrapper{
   margin: 0 auto;
+  width: 50%;
 }
 input[type="text"] {
   border-radius: 4px;
@@ -42,9 +43,32 @@ button {
   color: white;
   border-radius: 4px;
 }
+li {
+  list-style: none;
+}
+a:hover{
+  text-decoration: none;
+}
 
 .item-listing {
   border: 1px solid royalblue;
   margin: .5rem;
   padding: .5rem;
+  width: 300px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+.category-listing {
+  width: 400px;
+  min-height: 300px;
+}
+.item-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+}
+.item-wrapper {
+  padding: .5rem;
+  display: flex;
 }
