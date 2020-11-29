@@ -103,8 +103,8 @@ router.get('/:id/edit', (req, res, next) => {
   })
   
 })
-// PUT item form (EDIT)
-router.put('/:id/edit', [
+// POST item form (EDIT)
+router.post('/:id/edit', [
   body('brand').trim().isLength({min: 1}).escape(),
   body('category').trim().isLength({min: 1}).escape(),
   body('name').trim().isLength({min: 1}).escape(),
@@ -114,19 +114,46 @@ router.put('/:id/edit', [
   async (req, res, next) => {
 
     const item = await Item.findById(req.params.id);
-    const updatedItem = {
-      brand: req.body.brand,
-      category: req.body.category,
-      name: req.body.name,
-      price: req.body.price,
-      stock: req.body.stock
-    }
+    const updatedItem = {...req.body, brand: null, category: null};
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.render('item_form', {title: "Edit Item", errors: errors.array(), item})
 
-    // else validation is successful and we update the item
-    item.update(updatedItem, (err) => {
+    // Find Category and Brand by their names
+    async.parallel([
+      function(callback) {
+        Category.findOne({name: req.body.category}, callback)
+      },
+      function(callback) {
+        Brand.findOne({name: req.body.brand}, callback)
+      }
+    ], function(err, results) {
       if(err) return next(err);
+      // If category doesn't exist, we create it and append its id to the updated item
+      if(!results[0]) {
+        Category.create({name: req.body.category}, (err, category) => {
+          if(err) return next(err);
+          updatedItem.category = category._id;
+        })
+        // else just appends its id
+      } else {
+        updatedItem.category = results[0].id
+      }
+
+      // If category doesn't exist, we create it and append its id to the updated item
+      if(!results[1]) {
+        Brand.create({name: req.body.category}, (err, brand) => {
+          if(err) return next(err);
+          updatedItem.brand = brand._id;
+        })
+        // else just appends its id
+      } else {
+        updatedItem.brand = results[1].id
+      }
+      // else validation is successful and we update the item
+      item.update(updatedItem, (err) => {
+        if(err) return next(err);
+        res.redirect('/items');
+      })
     })
   }
 ])

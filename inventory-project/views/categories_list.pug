@@ -2,11 +2,11 @@ extends layout
 
 block content
   a(href="/")
-    p Go back
+    p Go Back
   h1 Categories
   
   ul.category_list
     each category in categories
       li
-        a(href=category.url)
+        a(href=category.url + '/items')
           p #{category.name}

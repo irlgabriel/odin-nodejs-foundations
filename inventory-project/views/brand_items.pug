@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  a(href="/brands")
+    p Go Back
+  h3= brand.name
+
+  div.d-flex.container-fluid
+    each item in items
+      div.item-listing
+        h4= item.brand.name
+        h5= item.name
+        em= item.description
+        div.d-flex.justify-content-between
+          p Stock: #{item.stock}pcs
+          strong $#{item.price}.99
