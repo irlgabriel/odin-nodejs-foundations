@@ -3,7 +3,10 @@ extends layout
 block content
   a(href="/brands")
     p Go Back
-  h3= brand.name
+  div.d-flex.align-items-center
+    h3= brand.name
+    a(href=brand.url + '/delete')
+      p(style="margin: 0; margin-left: 1rem; color: red") Delete this Brand
 
   div.d-flex.container-fluid
     each item in items

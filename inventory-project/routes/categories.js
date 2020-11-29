@@ -34,6 +34,7 @@ router.get('/new', (req, res, next) => {
 router.post('/new',[
   body('name').trim().isLength({min: 1}).escape(),
   (req, res, next) => {
+    //Category.findOne() check first if the category already exists
     Category.create({name: req.body.name}, (err, category) => {
       res.redirect('/categories');
     })
@@ -54,5 +55,10 @@ router.post('/:id/edit', [
     })
   }
 ])
+router.get('/:id/delete', (req, res, next) => {
+  Category.findOneAndDelete({_id: req.params.id}, (err) => {
+    res.redirect('/brands')
+  })
+})
 
 module.exports = router;

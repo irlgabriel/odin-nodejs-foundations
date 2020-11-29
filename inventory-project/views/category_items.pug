@@ -3,7 +3,11 @@ extends layout
 block content
   a(href="/categories")
     p Go Back
-  h3= category.name
+
+  div.d-flex.align-items-center
+    h3= category.name
+    a(href=category.url + '/delete')
+      p(style="margin: 0; margin-left: 1rem; color: red") Delete this Category
 
   div.d-flex.container-fluid
     each item in items
