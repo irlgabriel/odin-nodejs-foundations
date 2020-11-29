@@ -3,7 +3,8 @@ extends layout
 block content
   a(href="/items")
     p Go Back
-  i= item.category.name
+  a(href=item.category.url  + '/items')
+    i << #{item.category.name}
   h3= item.brand.name + ' ' + item.name
 
   p(style="margin-left: 20px;") #{item.description}
