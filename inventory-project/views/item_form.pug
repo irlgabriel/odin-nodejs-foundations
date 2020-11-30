@@ -15,10 +15,14 @@ block content
       textarea.form-control(type="text" placeholder="Description.." name="description" required) #{item ? item.description : "" }
 
       label(for="brand") Brand
-      input.form-control(type="text" name="brand" value=item ? item.brand.name : "" placeholder='Brand..' required)
+      select.form-control(name="brand" required)
+        for brand in brands
+          option(value=brand._id)= brand.name
 
       label(for="category") Category
-      input.form-control(type="text" value=item ? item.category.name : "" name="category" placeholder='Category..' required)
+      select.form-control(name="category" required)
+        for category in categories
+          option(value=category._id)= category.name
 
       label(for="price") Price
       input.form-control(type="number" value=item ? item.price : 0 name="price" required)

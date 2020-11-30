@@ -99,7 +99,7 @@ router.post('/:id/delete', (req, res, next) => {
   if(password === process.env.DELETE_PASSWORD) {
     Category.findOneAndDelete({_id: req.params.id}, (err) => {
       if(err) return next(err);
-      res.redirect('/category')
+      res.redirect('/categories')
     })
   } else {
     Category.findById(req.params.id, (err, category) => {
