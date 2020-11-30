@@ -1,9 +1,23 @@
 extends layout
 
 block content
-  a(href="/items")
-    p Items (#{itemsCount})
-  a(href="/brands")
-    p Brands (#{brandsCount})
-  a(href="/categories")
-    p Categories (#{categoriesCount})
+  a.mb-0(href="/brands")
+    p.mb-0 Brands (#{brands.length})
+
+  div.d-flex
+    for brand in brands
+      a(href=brand.url + '/items')
+        div.brand-listing
+          p=  brand.name
+          img(src='/' + brand.image style='max-width: 100%;')
+
+  a.mb-0(href='/categories')
+    p.mb-0 Categories(#{categories.length})
+
+  div.d-flex.mt-2
+    for category in categories
+      a(href=category.url + '/items')
+        div.category-listing
+          p= category.name
+          img(src='/' + category.image style='max-width: 100%;')
+

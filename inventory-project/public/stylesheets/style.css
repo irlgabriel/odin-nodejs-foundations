@@ -4,9 +4,6 @@
   box-sizing: border-box;
 }
 
-body {
-  background: #dae0e6;
-}
 
 nav {
   height: 50px;
@@ -50,7 +47,7 @@ a:hover{
   text-decoration: none;
 }
 
-.item-listing {
+.item-listing, .category-listing {
   border: 1px solid royalblue;
   margin: .5rem;
   padding: .5rem;
@@ -59,9 +56,14 @@ a:hover{
   display: flex;
   flex-direction: column;
 }
-.category-listing {
-  width: 400px;
-  min-height: 300px;
+.brand-listing, .category-listing, .item-listing {
+  border: 1px solid lightgray;
+  margin: .5rem;
+  padding: .5rem;
+}
+.brand-listing {
+  width: 100px;
+  height: 100px !important;
 }
 .item-footer {
   margin-top: auto;

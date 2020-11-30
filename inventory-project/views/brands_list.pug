@@ -10,13 +10,10 @@ block content
   
   ul.brands_list
     each brand in brands
-      li.d-flex.align-items-center
+      li.d-flex.align-items-center.my-2
         a(href=`/brands/${brand._id}/items`)
           p.mb-0 #{brand.name}
         a.ml-3(href=brand.url + '/delete')
           button.btn-sm.btn-warning Delete
         a.ml-3(href=brand.url +'/edit')
           button.btn-sm.btn-danger Edit
-
-  a(href="/brands/new")
-    p Create new Brand

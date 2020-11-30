@@ -6,7 +6,9 @@ block content
   div.d-flex.align-items-center
     h3= brand.name
     a(href=brand.url + '/delete')
-      p(style="margin: 0; margin-left: 1rem; color: red") Delete this Brand
+      button.ml-3.btn-sm.btn-warning Delete
+    a(href=brand.url + '/edit')
+      button.ml-3.btn-sm.btn-danger Edit
 
   div.d-flex.container-fluid
     each item in items
