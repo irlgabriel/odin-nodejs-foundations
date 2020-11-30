@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  a(href="/brands")
+    p Go Back
+  div.d-flex.align-items-center
+    div.d-flex
+      h3= brand.name
+      a(href='/items/new')
+        button.ml-2.btn.btn-sm.btn-info Create new Item
+
+  div.d-flex.container-fluid
+    each item in items
+      div.item-listing
+        img(src= '/' + item.image style='max-width: 100%;')
+        h4= item.brand.name
+        h5= item.name
+        em= item.description
+        div.item-footer
+          p Stock: #{item.stock}pcs
+        div.d-flex.justify-flex-end
+          a(href=item.url +'/edit')
+            p.text-warning Edit
+          a(href=item.url +'/delete')
+            p.ml-3.text-danger Delete

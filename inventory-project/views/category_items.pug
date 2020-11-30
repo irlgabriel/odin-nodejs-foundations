@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  a(href="/categories")
+    p Go Back
+
+  div.d-flex.align-items-center
+    div.d-flex
+      h3= category.name
+      a(href='/items/new')
+        button.ml-2.btn.btn-sm.btn-info Create new Item
+  div.d-flex.container-fluid
+    each item in items
+      div.item-listing
+        img(src= '/' + item.image style='max-width: 100%;')
+        h4= item.brand.name
+        h5= item.name
+        em= item.description
+        div.item-footer
+          p Stock: #{item.stock}pcs
+          strong $#{item.price}.99
+        div.d-flex
+          a.ml-auto(href=item.url +'/edit')
+            p Edit
+          a.ml-3(href=item.url +'/delete')
+            p Delete

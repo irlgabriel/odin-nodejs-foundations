@@ -1,0 +1,23 @@
+extends layout
+
+block content
+
+  a(href='/categories')
+    p Go Back
+  div.form-wrapper
+    h3= title
+
+    form(action='' method='POST' enctype='multipart/form-data')
+      label(for='name') Name
+      input.form-control(type='text' name='name' placeholder='Category name' value=category ? category.name : '' required)
+      
+      label(for='image') Category Image
+      input.form-control-file(type='file' name='image')
+
+      button(type='submit' style='margin-top: .5rem; margin-left: .5rem') Submit
+
+  
+  if errors 
+    ul
+      for error in errors
+        li!= error.msg

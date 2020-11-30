@@ -8,19 +8,16 @@ var Brand = require('../models/brands');
 
 
 router.get('/', (req, res, next) => {
-  async.parallel({
-    itemsCount: function(callback) {
-      Item.countDocuments(callback);
+  async.parallel([
+   function(callback) {
+      Category.find(callback);
     },
-    categoriesCount: function(callback) {
-      Category.countDocuments(callback);
-    },
-    brandsCount: function(callback) {
-      Brand.countDocuments(callback);
+    function(callback) {
+      Brand.find(callback);
     }
-  }, function(err, results) {
+  ], function(err, results) {
     if(err) return next(err);
-    res.render('index', {title: 'Odin Marketplace', itemsCount: results.itemsCount, categoriesCount: results.categoriesCount, brandsCount: results.brandsCount});
+    res.render('index', {title: 'Odin Marketplace', categories: results[0], brands: results[1]});
   })
 });
 

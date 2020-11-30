@@ -31,13 +31,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use('/uploads', express.static('uploads'))
+app.use(compression());
 
 app.use('/items', itemsRouter);
 app.use('/brands', brandsRouter);
 app.use('/categories', categoriesRouter);
-
-app.use(compression());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

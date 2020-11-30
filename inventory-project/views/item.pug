@@ -3,13 +3,18 @@ extends layout
 block content
   a(href="/items")
     p Go Back
-  i= item.category.name
-  h3= item.brand.name + ' ' + item.name
+  a(href=item.category.url  + '/items')
+    i << #{item.category.name}
 
-  p(style="margin-left: 20px;") #{item.description}
-  strong= 'Price: ' + '$' + item.price
-  p= 'In-Stock: ' + item.stock
-  a(href=item.url + "/delete")
-    p Delete Item
-  a(href=item.url + "/edit")
-    p Edit Item
+  div.item-wrapper
+    div.image-wrapper
+      img(src='/' + item.image, style='max-width: 400px;')
+    div.content-wrapper
+      h3= item.brand.name + ' ' + item.name
+      p(style="margin-left: 20px;") #{item.description}
+      strong= 'Price: ' + '$' + item.price
+      p= 'In-Stock: ' + item.stock
+      a(href=item.url + "/delete")
+        p(style="margin-bottom: 0;") Delete Item
+      a(href=item.url + "/edit")
+        p(style="margin-bottom: 0;") Edit Item
