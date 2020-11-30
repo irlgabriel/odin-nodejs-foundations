@@ -19,3 +19,8 @@ block content
         div.item-footer
           p Stock: #{item.stock}pcs
           strong $#{item.price}.99
+        div.d-flex
+          a.ml-auto(href=item.url +'/edit')
+            p Edit
+          a.ml-3(href=item.url +'/delete')
+            p Delete

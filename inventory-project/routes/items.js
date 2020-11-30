@@ -65,9 +65,8 @@ router.post('/new', [
   body('stock').trim().isLength({min: 1}).isNumeric().withMessage("Stock must be a number!").escape(),
   (req, res, next) => {
     const errors = validationResult(req);
-    const item = new Item({...req.body, brand: null, category: null})
+    const item = new Item({...req.body, brand: null, category: null, image: req.file ? req.file.pathname : 'uploads/no_image.png'})
     // check if file was sent
-    if(req.file) item.image = req.file.pathname;
 
     // if there are any validation errors we render this page again and show them.
     // sending the item param so the input fields stay populated after re-render.

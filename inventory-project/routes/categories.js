@@ -82,10 +82,33 @@ router.post('/:id/edit', [
     })
   }
 ])
+
 router.get('/:id/delete', (req, res, next) => {
-  Category.findOneAndDelete({_id: req.params.id}, (err) => {
-    res.redirect('/categories')
+  Category.findById(req.params.id, (err, category) => {
+    if(err) return next(err);
+    Item.find({category: category._id}, (err, items) => {
+      if(err) return next(err);
+        res.render('delete_category', {title: "Delete Category", category, items})
+    })
   })
+  
 })
 
+router.post('/:id/delete', (req, res, next) => {
+  const password = req.body.password;
+  if(password === process.env.DELETE_PASSWORD) {
+    Category.findOneAndDelete({_id: req.params.id}, (err) => {
+      if(err) return next(err);
+      res.redirect('/category')
+    })
+  } else {
+    Category.findById(req.params.id, (err, category) => {
+      if(err) return next(err);
+      Item.find({category: category._id}, (err, items) => {
+        if(err) return next(err);
+          res.render('delete_category', {title: "Delete Category", category, items, error: 'Incorrect Password!'})
+      })
+    })
+  }
+})
 module.exports = router;

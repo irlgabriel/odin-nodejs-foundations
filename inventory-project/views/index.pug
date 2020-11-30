@@ -1,9 +1,14 @@
 extends layout
 
 block content
+
+  div
+    a(href='/items')
+      h3 See All Items
+
   a.mb-0(href="/brands")
     p.mb-0 Brands (#{brands.length})
-
+    
   div.d-flex
     for brand in brands
       a(href=brand.url + '/items')
@@ -24,7 +29,7 @@ block content
         div.category-listing
           p.text-center= category.name
           img(src='/' + category.image style='max-width: 100%;')
-    a(href='/category/new')
+    a(href='/categories/new')
       div.category-listing
         p.text-center Create new Category
         img(src='/uploads/Plus_symbol.svg' width="300px" height="300px")

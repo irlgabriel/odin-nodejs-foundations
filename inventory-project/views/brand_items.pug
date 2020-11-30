@@ -18,3 +18,8 @@ block content
         em= item.description
         div.item-footer
           p Stock: #{item.stock}pcs
+        div.d-flex.justify-flex-end
+          a(href=item.url +'/edit')
+            Edit
+          a(href=item.url +'/delete')
+            Delete

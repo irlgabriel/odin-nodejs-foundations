@@ -1,0 +1,25 @@
+extends layout
+
+block content
+
+  div.text-center
+  
+    p Are you sure you want to delete this category?
+    a(href='/categories')
+      p Go Back!
+    if items.length
+      ul The following items will be deleted as well:
+      for item in items
+        li.item-listing.mx-auto
+          img(src= '/' + item.image style='max-width: 100%;')
+          h4= item.brand.name
+          h5= item.name
+          em= item.description
+          div.item-footer
+            p Stock: #{item.stock}pcs
+  form.w-50.mx-auto(method='POST' action= category.url + '/delete')
+    if error
+      p.text-center.font-weight-bold.text-danger= error
+    input.form-control(name='password' placeholder='Password...' type='text')
+    div.text-center
+      button.btn.btn-sm.btn-outline-info.mt-2 Delete

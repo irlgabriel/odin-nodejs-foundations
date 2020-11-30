@@ -88,9 +88,31 @@ router.post('/:id/edit', [
   
 ])
 router.get('/:id/delete', (req, res, next) => {
-  Brand.findOneAndDelete({_id: req.params.id}, (err) => {
+  Brand.findById(req.params.id, (err, brand) => {
     if(err) return next(err);
-    res.redirect('/brands')
+    Item.find({brand: brand._id}, (err, items) => {
+      if(err) return next(err);
+        res.render('delete_brand', {title: "Delete Brand", brand, items})
+    })
   })
+  
+})
+
+router.post('/:id/delete', (req, res, next) => {
+  const password = req.body.password;
+  if(password === process.env.DELETE_PASSWORD) {
+    Brand.findOneAndDelete({_id: req.params.id}, (err) => {
+      if(err) return next(err);
+      res.redirect('/brands')
+    })
+  } else {
+    Brand.findById(req.params.id, (err, brand) => {
+      if(err) return next(err);
+      Item.find({brand: brand._id}, (err, items) => {
+        if(err) return next(err);
+          res.render('delete_brand', {title: "Delete Brand", brand, items, error: 'Incorrect Password!'})
+      })
+    })
+  }
 })
 module.exports = router;
