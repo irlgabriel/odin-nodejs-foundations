@@ -6,8 +6,9 @@ block content
   h1 Items
   a(href="/items/new")
     p Create new Item
-  ul.item_list
+  ul.item_list.d-flex
     each item in items
-      li
+      li.item-listing 
         a(href=item.url)
           p #{item.name}
+          img(src='/' + item.image style='max-width: 100%;')

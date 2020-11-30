@@ -5,12 +5,10 @@ block content
     p Go Back
 
   div.d-flex.align-items-center
-    h3= category.name
-    a(href=category.url + '/delete')
-      p(style="margin: 0; margin-left: 1rem; color: red") Delete
-    a(href=category.url + '/edit')
-      p(style="margin: 0; margin-left: 1rem; color: orange") Edit 
-
+    div.d-flex
+      h3= category.name
+      a(href='/items/new')
+        button.ml-2.btn.btn-sm.btn-info Create new Item
   div.d-flex.container-fluid
     each item in items
       div.item-listing

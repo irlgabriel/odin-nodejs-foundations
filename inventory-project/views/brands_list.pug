@@ -10,10 +10,16 @@ block content
   
   ul.brands_list
     each brand in brands
-      li.d-flex.align-items-center.my-2
+      li.brand-listing
         a(href=`/brands/${brand._id}/items`)
           p.mb-0 #{brand.name}
-        a.ml-3(href=brand.url + '/delete')
-          button.btn-sm.btn-warning Delete
-        a.ml-3(href=brand.url +'/edit')
-          button.btn-sm.btn-danger Edit
+          img.mb-2(src='/' + brand.image, style='max-width: 100%')
+        div.d-flex.mt-auto
+          a(href=brand.url + '/edit')
+            button.ml-1.btn-sm.btn-warning Edit        
+          a(href=brand.url + '/delete')
+            button.ml-1.btn-sm.btn-danger Delete
+
+      
+
+

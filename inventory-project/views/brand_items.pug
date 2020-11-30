@@ -4,11 +4,10 @@ block content
   a(href="/brands")
     p Go Back
   div.d-flex.align-items-center
-    h3= brand.name
-    a(href=brand.url + '/delete')
-      button.ml-3.btn-sm.btn-warning Delete
-    a(href=brand.url + '/edit')
-      button.ml-3.btn-sm.btn-danger Edit
+    div.d-flex
+      h3= brand.name
+      a(href='/items/new')
+        button.ml-2.btn.btn-sm.btn-info Create new Item
 
   div.d-flex.container-fluid
     each item in items
@@ -19,4 +18,3 @@ block content
         em= item.description
         div.item-footer
           p Stock: #{item.stock}pcs
-          strong $#{item.price}.99

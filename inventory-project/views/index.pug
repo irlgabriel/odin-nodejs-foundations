@@ -8,8 +8,12 @@ block content
     for brand in brands
       a(href=brand.url + '/items')
         div.brand-listing
-          p=  brand.name
+          p.text-center=  brand.name
           img(src='/' + brand.image style='max-width: 100%;')
+    a(href='/brands/new')
+      div.brand-listing
+        p.text-center Create new Brand
+        img.mx-auto(src='/uploads/Plus_symbol.svg' width="100px" height="100px")          
 
   a.mb-0(href='/categories')
     p.mb-0 Categories(#{categories.length})
@@ -18,6 +22,10 @@ block content
     for category in categories
       a(href=category.url + '/items')
         div.category-listing
-          p= category.name
+          p.text-center= category.name
           img(src='/' + category.image style='max-width: 100%;')
+    a(href='/category/new')
+      div.category-listing
+        p.text-center Create new Category
+        img(src='/uploads/Plus_symbol.svg' width="300px" height="300px")
 

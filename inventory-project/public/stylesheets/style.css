@@ -60,10 +60,11 @@ a:hover{
   border: 1px solid lightgray;
   margin: .5rem;
   padding: .5rem;
+  display: flex;
+  flex-direction: column;
 }
-.brand-listing {
-  width: 100px;
-  height: 100px !important;
+.brand-listing img {
+  max-width: 100px !important;
 }
 .item-footer {
   margin-top: auto;
@@ -72,5 +73,8 @@ a:hover{
 }
 .item-wrapper {
   padding: .5rem;
+  display: flex;
+}
+.category_list, .brands_list {
   display: flex;
 }
