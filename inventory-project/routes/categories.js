@@ -1,15 +1,23 @@
-const express = require('express');
-const router = express.Router();
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-const Category = require('../models/categories');
+var Item = require('./items');
 
-router.get('/', async(req, res, next) => {
-  try {
-    const categories = await Category.find();
-    res.render('categories_list', {title: "Categories", categories});
-  } catch(err) {
-    return next(err);
-  }
+var CategorySchema = new Schema({
+  name: {type: String, required: true, minlength: 1, unique: true},
+  image: {type: String, default: 'uploads/no_image.png'},
+
 })
 
-module.exports = router;
+CategorySchema.virtual('url').get(function() {
+  return "/categories/" + this._id;
+})
+
+CategorySchema.post('findOneAndDelete', function(next) {
+  console.log('running post middleware on category delete');
+  Item.deleteMany({category: this._id}, err => {
+    if(err) return next(err);
+  });
+})
+
+module.exports = mongoose.model('Category', CategorySchema);
