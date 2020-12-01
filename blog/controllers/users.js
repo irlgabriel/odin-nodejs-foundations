@@ -12,13 +12,11 @@ exports.login_user = (req, res, next) => {
         user
       })
     }
-    req.login(user, {session: false}, (err) => {
-      if(err) res.send(err);
-      jwt.sign(user, process.env.JWT_SECRET, (err, token) => {
-        if(err) return res.json(err);
-        res.json({user, token});
-      });
-    })
+    if(err) res.send(err);
+    jwt.sign({user: user}, process.env.JWT_SECRET, (err, token) => {
+      if(err) return res.json(err);
+      res.json({user, token});
+    });
   })(req, res);
 }
 
