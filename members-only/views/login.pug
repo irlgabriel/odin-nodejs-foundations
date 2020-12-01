@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  div.container
+    h3.text-center.text-info Log in
+    form(method="POST" action='')
+      if errors
+        ul
+          for error in errors
+            li.text-danger.font-weight-bold= error.msg
+      div.form-group
+        label(for='username') Username
+        input.form-control(type='text' required name='username')
+      div.form-group
+        label(for='password') Password
+        input.form-control(type='password' required name='password')
+
+      div.form-group
+        button.btn.btn-sm.btn-secondary(type='submit') Log In

@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  if currentUser
+    a(href='/users/logout')
+      button.btn.btn-outline-info Log Out
+  else
+    a(href='/users/login')
+      button.btn.btn-outline-info Log In
+    a(href='/users/sign-up')
+      button.btn.btn-outline-primary Sign-up

@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  div.container
+    h3.text-center.text-info Sign Up
+    form(method="POST" action='')
+      if errors
+        ul
+          for error in errors
+            li.text-danger.font-weight-bold= error.msg
+      div.form-group
+        label(for='username') Username
+        input.form-control(type='text' required name='username')
+        
+      div.row.form-group
+        div.col-6
+          label(for='first_name') First Name
+          input.form-control(type='text' required name='first_name')
+        div.col-6
+          label(for='last_name') Last Name
+          input.form-control(type='text' required name='last_name')
+      div.form-group
+        label(for='email') Email
+        input.form-control(type='email' required name='email')
+      div.form-group
+        label(for='password') Password
+        input.form-control(type='password' required name='password')
+
+      div.form-group
+        button.btn.btn-sm.btn-secondary(type='submit') Sign Up
