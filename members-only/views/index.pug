@@ -1,11 +1,29 @@
 extends layout
 
+block posts
+  div.posts-container.container
+    if currentUser
+      form.mx-auto(method='post' action='/posts/new')
+        div.form-group
+          input.form-control(type='text' name='title' placeholder='Title...' required)
+        div.form-group
+          input.form-control(type='text' name='content' placeholder='Who are you gossiping next?' required)
+        div.form-group
+          button.btn.btn-sm.btn-info(type='submit') Create
+
 block content
-  if currentUser
-    a(href='/users/logout')
-      button.btn.btn-outline-info Log Out
-  else
-    a(href='/users/login')
-      button.btn.btn-outline-info Log In
-    a(href='/users/sign-up')
-      button.btn.btn-outline-primary Sign-up
+
+  if posts
+    for post in posts
+      div.post.container.w-50
+        div.post-header
+          if currentUser
+            p by #{post.user_id.username}
+          else 
+            span by 
+              a(href)
+                span [Login 
+            span to see who posted this]
+        div.post-content
+          h5= post.title
+          p.ml-3= post.content

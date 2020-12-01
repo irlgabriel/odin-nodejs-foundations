@@ -78,3 +78,7 @@ exports.login_post = function(req, res, next) {
   })(req, res, next);
 }
   
+exports.logout_get = function(req, res, next) {
+  req.logOut();
+  res.redirect('/');
+}

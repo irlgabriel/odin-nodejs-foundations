@@ -13,4 +13,25 @@ html(lang='en')
       nav.navbar
         a(href='/')
           p Home
+        a.ml-auto(href='/')
+          p Members Only
+        if currentUser
+          a.ml-auto(href='/users/logout')
+            button.btn.btn-outline-info Log Out
+        else
+          div.ml-auto
+            a(href='/users/login')
+              button.btn.btn-outline-info Log In
+            a(href='/users/sign-up')
+              button.btn.btn-outline-primary Sign-up
+    block posts
+      div.posts-container.container
+        if currentUser
+          form.mx-auto(method='post' action='/posts/new')
+            div.form-group
+              input.form-control(type='text' name='title' placeholder='Title...' required)
+            div.form-group
+              input.form-control(type='text' name='content' placeholder='Who are you gossiping next?' required)
+            div.form-group
+              button.btn.btn-sm.btn-info(type='submit') Create
     block content

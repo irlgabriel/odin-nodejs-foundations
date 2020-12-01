@@ -11,6 +11,7 @@ mongoose.connect(process.env.DB_STRING, {useCreateIndex: true, useNewUrlParser: 
 mongoose.connection.on('open', () => console.log('Connected to mongoDB'));
 
 const usersRouter = require('./routes/users');
+const postsRouter = require('./routes/posts');
 const indexRouter = require('./routes/index');
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(bodyparser.json());
 app.use(session({secret:'cat_warrior', saveUninitialized: true, resave: false}));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static('public'));
 
 
 // view locals middleware
@@ -37,4 +39,4 @@ app.use(function(req, res, next) {
 // routes middleware
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/posts', postsRouter);
