@@ -20,7 +20,7 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 // security middleware
-app.use(helmet());
+//app.use(helmet());
 
 // set view engine
 app.set('views', path.join(__dirname, 'views'));
