@@ -4,7 +4,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport')
 const session = require('express-session');
-const bodyparser = require('body-parser')
+const bodyparser = require('body-parser');
+const flash = require('connect-flash');
 
 mongoose.connect(process.env.DB_STRING, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.connection.on('open', () => console.log('Connected to mongoDB'));
@@ -19,6 +20,7 @@ app.listen(3000 || process.env.PORT, () => console.log('Server running'))
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(flash());
 app.use(bodyparser.urlencoded({extended: false}));
 app.use(bodyparser.json());
 app.use(session({secret:'cat_warrior', saveUninitialized: true, resave: false}));

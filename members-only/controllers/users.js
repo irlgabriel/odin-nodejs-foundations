@@ -1,7 +1,8 @@
 const User = require('../models/users');
-const passport = require('passport');
+const passport = require('../config/passport'); 
 const { body, validationResult } = require('express-validator');
 const async = require('async');
+const bcrypt = require('bcrypt');
 
 exports.get_users = function(req, res) {
   User.find((err, users) => {
@@ -49,10 +50,15 @@ exports.sign_up_post = [
         // if email not avalable
         if(results[1]) return res.render('sign-up', {title: 'Sign up', errors: [{msg: 'Email already in use'}], user: newUser})
 
-        // else just create the user
-        User.create(newUser, (err, user) => {
+        // hash password
+        bcrypt.hash(newUser.password, 10, (err, pass) => {
           if(err) return res.json(err);
-          res.redirect('users/profile');
+          newUser.password = pass;
+          // now just create the user
+          User.create(newUser, (err, user) => {
+            if(err) return res.json(err);
+            res.redirect('/users/profile');
+         })
         })
     })
   }
@@ -61,10 +67,14 @@ exports.login_get = function(req, res) {
   res.render('login', {title: 'Login'})
 }
 
-exports.login_post = [
-  passport.authenticate('local', {failureFlash: true, successFlash: true}),
-  function(req, res) {
-    console.log(req.body);
-    res.redirect('/profile');
-  }
-]
+exports.login_post = function(req, res, next) {
+  passport.authenticate('local', {failureFlash: true, successFlash: true}, function(err, user, info) {
+    if(err) console.log(err);
+    if(!user) return res.redirect('/users/login');
+    req.logIn(user, function(err) {
+      if(err) console.log(err);
+      return res.redirect('/users/profile');
+    })
+  })(req, res, next);
+}
+  
