@@ -1,0 +1,19 @@
+extends layout
+
+block posts_form
+
+block content
+
+  div.container.w-50
+    h3.text-center Edit Post
+    form(method='post' action='')
+      div.form-group
+        label(for='title') Title
+        input.form-control(type='text' name='title' value= post ? post.title : '' required)
+      div.form-group
+        label(for='content') Content
+        input.form-control(type='text' name='content' value= post ? post.content : '' required)
+      div.form-group.text-center
+        button.btn.btn-outline-primary Edit
+    
+    

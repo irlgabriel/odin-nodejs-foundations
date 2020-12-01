@@ -10,21 +10,21 @@ html(lang='en')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     block navbar
-      nav.navbar
+      nav.navbar.mb-2.text-light
         a(href='/')
           p Home
         a.ml-auto(href='/')
           p Members Only
         if currentUser
           a.ml-auto(href='/users/logout')
-            button.btn.btn-outline-info Log Out
+            button.btn.btn-info Log Out
         else
           div.ml-auto
-            a(href='/users/login')
-              button.btn.btn-outline-info Log In
+            a.mr-2(href='/users/login')
+              button.btn.btn-primary Log In
             a(href='/users/sign-up')
-              button.btn.btn-outline-primary Sign-up
-    block posts
+              button.btn.btn-info Sign Up
+    block posts_form
       div.posts-container.container
         if currentUser
           form.mx-auto(method='post' action='/posts/new')
@@ -32,6 +32,6 @@ html(lang='en')
               input.form-control(type='text' name='title' placeholder='Title...' required)
             div.form-group
               input.form-control(type='text' name='content' placeholder='Who are you gossiping next?' required)
-            div.form-group
+            div.form-group.text-center
               button.btn.btn-sm.btn-info(type='submit') Create
     block content

@@ -5,7 +5,7 @@ const Post = require('../models/posts');
 
 router.get('/', (req, res) => {
   Post.find() 
-  .populate('user').exec((err, posts) => {
+  .populate('user_id').exec((err, posts) => {
     if(err) return res.json(err);
     res.render('index', {title: 'Members Only', posts})
   })

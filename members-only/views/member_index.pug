@@ -1,0 +1,15 @@
+extends layout
+
+block posts_form
+
+block content
+  div.container.text-center
+    if errors
+      for error in errors
+        h3.text-center.text-danger= error.msg
+  form.w-50.mx-auto(method='post' action=`/members/${currentUser._id}/membership`)
+    div.form-group
+      label(for='member_password') Member Password
+      input.form-control(type='text' placeholder='Password...' name='member_password' required)
+    div.form-group
+      button.btn.btn-success Become a member

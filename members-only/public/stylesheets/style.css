@@ -8,8 +8,20 @@
   max-width: 600px;
 }
 .post {
-  max-width: 600px;
+  width: minmax(60%, 700px);
+  margin: .5rem auto;
   border: 1px solid lightgray;
   border-radius: 4px;
   padding: .5rem;
+}
+nav {
+  background-color: lightcoral;
+}
+
+nav a {
+  color: white;
+}
+nav a:hover {
+  text-decoration: none;
+  color: royalblue;
 }

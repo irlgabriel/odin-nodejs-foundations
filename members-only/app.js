@@ -13,6 +13,7 @@ mongoose.connection.on('open', () => console.log('Connected to mongoDB'));
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
 const indexRouter = require('./routes/index');
+const membersRouter = require('./routes/members');
 
 const app = express();
 app.listen(3000 || process.env.PORT, () => console.log('Server running'))
@@ -40,3 +41,4 @@ app.use(function(req, res, next) {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
+app.use('/members', membersRouter);
