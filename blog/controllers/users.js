@@ -13,7 +13,7 @@ exports.login_user = (req, res, next) => {
       })
     }
     if(err) res.send(err);
-    jwt.sign({user: user}, process.env.JWT_SECRET, (err, token) => {
+    jwt.sign({id: user._id, email: user.email}, process.env.JWT_SECRET, (err, token) => {
       if(err) return res.json(err);
       res.json({user, token});
     });
@@ -30,7 +30,7 @@ exports.sign_up_user = (req, res, next) => {
       User.create({email: email, password: hashedPassword}, (err, user) => {
         if(err) console.log(err);
         console.log(user);
-        jwt.sign({user: user}, process.env.JWT_SECRET, {expiresIn: '3600'}, (err, token) => {
+        jwt.sign({_id: user._id, email: user.email}, process.env.JWT_SECRET, {expiresIn: '3600'}, (err, token) => {
           if(err) console.log(err);
           res.status(200).json({
             token, 

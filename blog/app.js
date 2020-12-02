@@ -8,6 +8,7 @@ require('./config/passport');
 
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
+const commentsRouter = require('./routes/comments');
 
 const app = express();
 
@@ -21,3 +22,4 @@ app.listen(process.env.PORT || 5000, () => console.log('Server running'));
 
 app.use('/api/users', usersRouter);
 app.use('/api/posts', postsRouter);
+app.use('/api/posts/:post_id/comments', commentsRouter);

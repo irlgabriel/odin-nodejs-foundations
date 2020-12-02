@@ -9,7 +9,8 @@ router.get('/', postController.get_posts)
 
 // POST create post
 router.post('/', [
-  passport.authenticate('jwt', {session: false}), 
+  passport.authenticate('jwt', {session: false}),
   postController.create_post
 ])
+
 module.exports = router;
