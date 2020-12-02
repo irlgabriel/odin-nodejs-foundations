@@ -2,7 +2,10 @@ const Comment = require('../models/comments');
 const { body, validationResult } = require('express-validator');
 
 exports.get_post_comments = (req, res, next) => {
-  Comment.find({post: req.params.post_id}, (err, comments) => {
+  Comment.find({post: req.params.post_id})
+  .populate('author')
+  .populate('post')
+  .exec((err, comments) => {
     if(err) return res.json(err);
     res.json(comments);
   })
@@ -11,7 +14,10 @@ exports.get_post_comments = (req, res, next) => {
 exports.create_comment = [
   body('content').trim().isLength({min: 1}).escape(),
   (req, res, next) => {
-    Comment.create({content, author: req.user._id, post: req.params.post_id}, (err, comment) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) return res.json(errors.array());
+
+    Comment.create({content: req.body.content, author: req.user._id, post: req.params.post_id}, (err, comment) => {
       if(err) return res.json(err);
       res.json(comment);
     })

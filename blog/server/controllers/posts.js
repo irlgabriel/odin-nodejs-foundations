@@ -4,7 +4,9 @@ const Post = require('../models/posts');
 const passport = require('passport');
 
 exports.get_posts = (req, res, next) => {
-  Post.find((err, posts) => {
+  Post.find()
+  .populate('author')
+  .exec((err, posts) => {
     if(err) return res.json(err);
     res.json(posts);
   })

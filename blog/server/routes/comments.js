@@ -14,9 +14,15 @@ router.post('/', [
 ]);
 
 // PUT edit comment
-router.put('/:comment_id', commentsController.edit_comment);
+router.put('/:comment_id', 
+  passport.authenticate('jwt', {session: false}),
+  commentsController.edit_comment
+);
 
 // DELETE comment
-router.delete('/comment_id', commentsController.delete_comment);
+router.delete('/comment_id', 
+  passport.authenticate('jwt', {session: false}),
+  commentsController.delete_comment
+);
 
 module.exports = router;
