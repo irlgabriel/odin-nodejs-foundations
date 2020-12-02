@@ -2,17 +2,22 @@ import './App.css';
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import { Container } from 'reactstrap';
-
+import { Post } from "./Components/Post/Post";
 function App() {
   const [posts, setPosts] = useState([]);
   // Fetch resources
-  useEffect((posts) => {
+  useEffect(() => {
     // fetch posts
-      
+    axios.get('/posts')
+    .then(res => setPosts(res.data));
   }, [])
   return (
-    <Container>
-
+    <Container fluid>
+    {
+      posts.map(post => 
+        <Post {...post}/>
+      )
+    }
     </Container>
   );
 }
