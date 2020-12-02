@@ -18,5 +18,5 @@ app.use(bodyparser.json());
 
 app.listen(process.env.PORT || 5000, () => console.log('Server running'));
 
-app.use('/api/users', passport.authenticate('jwt', {session: false}), usersRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/posts', postsRouter);
