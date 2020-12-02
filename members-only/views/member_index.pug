@@ -10,6 +10,7 @@ block content
   form.w-50.mx-auto(method='post' action=`/members/${currentUser._id}/membership`)
     div.form-group
       label(for='member_password') Member Password
+      em.d-block.text-muted the password might be in the HTML head element - in a meta tag, who knows though..
       input.form-control(type='text' placeholder='Password...' name='member_password' required)
     div.form-group
       button.btn.btn-success Become a member
