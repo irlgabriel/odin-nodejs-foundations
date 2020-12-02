@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const cors = require('cors');
 require('./config/passport');
 
 const usersRouter = require('./routes/users');
@@ -15,6 +16,7 @@ const app = express();
 mongoose.connect(process.env.DB_STRING, {useNewUrlParser: true, useUnifiedTopology: true})
 mongoose.connection.on('open', () => console.log('Connected to mongoDB'));
 
+app.use(cors());
 app.use(bodyparser.urlencoded({extended: false}));
 app.use(bodyparser.json());
 
