@@ -3,6 +3,8 @@ import axios from "axios";
 import { useEffect, useState } from 'react';
 import { Container } from 'reactstrap';
 import { Post } from "./Components/Post/Post";
+import { Navbar } from "./Components/Navbar/Navbar";
+import { Background } from "./Components/Background/Background";
 function App() {
   const [posts, setPosts] = useState([]);
   // Fetch resources
@@ -13,11 +15,13 @@ function App() {
   }, [])
   return (
     <Container fluid>
-    {
-      posts.map(post => 
-        <Post {...post}/>
-      )
-    }
+      <Background />
+      <Navbar />
+      {
+        posts.map(post => 
+          <Post {...post}/>
+        )
+      }
     </Container>
   );
 }
