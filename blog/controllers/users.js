@@ -4,6 +4,13 @@ const passport = require('passport');
 
 const User = require('../models/users');
 
+exports.get_users = (req, res, next) => {
+  User.find((err, users) => {
+    if(err) return res.json(err);
+    res.json(users);
+  })
+}
+
 exports.login_user = (req, res, next) => {
   passport.authenticate('local', {session: false}, (err, user, info) => { 
     if(err || !user) {
@@ -40,5 +47,12 @@ exports.sign_up_user = (req, res, next) => {
         });
       })
     })
+  })
+}
+
+exports.get_user = (req, res, user) => {
+  User.findOne({_id: req.params.user_id}, (err, user) => {
+    if(err) return res.json(err);
+    res.json(user);
   })
 }
