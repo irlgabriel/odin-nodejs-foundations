@@ -16,7 +16,7 @@ const indexRouter = require('./routes/index');
 const membersRouter = require('./routes/members');
 
 const app = express();
-app.listen(3000 || process.env.PORT, () => console.log('Server running'))
+app.listen(process.env.PORT || 3000, () => console.log('Server running'))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
