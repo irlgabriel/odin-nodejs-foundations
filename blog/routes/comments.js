@@ -18,3 +18,5 @@ router.put('/:comment_id', commentsController.edit_comment);
 
 // DELETE comment
 router.delete('/comment_id', commentsController.delete_comment);
+
+module.exports = router;

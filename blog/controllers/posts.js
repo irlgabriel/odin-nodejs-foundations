@@ -40,3 +40,10 @@ exports.edit_post = [
     })
   }
 ]
+
+exports.delete_post = (req, res, next) => {
+  Post.findOneAndDelete({_id: req.params.post_id}, (err, deletedPost) => {
+    if(err) return res.json(err);
+    res.json(deletedPost);
+  })
+}
