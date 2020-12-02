@@ -23,15 +23,14 @@ exports.login_user = (req, res, next) => {
 exports.sign_up_user = (req, res, next) => {
   const {email, password} = req.body;
   User.findOne({email: email}, (err, user) => {
-    if(err) console.log(err);
-    if(user) return res.json(new Error('User with this email already exists'));
+    if(user) return res.json({message:'User with this email already exists'});
 
     bcrypt.hash(password, 10, (err, hashedPassword) => {
       if(err) console.log(err);
       User.create({email: email, password: hashedPassword}, (err, user) => {
         if(err) console.log(err);
-
-        jwt.sign(user, process.env.JWT_SECRET, {expiresIn: '3600'}, (err, token) => {
+        console.log(user);
+        jwt.sign({user: user}, process.env.JWT_SECRET, {expiresIn: '3600'}, (err, token) => {
           if(err) console.log(err);
           res.status(200).json({
             token, 
