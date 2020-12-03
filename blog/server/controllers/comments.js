@@ -5,6 +5,7 @@ exports.get_post_comments = (req, res, next) => {
   Comment.find({post: req.params.post_id})
   .populate('author')
   .populate('post')
+  .sort('-createdAt')
   .exec((err, comments) => {
     if(err) return res.json(err);
     res.json(comments);

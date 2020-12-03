@@ -1,6 +1,5 @@
 import './App.css';
 import axios from "axios";
-import jwt_decode from 'jwt-decode';
 import { HashRouter as Router, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Container } from 'reactstrap';
@@ -15,8 +14,8 @@ function App() {
   // Fetch resources
   useEffect(() => {
     // check if user is logged-in
-    const token = localStorage.getItem('token');
-    if(token) setUser(token);
+    const user = JSON.parse(localStorage.getItem('user'));
+    if(user) setUser(user.user);
     // fetch posts
     setLoading(true);
     axios.get('/posts')

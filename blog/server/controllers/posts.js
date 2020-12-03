@@ -6,6 +6,7 @@ const passport = require('passport');
 exports.get_posts = (req, res, next) => {
   Post.find()
   .populate('author')
+  .sort('-createdAt')
   .exec((err, posts) => {
     if(err) return res.json(err);
     res.json(posts);

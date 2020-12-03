@@ -20,7 +20,7 @@ const Login = ({setUser}) => {
     axios.post('/users/login', {email, password})
     .then(res => {
       console.log(res.data);
-      localStorage.setItem('token', JSON.stringify(res.data.token).split("\"")[1]);
+      localStorage.setItem('user', JSON.stringify(res.data));
       setUser(res.data.user);
       history.push('/');
     })

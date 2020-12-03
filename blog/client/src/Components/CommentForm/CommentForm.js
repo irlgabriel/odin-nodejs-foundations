@@ -13,10 +13,10 @@ const CommentForm = ({comments, setComments, currentUser, post_id}) => {
   const [content, setContent] = useState('');
   const submitHandler = (e) => {
     e.preventDefault();
-    axios.post(`/posts/${post_id}/comments`, {content, author: currentUser._id, post: post_id}, {headers:{Authorization: `bearer ${localStorage.getItem('token')}`}})
+    axios.post(`/posts/${post_id}/comments`, {content, author: currentUser._id, post: post_id}, {headers:{Authorization: `bearer ${JSON.parse(localStorage.getItem('user')).token}`}})
     .then(res => {
       console.log(res.data);
-      setComments([...comments, res.data]);
+      setComments([res.data, comments]);
 
     })
   }
