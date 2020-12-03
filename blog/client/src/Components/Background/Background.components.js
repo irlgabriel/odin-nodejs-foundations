@@ -1,13 +1,14 @@
 import styled from 'styled-components';
+import bg from '../../images/bg-photo.jpg';
 
-export const RelativeContainer = styled.div`
+export const BackgroundImage = styled.div`
   position: fixed;
   top: 0;
   bottom: 0;
   right: 0;
   left: 0;
   z-index: -2;
-  background-image: url('bg-photo.jpg');
+  background-image: url(${bg});
   background-repeat: no-repeat;
   background-attachment: fixed; 
   background-size: cover;

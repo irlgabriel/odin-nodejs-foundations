@@ -1,7 +1,9 @@
-import { RelativeContainer } from "./Background.components";
+import { BackgroundImage } from "./Background.components";
 
-export const Background = () => {
+const Background = () => {
   return(
-    <RelativeContainer />
+    <BackgroundImage />
   )
 }
+
+export default Background

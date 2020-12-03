@@ -1,7 +1,7 @@
 import { Container } from 'reactstrap';
 import moment from 'moment';
 
-export const Comment = ({content, _id, author, createdAt, post}) => {
+const Comment = ({content, _id, author, createdAt, post}) => {
   return (
     <Container fluid className='pl-4'>
       <span>by {author.email}</span>
@@ -10,3 +10,5 @@ export const Comment = ({content, _id, author, createdAt, post}) => {
     </Container>
   )
 }
+
+export default Comment;
