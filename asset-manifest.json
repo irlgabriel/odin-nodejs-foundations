@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/odin-nodejs-foundations/static/css/main.01e11900.chunk.css",
-    "main.js": "/odin-nodejs-foundations/static/js/main.288c37e3.chunk.js",
-    "main.js.map": "/odin-nodejs-foundations/static/js/main.288c37e3.chunk.js.map",
+    "main.js": "/odin-nodejs-foundations/static/js/main.f812252c.chunk.js",
+    "main.js.map": "/odin-nodejs-foundations/static/js/main.f812252c.chunk.js.map",
     "runtime-main.js": "/odin-nodejs-foundations/static/js/runtime-main.8d1d7a81.js",
     "runtime-main.js.map": "/odin-nodejs-foundations/static/js/runtime-main.8d1d7a81.js.map",
     "static/css/2.43b2b750.chunk.css": "/odin-nodejs-foundations/static/css/2.43b2b750.chunk.css",
@@ -21,6 +21,6 @@
     "static/css/2.43b2b750.chunk.css",
     "static/js/2.84f6372a.chunk.js",
     "static/css/main.01e11900.chunk.css",
-    "static/js/main.288c37e3.chunk.js"
+    "static/js/main.f812252c.chunk.js"
   ]
 }
