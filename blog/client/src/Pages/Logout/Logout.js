@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 const Logout = ({setUser}) => {
   const history = useHistory();
   useEffect(() => {
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('token');
     setUser(undefined);
     history.push('/');
   }, [])
