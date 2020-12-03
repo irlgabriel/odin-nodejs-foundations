@@ -19,7 +19,7 @@ export const Post = ({_id, author, title, content, createdAt}) => {
     .catch(err => console.log(err))
   }, [])
   return(
-    <Container>
+    <Container className='border p-2'>
       <span>by {author.email}</span>
       <span>&nbsp; {moment(createdAt).fromNow()}</span>
       <h5>{title}</h5>
