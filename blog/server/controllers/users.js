@@ -20,9 +20,9 @@ exports.login_user = (req, res, next) => {
       })
     }
     if(err) res.send(err);
-    jwt.sign({_id: user._id, email: user.email}, process.env.JWT_SECRET, (err, token) => {
+    jwt.sign({_id: user._id, email: user.email}, {expiresIn: '3600'}, process.env.JWT_SECRET, (err, token) => {
       if(err) return res.json(err);
-      res.json({user, token});
+      res.json({token});
     });
   })(req, res);
 }
@@ -42,7 +42,6 @@ exports.sign_up_user = (req, res, next) => {
           res.status(200).json({
             token, 
             message:'Signed up Successfully', 
-            user: {_id: user._id, email: user.email}
           });
         });
       })
