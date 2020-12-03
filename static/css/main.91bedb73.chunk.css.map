@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://src/index.css","webpack://src/App.css"],"names":[],"mappings":"AAAA,EACE,QAAS,CACT,QAAS,CACT,qBAAsB,CACtB,UACF,CCJA,KACE,WACF,CAEA,iBACE,SACF","file":"main.91bedb73.chunk.css","sourcesContent":["* {\n  margin: 0;\n  bottom: 0;\n  box-sizing: border-box;\n  color: white;\n}","\n.nav {\n  height: 40px;\n}\n\n.container-fluid {\n  padding: 0;\n}"]}

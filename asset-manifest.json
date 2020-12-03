@@ -1,25 +1,26 @@
 {
   "files": {
-    "main.css": "/odin-nodejs-foundations/static/css/main.91bedb73.chunk.css",
-    "main.js": "/odin-nodejs-foundations/static/js/main.e3492032.chunk.js",
-    "main.js.map": "/odin-nodejs-foundations/static/js/main.e3492032.chunk.js.map",
-    "runtime-main.js": "/odin-nodejs-foundations/static/js/runtime-main.5db1f539.js",
-    "runtime-main.js.map": "/odin-nodejs-foundations/static/js/runtime-main.5db1f539.js.map",
+    "main.css": "/odin-nodejs-foundations/static/css/main.01e11900.chunk.css",
+    "main.js": "/odin-nodejs-foundations/static/js/main.288c37e3.chunk.js",
+    "main.js.map": "/odin-nodejs-foundations/static/js/main.288c37e3.chunk.js.map",
+    "runtime-main.js": "/odin-nodejs-foundations/static/js/runtime-main.8d1d7a81.js",
+    "runtime-main.js.map": "/odin-nodejs-foundations/static/js/runtime-main.8d1d7a81.js.map",
     "static/css/2.43b2b750.chunk.css": "/odin-nodejs-foundations/static/css/2.43b2b750.chunk.css",
-    "static/js/2.e33213f3.chunk.js": "/odin-nodejs-foundations/static/js/2.e33213f3.chunk.js",
-    "static/js/2.e33213f3.chunk.js.map": "/odin-nodejs-foundations/static/js/2.e33213f3.chunk.js.map",
-    "static/js/3.cf248897.chunk.js": "/odin-nodejs-foundations/static/js/3.cf248897.chunk.js",
-    "static/js/3.cf248897.chunk.js.map": "/odin-nodejs-foundations/static/js/3.cf248897.chunk.js.map",
+    "static/js/2.84f6372a.chunk.js": "/odin-nodejs-foundations/static/js/2.84f6372a.chunk.js",
+    "static/js/2.84f6372a.chunk.js.map": "/odin-nodejs-foundations/static/js/2.84f6372a.chunk.js.map",
+    "static/js/3.843aa941.chunk.js": "/odin-nodejs-foundations/static/js/3.843aa941.chunk.js",
+    "static/js/3.843aa941.chunk.js.map": "/odin-nodejs-foundations/static/js/3.843aa941.chunk.js.map",
     "index.html": "/odin-nodejs-foundations/index.html",
     "static/css/2.43b2b750.chunk.css.map": "/odin-nodejs-foundations/static/css/2.43b2b750.chunk.css.map",
-    "static/css/main.91bedb73.chunk.css.map": "/odin-nodejs-foundations/static/css/main.91bedb73.chunk.css.map",
-    "static/js/2.e33213f3.chunk.js.LICENSE.txt": "/odin-nodejs-foundations/static/js/2.e33213f3.chunk.js.LICENSE.txt"
+    "static/css/main.01e11900.chunk.css.map": "/odin-nodejs-foundations/static/css/main.01e11900.chunk.css.map",
+    "static/js/2.84f6372a.chunk.js.LICENSE.txt": "/odin-nodejs-foundations/static/js/2.84f6372a.chunk.js.LICENSE.txt",
+    "static/media/bg-photo.0216d7e3.jpg": "/odin-nodejs-foundations/static/media/bg-photo.0216d7e3.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.5db1f539.js",
+    "static/js/runtime-main.8d1d7a81.js",
     "static/css/2.43b2b750.chunk.css",
-    "static/js/2.e33213f3.chunk.js",
-    "static/css/main.91bedb73.chunk.css",
-    "static/js/main.e3492032.chunk.js"
+    "static/js/2.84f6372a.chunk.js",
+    "static/css/main.01e11900.chunk.css",
+    "static/js/main.288c37e3.chunk.js"
   ]
 }
