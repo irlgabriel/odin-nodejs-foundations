@@ -2,6 +2,7 @@ import { useEffect, useState} from 'react';
 import { 
   Container,
 } from "reactstrap";
+import { FcComments } from 'react-icons/fc'
 import { Comment, LoadingOverlay, LoginPrompt, CommentForm } from "../";
 import { CSSTransition } from 'react-transition-group';
 import moment from 'moment';
@@ -29,7 +30,10 @@ const Post = ({currentUser, _id, author, title, content, createdAt}) => {
       <span>&nbsp; {moment(createdAt).fromNow()}</span>
       <h3>{title}</h3>
       <p>{content}</p>
-      <p onClick={() => setDropdown(!dropdown)} style={{userSelect: "none", cursor: "pointer"}} className='pb-0 mb-0'>Comments({comments.length})</p>
+      <div onClick={() => setDropdown(!dropdown)} style={{userSelect: "none", cursor: "pointer"}} className='d-flex align-items-center'>
+        <FcComments size={24} />&nbsp;
+        <p className='pb-0 mb-0'>Comments({comments.length})</p>
+      </div>
       <CSSTransition
         in={dropdown}
         timeout={300}
