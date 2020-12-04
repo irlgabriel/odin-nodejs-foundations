@@ -6,9 +6,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
-//axios.defaults.baseURL = 'https://nodejsblog-api.herokuapp.com/api'
+//prod
+axios.defaults.baseURL = 'https://nodejsblog-api.herokuapp.com/api'
 //dev
-axios.defaults.baseURL = 'http://localhost:5000/api';
+//axios.defaults.baseURL = 'http://localhost:5000/api';
 
 ReactDOM.render(
   <React.StrictMode>
