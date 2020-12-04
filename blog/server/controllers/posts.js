@@ -2,6 +2,7 @@ const { body, validationResult } = require('express-validator');
 
 const Post = require('../models/posts');
 const passport = require('passport');
+const { populate } = require('../models/posts');
 
 exports.get_posts = (req, res, next) => {
   Post.find()
@@ -38,13 +39,13 @@ exports.create_post = [
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.json(errors.array());
 
-    const {title, content} = req.body;
-    Post.create({title, content, author: req.user._id})
-    .populate('author').exec((err, post) => {
+    const {title, content, published} = req.body;
+    Post.create({title, content, author: req.user._id, published}, (err, post) => {
       if(err) return res.json(err);
-      res.json(post);
+      post.populate('author', (err, populatedPost) => {
+        res.json(populatedPost);
+      })
     })
-    
   }
 ]
 

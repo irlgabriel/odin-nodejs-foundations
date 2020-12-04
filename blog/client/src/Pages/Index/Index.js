@@ -5,8 +5,9 @@ const Index = ({posts, currentUser}) => {
   return(
     <Container className='d-flex align-items-center flex-wrap justify-content-around'>
       {
-        posts.map(post => 
+        posts.map(post => post.published ? 
           <PostPreview key={post._id} {...post} currentUser={currentUser}/>
+          : ''
         )
       }
     </Container>

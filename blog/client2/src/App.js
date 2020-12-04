@@ -29,7 +29,7 @@ function App() {
 
   return (
     <Container className='p-0' fluid>
-      <Navbar currentUser={currentUser}/>
+      <Navbar setUser={setUser} currentUser={currentUser}/>
       <Container>
         <Button onClick={() => setShowForm(!showForm)} className='my-2 d-block' color='secondary'><AiFillPlusCircle />&nbsp;New Post</Button>
         <CSSTransition
