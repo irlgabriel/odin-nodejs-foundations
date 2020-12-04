@@ -42,7 +42,8 @@ const Comment = ({comments, setComments, currentUser, content, _id, author, crea
         !edit 
         ? 
         <div>
-          <span>by {author.email}</span>
+          <span>by </span>
+          <span style={{color: author._id === currentUser._id ? 'royalblue' : ''}}>{author.email}</span>
           <span>&nbsp; {moment(createdAt).fromNow()}</span>
           <p>{content}</p>
         </div>
