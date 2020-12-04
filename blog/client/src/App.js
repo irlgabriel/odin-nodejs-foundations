@@ -11,6 +11,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [currentUser, setUser] = useState(undefined);
 
+  console.log(process.env.NODE_ENV)
+
   // Fetch resources
   useEffect(() => {
     // check if user is logged-in

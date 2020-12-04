@@ -37,7 +37,7 @@ const Post = ({currentUser, _id, author, title, content, createdAt}) => {
         unmountOnExit
       >
         <div>
-          <hr className='mt-1' />
+          <hr style={{background: 'white'}} className='mt-1' />
           {!currentUser && <LoginPrompt info={' to post comments!'} />}
           {currentUser && <CommentForm setComments={setComments} comments={comments} currentUser={currentUser} post_id={_id}/>}
           {
