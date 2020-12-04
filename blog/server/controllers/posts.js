@@ -37,7 +37,9 @@ exports.edit_post = [
 
     if(!errors.isEmpty()) return res.json(errors.array());
 
-    Post.findOneAndUpdate({_id: req.params.id}, {title, content}, (err, updatedPost) => {
+    const {title, content} = req.body;
+
+    Post.findOneAndUpdate({_id: req.params.post_id}, {title, content}, (err, updatedPost) => {
       if(err) return res.json(err);
       res.json(updatedPost);
     })
@@ -50,3 +52,5 @@ exports.delete_post = (req, res, next) => {
     res.json(deletedPost);
   })
 }
+
+
