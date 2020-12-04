@@ -31,7 +31,7 @@ function App() {
     <Container className='p-0' fluid>
       <Navbar currentUser={currentUser}/>
       <Container>
-        <Button onClick={() => setShowForm(!showForm)} type='button' className='my-2 d-block' color='secondary'><AiFillPlusCircle />&nbsp;New Post</Button>
+        <Button onClick={() => setShowForm(!showForm)} className='my-2 d-block' color='secondary'><AiFillPlusCircle />&nbsp;New Post</Button>
         <CSSTransition
           in={showForm}
           timeout={500}
