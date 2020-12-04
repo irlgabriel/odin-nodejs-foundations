@@ -30,7 +30,10 @@ exports.edit_comment = [
   (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.json(errors.array());
-    Comment.findOneAndUpdate({_id: req.params.comment_id}, {content}, (err, updatedComment) => {
+
+    const content = req.body.content;
+
+    Comment.findOneAndUpdate({_id: req.params.comment_id}, {content}, {new:true, useFindAndModify: false}).populate('author').exec((err, updatedComment) => {
       if(err) return res.json(err);
       res.json(updatedComment);
     })

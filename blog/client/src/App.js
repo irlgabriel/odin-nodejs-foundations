@@ -1,17 +1,15 @@
 import './App.css';
 import axios from "axios";
-import { HashRouter as Router, Route } from 'react-router-dom';
+import { HashRouter as Router, Route, generatePath } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Container } from 'reactstrap';
-import { Navbar, Background, LoadingOverlay } from "./Components";
+import { Navbar, Background, LoadingOverlay, Post } from "./Components";
 import { Index, Login, Signup, Logout } from "./Pages";
 
 function App() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentUser, setUser] = useState(undefined);
-
-  console.log(process.env.NODE_ENV)
 
   // Fetch resources
   useEffect(() => {
@@ -38,6 +36,12 @@ function App() {
         <Route exact path='/login' render={() => <Login setUser={setUser}/>}></Route>
         <Route exact path='/sign-up' render={() => <Signup />}></Route>
         <Route exact path='/logout' render={() => <Logout setUser={setUser}/>}></Route>
+        {/* Post routes */}
+        {
+          posts.map(post => 
+            <Route exact path={`/posts/${post._id}`} render={() => <Post {...post} currentUser={currentUser}/>}></Route>
+          )
+        }
       </Router>
     </Container>
   );

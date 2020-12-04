@@ -1,15 +1,15 @@
-import { Post } from "../../Components";
-
+import { PostPreview } from "../../Components";
+import { Container } from "reactstrap";
 
 const Index = ({posts, currentUser, setPosts}) => {
   return(
-    <div>
+    <Container className='d-flex align-items-center flex-wrap justify-content-around'>
       {
         posts.map(post => 
-          <Post {...post} currentUser={currentUser}/>
+          <PostPreview key={post._id} {...post} currentUser={currentUser}/>
         )
       }
-    </div>
+    </Container>
   )
 }
 

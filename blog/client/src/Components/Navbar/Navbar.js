@@ -18,9 +18,12 @@ const Navbar = ({currentUser}) => {
         </div>
       }
       {currentUser &&
-        <Link to='/logout'>
-          <h3 className='pb-0'>Logout</h3>
-        </Link>
+        <div className='d-flex align-items-center'>
+          <p className='mb-0'>Logged in as {currentUser.email}&nbsp;</p>
+          <Link to='/logout'>
+            <h3 className='pb-0'>Logout</h3>
+          </Link>
+        </div>
       }
   </Nav>
  )

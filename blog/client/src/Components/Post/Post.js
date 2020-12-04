@@ -45,7 +45,7 @@ const Post = ({currentUser, _id, author, title, content, createdAt}) => {
           {!currentUser && <LoginPrompt info={' to post comments!'} />}
           {currentUser && <CommentForm setComments={setComments} comments={comments} currentUser={currentUser} post_id={_id}/>}
           {
-            comments.map(comment => <Comment key={comment._id} {...comment} />)
+            comments.map(comment => <Comment comments={comments} setComments={setComments} currentUser={currentUser} key={comment._id} {...comment} />)
           }
         </div>
       </CSSTransition>
