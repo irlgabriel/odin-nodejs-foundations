@@ -3,3 +3,13 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.nav-link {
+  margin-bottom: 0;
+}
+
+.nav-link:hover{
+  opacity: .5;
+  user-select: none;
+  cursor: pointer;
+}

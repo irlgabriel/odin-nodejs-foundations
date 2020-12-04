@@ -17,7 +17,7 @@ const PostForm = ({posts, setPosts}) => {
   const submitHandler = (e) => {
     e.preventDefault();
     
-    axios.post('/posts', {title, content, published}, {headers:{Authorization: `bearer ${JSON.parse(localStorage.getItem('user')).token}`}})
+    axios.post('/posts', JSON.stringify({title, content, published}), {headers:{Authorization: `bearer ${JSON.parse(localStorage.getItem('user')).token}`}})
     .then(res => {
       setPosts([res.data, ...posts]);
     })
