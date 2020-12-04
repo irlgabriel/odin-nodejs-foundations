@@ -21,7 +21,8 @@ exports.create_post = [
     if(!errors.isEmpty()) return res.json(errors.array());
 
     const {title, content} = req.body;
-    Post.create({title, content, author: req.user._id}, (err, post) => {
+    Post.create({title, content, author: req.user._id})
+    .populate('author').exec((err, post) => {
       if(err) return res.json(err);
       res.json(post);
     })
@@ -39,7 +40,9 @@ exports.edit_post = [
 
     const {title, content} = req.body;
 
-    Post.findOneAndUpdate({_id: req.params.post_id}, {title, content}, (err, updatedPost) => {
+    Post.findOneAndUpdate({_id: req.params.post_id}, {title, content}, {useFindAndModify: false, new: true})
+    .populate('author')
+    .exec((err, updatedPost) => {
       if(err) return res.json(err);
       res.json(updatedPost);
     })

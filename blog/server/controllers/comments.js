@@ -33,7 +33,9 @@ exports.edit_comment = [
 
     const content = req.body.content;
 
-    Comment.findOneAndUpdate({_id: req.params.comment_id}, {content}, {new:true, useFindAndModify: false}).populate('author').exec((err, updatedComment) => {
+    Comment.findOneAndUpdate({_id: req.params.comment_id}, {content}, {new: true, useFindAndModify: false})
+    .populate('author')
+    .exec((err, updatedComment) => {
       if(err) return res.json(err);
       res.json(updatedComment);
     })
