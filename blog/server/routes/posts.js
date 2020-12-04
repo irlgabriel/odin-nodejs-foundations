@@ -13,6 +13,12 @@ router.post('/', [
   postController.create_post
 ])
 
+// POST publish post
+router.post('/:post_id', postController.publish_post);
+
+// POST unpublish post
+router.post('/:post_id', postController.unpublish_post);
+
 // PUT update post
 router.put('/:post_id', postController.edit_post);
 module.exports = router;

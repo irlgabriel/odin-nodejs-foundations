@@ -13,6 +13,24 @@ exports.get_posts = (req, res, next) => {
   })
 } 
 
+exports.publish_post = (req, res, next) => {
+  Post.findOneAndUpdate({_id: req.params.post_id}, {published: true}, {useFindAndModify: false, new: true})
+  .populate('author')
+  .exec((err, post) => {
+    if(err) return res.status(400).json(err);
+    res.json(post);
+  })
+}
+
+exports.unpublish_post = (req, res, next) => {
+  Post.findOneAndUpdate({_id: req.params.post_id}, {published: false}, {useFindAndModify: false, new: true})
+  .populate('author')
+  .exec((err, post) => {
+    if(err) return res.status(400).json(err);
+    res.json(post);
+  })
+}
+
 exports.create_post = [
   body('title').trim().isLength({min: 1}).escape(),
   body('content').trim().isLength({min: 1}).escape(),
