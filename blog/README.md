@@ -2,7 +2,7 @@
 
 ## Built with React, NodeJS, Mongo and Express.
 
-# readonly Blog app is also deployed (here)[https://irlgabriel.github.io/odin-nodejs-foundations/#/]
+# readonly Blog app is also deployed [here](https://irlgabriel.github.io/odin-nodejs-foundations/#/)
 
 ## Structure:
 ### client - readonly blog
