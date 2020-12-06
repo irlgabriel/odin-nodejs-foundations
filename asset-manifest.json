@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/odin-nodejs-foundations/static/css/main.c252f356.chunk.css",
-    "main.js": "/odin-nodejs-foundations/static/js/main.b5c10564.chunk.js",
-    "main.js.map": "/odin-nodejs-foundations/static/js/main.b5c10564.chunk.js.map",
+    "main.css": "/odin-nodejs-foundations/static/css/main.ccd9af48.chunk.css",
+    "main.js": "/odin-nodejs-foundations/static/js/main.fb95556e.chunk.js",
+    "main.js.map": "/odin-nodejs-foundations/static/js/main.fb95556e.chunk.js.map",
     "runtime-main.js": "/odin-nodejs-foundations/static/js/runtime-main.e31f46da.js",
     "runtime-main.js.map": "/odin-nodejs-foundations/static/js/runtime-main.e31f46da.js.map",
     "static/css/2.43b2b750.chunk.css": "/odin-nodejs-foundations/static/css/2.43b2b750.chunk.css",
@@ -12,7 +12,7 @@
     "static/js/3.c97caf0f.chunk.js.map": "/odin-nodejs-foundations/static/js/3.c97caf0f.chunk.js.map",
     "index.html": "/odin-nodejs-foundations/index.html",
     "static/css/2.43b2b750.chunk.css.map": "/odin-nodejs-foundations/static/css/2.43b2b750.chunk.css.map",
-    "static/css/main.c252f356.chunk.css.map": "/odin-nodejs-foundations/static/css/main.c252f356.chunk.css.map",
+    "static/css/main.ccd9af48.chunk.css.map": "/odin-nodejs-foundations/static/css/main.ccd9af48.chunk.css.map",
     "static/js/2.80d93429.chunk.js.LICENSE.txt": "/odin-nodejs-foundations/static/js/2.80d93429.chunk.js.LICENSE.txt",
     "static/media/bg-photo.0216d7e3.jpg": "/odin-nodejs-foundations/static/media/bg-photo.0216d7e3.jpg"
   },
@@ -20,7 +20,7 @@
     "static/js/runtime-main.e31f46da.js",
     "static/css/2.43b2b750.chunk.css",
     "static/js/2.80d93429.chunk.js",
-    "static/css/main.c252f356.chunk.css",
-    "static/js/main.b5c10564.chunk.js"
+    "static/css/main.ccd9af48.chunk.css",
+    "static/js/main.fb95556e.chunk.js"
   ]
 }
