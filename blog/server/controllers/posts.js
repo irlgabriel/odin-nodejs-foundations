@@ -58,7 +58,7 @@ exports.edit_post = [
     if(!errors.isEmpty()) return res.json(errors.array());
 
     const {title, content} = req.body;
-
+    
     Post.findOneAndUpdate({_id: req.params.post_id}, {title, content}, {useFindAndModify: false, new: true})
     .populate('author')
     .exec((err, updatedPost) => {
