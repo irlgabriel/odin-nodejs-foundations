@@ -33,7 +33,7 @@ const PostForm = ({posts, setPosts}) => {
       </FormGroup>
       <FormGroup>
         <Label for='content'>Content</Label>
-        <Input type='textarea' onChange={(e) => setContent(e.target.value)} name='content' />
+        <Input type='textarea' rows='10' onChange={(e) => setContent(e.target.value)} name='content' />
       </FormGroup>
       <FormGroup tag='fieldset'>
         <FormGroup check>
