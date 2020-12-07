@@ -1,9 +1,25 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const JWTStrategy = require('passport-jwt').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
+
+const ExtractJWT = require('passport-jwt').ExtractJwt;
+
 const User = require('../models/users');
 
+passport.use(new JWTStrategy(
+  {
+    secretOrKey: process.env.JWT_SECRET,
+    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+  },
+  (err, user) => {
+    if(err) return done(err, false);
+    if(!user) return done(null, false);
+    return done(null, user);
+  }
+))
 
 passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_APP_ID,
