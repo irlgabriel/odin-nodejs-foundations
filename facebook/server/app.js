@@ -4,10 +4,10 @@ const express = require('express');
 const passport = require('passport');
 require('./config/passport');
 const path = require('path');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose')
-const session = require('express-session');
 
 const usersRouter = require('./routes/users');
 
@@ -16,14 +16,12 @@ mongoose.connection.on('open', () => console.log('Connected to mongoDB'));
 
 const app = express();
 
-
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true}));
 app.use(passport.initialize());
-app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', usersRouter);

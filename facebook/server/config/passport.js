@@ -1,6 +1,5 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const JWTStrategy = require('passport-jwt').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
@@ -14,7 +13,7 @@ passport.use(new JWTStrategy(
     secretOrKey: process.env.JWT_SECRET,
     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   },
-  (err, user) => {
+  (user, done) => {
     if(err) return done(err, false);
     if(!user) return done(null, false);
     return done(null, user);
@@ -28,10 +27,11 @@ passport.use(new FacebookStrategy({
   profileFields: ['id', 'displayName', 'photos', 'email']
   }, 
   (accessToken, refreshToken, profile, cb) => {
-
-    console.log(profile);
     User.findOne({ facebookID: profile.id}, (err, user) => {
       if(user) {
+        if(user) {
+          
+        }
         return cb(err, user);
       } else {
         User.create({ email: profile.emails[0].value, profilePhoto: profile.photos[0].value, facebookID: profile.id, displayName: profile.displayName}, (err, user) => {
@@ -42,15 +42,21 @@ passport.use(new FacebookStrategy({
   })
 )
 
-passport.use(new LocalStrategy(
+passport.use(new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password'
+},
   (email, password, done) => {
     User.findOne({email: email}, (err, user) => {
       if(err) return done(err);
       if(!user) return done(null, false);
       //check for password match
-      bcrypt.compare(password, user.password, (err, match) => {
+      bcrypt.compare(password, user.password, async (err, match) => {
+        if(err) return done(err, false);
         if(!match) return done(null, false);
-        return done(null, user);
+        const token = await user.generate_jwt();
+        console.log('in local strategy: ', token);
+        return done(null, {user, token: token});
       })
     })
   }
