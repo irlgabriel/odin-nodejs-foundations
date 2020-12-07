@@ -2,7 +2,8 @@ const { body, validationResult } = require('express-validator');
 
 const Post = require('../models/posts');
 const passport = require('passport');
-const { populate } = require('../models/posts');
+
+const unescape = require('../config/unescape_middleware');
 
 exports.get_posts = (req, res, next) => {
   Post.find()
@@ -35,6 +36,7 @@ exports.unpublish_post = (req, res, next) => {
 exports.create_post = [
   body('title').trim().isLength({min: 1}).escape(),
   body('content').trim().isLength({min: 1}).escape(),
+  unescape('&#x27;',"'"),
   (req, res, next) => {  
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.json(errors.array());
@@ -52,13 +54,14 @@ exports.create_post = [
 exports.edit_post = [
   body('title').trim().isLength({min: 1}).escape(),
   body('content').trim().isLength({min: 1}).escape(),
+  //unescape('&#x27;',"'"),  
   (req, res, next) => {
     const errors = validationResult(req);
 
     if(!errors.isEmpty()) return res.json(errors.array());
 
     const {title, content} = req.body;
-    
+
     Post.findOneAndUpdate({_id: req.params.post_id}, {title, content}, {useFindAndModify: false, new: true})
     .populate('author')
     .exec((err, updatedPost) => {
