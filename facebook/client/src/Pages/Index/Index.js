@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import Axios from 'axios';
+import { Link, useHistory } from 'react-router-dom';
 import {
   Container,
   Form,
@@ -7,7 +10,24 @@ import {
   FormGroup,
 } from 'reactstrap';
 
-const Index = () => {
+const Index = ({setUser}) => {
+  const location = useHistory();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    Axios.post('/login', {email, password})
+    .then(res => {
+      console.log(res.data);
+      setUser(res.data);
+      location.push('/');
+
+    })
+    .catch(err => console.log(err));
+  }
+
   return (
     <Container id='index-main'>
       <div id='facebook-story'>
@@ -15,12 +35,12 @@ const Index = () => {
         <p>Connect with friends and the world around you on Facebook.</p>
       </div>
       <div id='index-login'>
-        <Form>
+        <Form onSubmit={(e) => submitHandler(e)}>
           <FormGroup>
-            <Input type='email' placeholder='Email' />
+            <Input onChange={(e) => setEmail(e.target.value)} type='email' placeholder='Email' />
           </FormGroup>
           <FormGroup>
-            <Input type='password' placeholder='********' />
+            <Input onChange={(e) => setPassword(e.target.value)} type='password' placeholder='********' />
           </FormGroup>
           <FormGroup>
             <Button style={{fontSize:'20px'}} color='primary' className='font-weight-bold py-2 w-100'>Log In</Button>
@@ -28,7 +48,9 @@ const Index = () => {
         </Form>
         <hr />
         <Container className='w-75'>
-          <Button className='w-100 py-2 font-weight-bold' color='success'>Create New Account</Button>
+          <Link to='/register'>
+            <Button className='w-100 py-2 font-weight-bold' color='success'>Create New Account</Button>
+          </Link>
         </Container>
       </div>
     </Container>
