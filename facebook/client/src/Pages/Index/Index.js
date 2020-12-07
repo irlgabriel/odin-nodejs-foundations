@@ -9,10 +9,10 @@ import {
 
 const Index = () => {
   return (
-    <Container className='d-flex justify-content-around align-items-center' style={{ paddingTop: '90px', width: '980px'}}>
+    <Container id='index-main'>
       <div id='facebook-story'>
         <img id='fb-logo' src='https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg'/>
-        <h2>Connect with friends and the world around you on Facebook.</h2>
+        <p>Connect with friends and the world around you on Facebook.</p>
       </div>
       <div id='index-login'>
         <Form>
