@@ -25,9 +25,9 @@ const Post = ({_id, author, content, title, createdAt, published, posts, setPost
 
   }
 
-  const edtiHandler = (e) => {
+  const editHandler = (e) => {
     e.preventDefault();
-    axios.put(`posts/${_id}`, {title: currentTitle, content: currentContent})
+    axios.put(`posts/${_id}`, {title: currentTitle, content: currentContent}, {headers:{Authorization: `bearer ${JSON.parse(localStorage.getItem('user')).token}`}})
     .then(res => {
       setPosts(posts.map(post => post._id === res.data._id ? res.data : post))
       setShowEdit(false);
@@ -77,7 +77,7 @@ const Post = ({_id, author, content, title, createdAt, published, posts, setPost
           </FormGroup>
           <FormGroup className='d-flex align-items-center'>
             <Button className='mr-2' type='button' onClick={() => setShowEdit(false)} color='secondary'>Cancel</Button>
-            <Button type='button' onClick={(e) => edtiHandler(e)} color='primary'>Edit</Button>
+            <Button type='button' onClick={(e) => editHandler(e)} color='primary'>Edit</Button>
           </FormGroup>
         </Form>
       }

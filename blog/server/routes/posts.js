@@ -14,14 +14,27 @@ router.post('/', [
 ])
 
 // POST publish post
-router.post('/:post_id/publish', postController.publish_post);
+router.post('/:post_id/publish', [
+  passport.authenticate('jwt', {session: false}),
+  postController.publish_post
+]);
 
 // POST unpublish post
-router.post('/:post_id/unpublish', postController.unpublish_post);
+router.post('/:post_id/unpublish', [  
+  passport.authenticate('jwt', {session: false}), 
+  postController.unpublish_post
+]);
 
 // PUT update post
-router.put('/:post_id', postController.edit_post);
-module.exports = router;
+router.put('/:post_id', [
+  passport.authenticate('jwt', {session: false}),
+  postController.edit_post
+]);
 
 // DELETE delete post
-router.delete('/:post_id', postController.delete_post);
+router.delete('/:post_id', [
+  passport.authenticate('jwt', {session: false}),
+  postController.delete_post
+]);
+
+module.exports = router;
