@@ -1,8 +1,8 @@
 const passport = require('passport');
+const bcrypt = require('bcrypt');
+const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
-
 const User = require('../models/users');
-
 
 
 passport.use(new FacebookStrategy({
@@ -25,6 +25,20 @@ passport.use(new FacebookStrategy({
     })
   })
 )
+
+passport.use(new LocalStrategy(
+  (email, password, done) => {
+    User.findOne({email: email}, (err, user) => {
+      if(err) return done(err);
+      if(!user) return done(null, false);
+      //check for password match
+      bcrypt.compare(password, user.password, (err, match) => {
+        if(!match) return done(null, false);
+        return done(null, user);
+      })
+    })
+  }
+))
 
 passport.serializeUser(function(user, cb) {
   cb(null, user);
