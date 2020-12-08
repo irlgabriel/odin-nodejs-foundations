@@ -22,8 +22,8 @@ const Register = ({setUser}) => {
     e.preventDefault();
     axios.post('/register', {email, password, first_name: firstName, last_name: lastName})
     .then(res => {
-      setUser(res.data);
-      location.push('/');
+      localStorage.setItem('user', JSON.stringify({user: res.data.user, token: res.data.token}));
+      location.push('/home');
     })
     .catch(err => {
       console.log(err);

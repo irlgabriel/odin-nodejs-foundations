@@ -21,7 +21,6 @@ function App() {
 
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem('user'));
-    console.log(currentUser);
     if(currentUser) setUser(currentUser.user);
   }, [localStorage])
 
@@ -30,10 +29,10 @@ function App() {
       <Container fluid className='p-0'>
         {/* Page routes */}
         <Route exact path='/' render={() => <Index setUser={setUser}/>}></Route>
-        <Route exact path='/home' render={() => <Home user={user} />}></Route>
-        <Route exact path='/profile' render={() => <Profile />}></Route>
+        {user &&  <Route exact path='/home' render={() => <Home user={user} />}></Route>}
+        {user && <Route exact path='/profile' render={() => <Profile />}></Route>}
         <Route exact path='/register' render={() => <Register setUser={setUser} />}></Route>
-        <Route exact path='/friends' render={() => <Friends user={user}/>}></Route>
+        {user && <Route exact path='/friends' render={() => <Friends user={user}/>}></Route>}
       </Container>
     </Router>
   );

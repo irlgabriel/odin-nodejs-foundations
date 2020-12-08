@@ -27,10 +27,10 @@ const Navbar = () => {
       </Col>
       <Col className='d-flex align-items-center'>
         <NavMidItem to='/home' active={location.pathname === '/home'} className='mid-nav-item'>
-          <AiFillHome size={32} fill='royalblue' className='mr-2'/>
+          <AiFillHome size={32} fill={location.pathname === '/home' ? 'royalblue' : 'gray'} className='mr-2'/>
         </NavMidItem>
         <NavMidItem to='/friends' active={location.pathname === '/friends'} className='mid-nav-item'>
-          <FaUserFriends fill='royalblue' size={32} />
+          <FaUserFriends fill={location.pathname === '/friends' ? 'royalblue' : 'gray'} size={32} />
         </NavMidItem>
       </Col>
       <Col className='d-flex justify-content-end align-items-center'>
