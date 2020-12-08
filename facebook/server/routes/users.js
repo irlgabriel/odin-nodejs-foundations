@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const passport = require('passport')
+const tokenMiddleware = require('../middlewares/token');
 
 const userController = require('../controllers/user');
 
@@ -10,10 +11,10 @@ router.get('/', (req, res, next) => {
 })
 
 /* Login */
-router.post('/login', userController.login);
+router.post('/login', userController.login, tokenMiddleware);
 
 /* Register */
-router.post('/register', userController.register);
+router.post('/register', userController.register, tokenMiddleware);
 
 /* Facebook auth */
 router.get('/auth/facebook', passport.authenticate('facebook', {
@@ -25,7 +26,7 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
   successRedirect: '/',
   failureRedirect: '/'}
 ), (req, res) => {
-  const token = req.user.jwt_token;
+  const token = req.token;
   res.json({token: token});
 })
 

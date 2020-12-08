@@ -7,8 +7,7 @@ const { body, validationResult } = require('express-validator');
 exports.login = [
   passport.authenticate('local', {session: false}),
   (req, res, next) => {
-    //console.log(req.user);
-    res.json(req.user)
+    next();
   }
 ]
 
