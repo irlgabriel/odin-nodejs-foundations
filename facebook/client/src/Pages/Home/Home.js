@@ -13,15 +13,12 @@ import { Navbar, PostForm } from "../../Components";
 import { FaUserFriends } from 'react-icons/fa'
 
 const Home = ({user}) => {
-<<<<<<< HEAD
   const history = useHistory();
+
   useEffect(() => {
     if(!user) history.push('/');
-  }, [])
+  }, [user])
 
-  console.log(user);
-=======
->>>>>>> d39d09aa16552b08b18c983247af2df2b0b2ad29
   return (
     <Container fluid className='px-0'>
       <Navbar/>

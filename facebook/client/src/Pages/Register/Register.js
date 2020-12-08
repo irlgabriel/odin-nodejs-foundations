@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -10,7 +10,7 @@ import {
   Button,
 } from 'reactstrap';
 
-const Register = ({setUser}) => {
+const Register = ({user}) => {
   const location = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,6 +29,10 @@ const Register = ({setUser}) => {
       console.log(err);
     })
   }
+
+  useEffect(() => {
+    if(user) location.push('/home');
+  }, [user])
 
   return (
     <Container style={{width: '600px', paddingTop: '60px'}}>

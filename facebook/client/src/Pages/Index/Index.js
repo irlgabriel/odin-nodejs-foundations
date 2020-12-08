@@ -28,7 +28,7 @@ const Index = ({user}) => {
 
   useEffect(() => {
     if(user) location.push('/home');
-  }, [])
+  }, [user])
 
   return (
     <Container id='index-main'>
