@@ -33,7 +33,9 @@ exports.register = [
           if(err) return res.status(400).json(err);
           jwt.sign({user: user}, process.env.JWT_SECRET, (err, token) => {
             if(err) return res.status(400).json(err);
-            res.json({user: registeredUser, token: token});
+            req.user = registeredUser;
+            req.token = token;
+            next();
           })
         })
       })
