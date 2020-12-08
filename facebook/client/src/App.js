@@ -7,7 +7,8 @@ import {
   Index,
   Home,
   Profile,
-  Register
+  Register,
+  Friends
 } from "./Pages";
 import {
   HashRouter as Router,
@@ -18,6 +19,11 @@ function App() {
   
   const [user, setUser] = useState(undefined);
 
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+    if(currentUser) setUser(currentUser.user);
+  }, [localStorage])
+
   return (
     <Router>
       <Container fluid className='p-0'>
@@ -26,6 +32,7 @@ function App() {
         <Route exact path='/home' render={() => <Home />}></Route>
         <Route exact path='/profile' render={() => <Profile />}></Route>
         <Route exact path='/register' render={() => <Register setUser={setUser} />}></Route>
+        <Route exact path='/friends' render={() => <Friends />}></Route>
       </Container>
     </Router>
   );

@@ -16,14 +16,14 @@ const Index = ({setUser}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+
+
   const submitHandler = (e) => {
     e.preventDefault();
     Axios.post('/login', {email, password})
     .then(res => {
-      console.log(res.data);
-      setUser(res.data);
-      location.push('/');
-
+      localStorage.setItem('user', JSON.stringify({user: res.data.user, token: res.data.token}));
+      location.push('/home');
     })
     .catch(err => console.log(err));
   }
