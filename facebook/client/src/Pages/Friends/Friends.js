@@ -3,7 +3,7 @@ import {
   Container
 } from 'reactstrap';
 
-const Friends = () => {
+const Friends = ({user}) => {
   return (
     <Container fluid className='px-0'>
       <Navbar />
