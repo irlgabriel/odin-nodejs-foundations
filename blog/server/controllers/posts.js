@@ -2,11 +2,8 @@ const { body, validationResult } = require('express-validator');
 
 const Post = require('../models/posts');
 const passport = require('passport');
-<<<<<<< HEAD
-=======
 
 const unescape = require('../config/unescape_middleware');
->>>>>>> 534d9bb887273d25b3a2c1fc168e6b1594c0f18a
 
 exports.get_posts = (req, res, next) => {
   Post.find()
@@ -55,14 +52,9 @@ exports.create_post = [
 ]
 
 exports.edit_post = [
-<<<<<<< HEAD
-  body('title').isLength({min: 1}).escape(),
-  body('content').isLength({min: 1}).escape(),
-=======
   body('title').trim().isLength({min: 1}).escape(),
   body('content').trim().isLength({min: 1}).escape(),
   //unescape('&#x27;',"'"),  
->>>>>>> 534d9bb887273d25b3a2c1fc168e6b1594c0f18a
   (req, res, next) => {
     const errors = validationResult(req);
 

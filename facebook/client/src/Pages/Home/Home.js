@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { 
   Container,
   Row,
@@ -11,6 +13,11 @@ import { Navbar } from "../../Components";
 import { FaUserFriends } from 'react-icons/fa'
 
 const Home = ({user}) => {
+  const history = useHistory();
+  useEffect(() => {
+    if(!user) history.push('/');
+  }, [])
+
   console.log(user);
   return (
     <Container fluid className='px-0'>

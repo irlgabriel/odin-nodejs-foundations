@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
 import {
@@ -10,13 +10,11 @@ import {
   FormGroup,
 } from 'reactstrap';
 
-const Index = ({setUser}) => {
+const Index = ({user}) => {
   const location = useHistory();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -27,6 +25,10 @@ const Index = ({setUser}) => {
     })
     .catch(err => console.log(err));
   }
+
+  useEffect(() => {
+    if(user) location.push('/home');
+  }, [])
 
   return (
     <Container id='index-main'>

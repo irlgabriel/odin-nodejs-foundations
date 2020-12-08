@@ -20,19 +20,24 @@ function App() {
   const [user, setUser] = useState(undefined);
 
   useEffect(() => {
+  const checkUser = () => {
     const currentUser = JSON.parse(localStorage.getItem('user'));
     console.log(currentUser);
     if(currentUser) setUser(currentUser.user);
-  }, [localStorage])
+  }
+  window.addEventListener('storage', checkUser);
+  return () => window.removeEventListener('storage', checkUser);
+  }, [])
+
 
   return (
     <Router>
       <Container fluid className='p-0'>
         {/* Page routes */}
-        <Route exact path='/' render={() => <Index setUser={setUser}/>}></Route>
+        <Route exact path='/' render={() => <Index user={user}/>}></Route>
         <Route exact path='/home' render={() => <Home user={user} />}></Route>
-        <Route exact path='/profile' render={() => <Profile />}></Route>
-        <Route exact path='/register' render={() => <Register setUser={setUser} />}></Route>
+        <Route exact path='/profile' render={() => <Profile user={user}/>}></Route>
+        <Route exact path='/register' render={() => <Register user={user}/>}></Route>
         <Route exact path='/friends' render={() => <Friends user={user}/>}></Route>
       </Container>
     </Router>
