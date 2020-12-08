@@ -31,7 +31,7 @@ passport.use(new FacebookStrategy({
       if(user) {
         return cb(err, user);
       } else {
-        User.create({ email: profile.emails[0].value, profilePhoto: profile.photos[0].value, facebookID: profile.id, displayName: profile.displayName}, (err, user) => {
+        User.create({ email: profile.emails[0].value, profile_photo: profile.photos[0].value, facebookID: profile.id, display_name: profile.displayName}, (err, user) => {
           return cb(err, user);
         })
       }

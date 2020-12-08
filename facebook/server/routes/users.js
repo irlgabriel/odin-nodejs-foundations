@@ -6,10 +6,6 @@ const tokenMiddleware = require('../middlewares/token');
 
 const userController = require('../controllers/user');
 
-router.get('/', (req, res, next) => {
-  res.json(req.user);
-})
-
 /* Login */
 router.post('/login', userController.login, tokenMiddleware);
 
@@ -26,7 +22,7 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
   session: false,
   successRedirect: '/',
   failureRedirect: '/'}
-), tokenMiddleware())
+))
 
 /* Logout */
 router.get('/logout', (req, res, next) => {
