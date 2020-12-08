@@ -21,14 +21,12 @@ router.get('/auth/facebook', passport.authenticate('facebook', {
   session: false,
   scope: ['public_profile', 'email']}
 ));
+
 router.get('/auth/facebook/callback', passport.authenticate('facebook', {
   session: false,
   successRedirect: '/',
   failureRedirect: '/'}
-), (req, res) => {
-  const token = req.token;
-  res.json({token: token});
-})
+), tokenMiddleware())
 
 /* Logout */
 router.get('/logout', (req, res, next) => {
