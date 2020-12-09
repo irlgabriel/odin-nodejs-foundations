@@ -41,7 +41,7 @@ const Navbar = ({setUser, user}) => {
   return (
     <Nav className='px-1'>
       <Col sm='3' className='align-items-center d-flex'>
-      {!showSearch && <FaFacebook className='mr-2' fill='royalblue' size={40} /> }
+      {!showSearch && <Link to='/home'><FaFacebook className='mr-2' fill='royalblue' size={40} /></Link>}
         {
           !showSearch &&
           <RoundWrapper onClick={() => setShowSearch(true)} >

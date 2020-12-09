@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 export const RoundImage = styled.img`
   border-radius: 20px;
-  width: 24px;
-  height: 24px;
+  width: 36px;
+  height: 36px;
   z-index: 2;
 `
 

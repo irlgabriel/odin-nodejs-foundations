@@ -30,7 +30,7 @@ const Home = ({setUser, user}) => {
             &nbsp;{user.displayName || user.first_name + ' ' + user.last_name}
           </NavItem>
           <NavItem>
-            <FaUserFriends size={24} fill='royalblue' />
+            <FaUserFriends size={36} fill='royalblue' />
             &nbsp;Friends
           </NavItem>
         </Col>
