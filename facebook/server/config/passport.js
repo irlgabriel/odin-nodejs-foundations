@@ -14,7 +14,6 @@ passport.use(new JWTStrategy(
     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   },
   (user, done) => {
-    if(err) return done(err, false);
     if(!user) return done(null, false);
     return done(null, user);
   }

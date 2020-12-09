@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { 
   Container,
@@ -9,15 +9,25 @@ import {
   NavItem,
   RoundImage
 } from './Home.components';
-import { Navbar, PostForm } from "../../Components";
-import { FaUserFriends } from 'react-icons/fa'
+import { Navbar, PostForm, Post } from "../../Components";
+import { FaUserFriends } from 'react-icons/fa';
+import axios from 'axios';
 
 const Home = ({setUser, user}) => {
   const history = useHistory();
 
+  const [posts, setPosts] = useState([]);
+
   useEffect(() => {
     if(!user) history.push('/');
   }, [user])
+
+  useEffect(() => {
+    axios.get('/posts', /*jwt token header,*/)
+    .then(res => {
+      setPosts(res.data)
+    })
+  }, [])
 
   return (
     <Container fluid className='px-0'>
@@ -36,6 +46,11 @@ const Home = ({setUser, user}) => {
         </Col>
         <Col id='mid-col' sm='6'>
           <PostForm user={user}/>
+          {
+            posts.map(post => 
+              <Post posts={posts} post={post}/>
+            )
+          }
         </Col>
         <Col id='right-col' sm='3'></Col>
       </Row>
