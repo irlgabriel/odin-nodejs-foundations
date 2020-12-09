@@ -16,11 +16,11 @@ import {
 } from 'react-icons/fc';
 const PostForm = ({user}) => {
   return (
-    <Container fluid className='my-3 p-2' style={{background: 'white', borderRadius: '5px'}}>
+    <Container fluid className='my-3 p-2' style={{boxShadow: '0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1)' ,background: 'white', borderRadius: '5px'}}>
       <Form>
         <div className='d-flex align-items-center'>
           <RoundImage className='mr-2' src={user.profile_photo} width='36px'/>
-          <Input style={{borderRadius: '24px', background: '#f0f2f5'}} className='border-0' type='text' placeholder={`What's on your mind, ${user.first_name}?`} />
+          <Input style={{borderRadius: '24px', background: '#f0f2f5'}} className='border-0 py-2' type='text' placeholder={`What's on your mind, ${user.first_name}?`} />
         </div>
         <hr className='my-3'/>
         <GrayHover>

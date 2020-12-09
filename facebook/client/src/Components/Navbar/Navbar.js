@@ -4,6 +4,7 @@ import {
   Nav,
   Button,
   Col,
+  Input
 } from 'reactstrap'
 import {
   NavMidItem,
@@ -18,13 +19,16 @@ import { FaFacebook, FaUserFriends, FaFacebookMessenger, FaDoorOpen} from 'react
 import { AiOutlineSearch, AiFillHome, AiFillBell } from 'react-icons/ai';
 import { GrAdd } from 'react-icons/gr';
 import { GoTriangleDown } from 'react-icons/go';
+import { BsArrowLeft } from 'react-icons/bs';
 import { CSSTransition } from 'react-transition-group';
+
 
 
 const Navbar = ({setUser, user}) => {
   const location = useLocation();
   const history = useHistory();
   
+  const [showSearch, setShowSearch] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [notificationDropdown, setNotificationDropdown] = useState(false);
 
@@ -37,10 +41,22 @@ const Navbar = ({setUser, user}) => {
   return (
     <Nav className='px-1'>
       <Col sm='3' className='align-items-center d-flex'>
-        <FaFacebook className='mr-2' fill='royalblue' size={40} />          
-        <RoundWrapper >
-          <AiOutlineSearch size={20} />
-        </RoundWrapper>
+      {!showSearch && <FaFacebook className='mr-2' fill='royalblue' size={40} /> }
+        {
+          !showSearch &&
+          <RoundWrapper onClick={() => setShowSearch(true)} >
+            <AiOutlineSearch size={20} />
+          </RoundWrapper>
+        }
+        {
+          showSearch &&
+          <div className='d-flex align-items-center'>
+            <RoundWrapper className='mr-2 px-2' onClick={() => setShowSearch(false) }>
+              <BsArrowLeft size={16}/>
+            </RoundWrapper>
+            <Input style={{borderRadius: '21px'}} type='text' className='py-2' placeholder='Search Facebook' />
+          </div>
+        }
       </Col>
       <Col className='d-flex align-items-center'>
         <NavMidItem to='/home' active={location.pathname === '/home'} className='mid-nav-item'>

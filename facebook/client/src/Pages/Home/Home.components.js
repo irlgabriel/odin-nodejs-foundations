@@ -15,6 +15,7 @@ export const NavItem = styled(Link)`
   border-radius: 6px;
   color: black;
   font-size: 18px;
+  transition: all .2s ease-in-out;
   &:hover {
     cursor: pointer;
     color: black;
