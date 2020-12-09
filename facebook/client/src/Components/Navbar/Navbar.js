@@ -1,4 +1,5 @@
-import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import {
   Nav,
   Button,
@@ -6,17 +7,33 @@ import {
 } from 'reactstrap'
 import {
   NavMidItem,
-  RoundWrapper
+  RoundWrapper,
+  CollapsableDiv,
+  RoundImage,
+  GrayHover,
+  LinkGreyHover
 } from './Navbar.components';
 /* React Icons */
-import { FaFacebook, FaUserFriends, FaFacebookMessenger} from 'react-icons/fa';
+import { FaFacebook, FaUserFriends, FaFacebookMessenger, FaDoorOpen} from 'react-icons/fa';
 import { AiOutlineSearch, AiFillHome, AiFillBell } from 'react-icons/ai';
 import { GrAdd } from 'react-icons/gr';
-import { IoIosArrowDown } from 'react-icons/io';
+import { GoTriangleDown } from 'react-icons/go';
+import { CSSTransition } from 'react-transition-group';
 
-const Navbar = () => {
+
+const Navbar = ({setUser, user}) => {
   const location = useLocation();
-  console.log(location.pathname)
+  const history = useHistory();
+  
+  const [userDropdown, setUserDropdown] = useState(false);
+  const [notificationDropdown, setNotificationDropdown] = useState(false);
+
+  const logoutHandler = () => {
+    localStorage.removeItem('user');
+    setUser(undefined);
+    history.push('/');
+  }
+
   return (
     <Nav className='px-1'>
       <Col sm='3' className='align-items-center d-flex'>
@@ -40,13 +57,60 @@ const Navbar = () => {
         <RoundWrapper className='mr-2'>
           <FaFacebookMessenger size={16} fill='black'/>
         </RoundWrapper>
-        <RoundWrapper className='mr-2'>
-          <AiFillBell size={16} fill='black'/>
+        <RoundWrapper active={notificationDropdown} onClick={() => setNotificationDropdown(!notificationDropdown)} className='mr-2'>
+          <AiFillBell style={{transition: 'all .5s ease-in-out', fill: notificationDropdown ? 'royalblue' : 'black'}} size={16} fill='black'/>
         </RoundWrapper>
-        <RoundWrapper>
-          <IoIosArrowDown size={16} fill='black'/>
+        <RoundWrapper onClick={() => setUserDropdown(!userDropdown)}>
+          <GoTriangleDown  style={{
+            transition: '.3s ease-in-out', transform: userDropdown ? 'rotate(180deg)' : 'rotate(0deg)',
+            fill: userDropdown ? 'royalblue' : 'black'
+          }} size={16} fill='black'
+            
+          />
         </RoundWrapper>
       </Col>
+
+
+      {/** Collapsable div for user profile */}
+      <CSSTransition
+        in={userDropdown}
+        timeout={500}
+        classNames='slide-from-top'
+        unmountOnExit
+      >
+        <CollapsableDiv>
+          <LinkGreyHover to='/profile'>
+            <GrayHover>
+              <RoundImage src={user.profile_photo} className='mr-2'/>
+              <div>
+                <p style={{fontSize: '18px'}} className='font-weight-bold mb-0'>{user.first_name + ' ' + user.last_name || user.display_name}</p>
+                <p className='text-muted mb-0'>See your profile</p>
+              </div>
+            </GrayHover>
+          </LinkGreyHover>
+          <hr />
+          <GrayHover onClick={() => logoutHandler()}>
+            <RoundWrapper className='mr-2'>
+              <FaDoorOpen size={24}/>
+            </RoundWrapper>
+            <p className='mb-0 font-weight-bold'>Log Out</p>
+          </GrayHover>
+        </CollapsableDiv>  
+      </CSSTransition>
+      
+
+      {/** Collapsable div for notifications */ }
+      <CSSTransition
+        in={notificationDropdown}
+        timeout={500}
+        classNames='slide-from-top'
+        unmountOnExit
+      >
+        <CollapsableDiv>
+          <h3>Notifications</h3>
+          <p>New</p>
+        </CollapsableDiv>
+      </CSSTransition>
     </Nav>
   )
 }

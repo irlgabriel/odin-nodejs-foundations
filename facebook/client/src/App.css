@@ -62,4 +62,24 @@
 .nav {
   background: white;
   height: 55px;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+  position: relative;
+}
+
+/* react-transition-group animation classnames */
+
+.slide-from-top-enter {
+  margin-top: -20%;
+}
+.slide-from-top-enter-active {
+  margin-top: 0;
+  transition: all .5s ease-in-out;
+}
+.slide-from-top-exit {
+  margin-top: 0;
+}
+.slide-from-top-exit-active {
+  margin-top: -20%;
+  transition: all .5s ease-in-out;
 }

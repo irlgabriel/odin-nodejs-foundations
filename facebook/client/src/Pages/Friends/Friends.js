@@ -6,7 +6,7 @@ import {
 const Friends = ({user}) => {
   return (
     <Container fluid className='px-0'>
-      <Navbar />
+      <Navbar user={user}/>
 
     </Container>
   )

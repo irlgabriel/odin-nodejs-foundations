@@ -10,7 +10,7 @@ import {
   FormGroup,
 } from 'reactstrap';
 
-const Index = ({user}) => {
+const Index = ({setUser, user}) => {
   const location = useHistory();
 
   const [email, setEmail] = useState('');
@@ -21,6 +21,7 @@ const Index = ({user}) => {
     Axios.post('/login', {email, password})
     .then(res => {
       localStorage.setItem('user', JSON.stringify({user: res.data.user, token: res.data.token}));
+      setUser(res.data.user);
       location.push('/home');
     })
     .catch(err => console.log(err));

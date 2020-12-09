@@ -12,7 +12,7 @@ import {
 import { Navbar, PostForm } from "../../Components";
 import { FaUserFriends } from 'react-icons/fa'
 
-const Home = ({user}) => {
+const Home = ({setUser, user}) => {
   const history = useHistory();
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const Home = ({user}) => {
 
   return (
     <Container fluid className='px-0'>
-      <Navbar/>
+      <Navbar setUser={setUser} user={user}/>
       <Row className='mx-0'>
         <Col id='left-col' className='p-2' sm='3'>
           <NavItem>
