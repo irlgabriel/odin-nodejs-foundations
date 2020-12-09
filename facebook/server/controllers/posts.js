@@ -5,7 +5,12 @@ const Post = require('../models/posts');
 exports.get_posts = (req, res, next) => {
   Post.find((err, posts) => {
     if(err) return res.status(400).json(err);
-    res.json(posts);
+
+    Post.populate(posts, {path: 'user'}, (err, populatedPosts) => {
+      if(err) return res.status(400).json(err);
+      console.log(populatedPosts)
+      res.json(populatedPosts);
+    })
   })
 }
 
