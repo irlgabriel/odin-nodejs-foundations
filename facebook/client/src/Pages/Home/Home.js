@@ -25,7 +25,6 @@ const Home = ({setUser, user}) => {
   useEffect(() => {
     axios.get('/posts', /*jwt token header,*/)
     .then(res => {
-      console.log(res.data);
       setPosts(res.data)
     })
   }, [])
@@ -35,12 +34,12 @@ const Home = ({setUser, user}) => {
       <Navbar setUser={setUser} user={user}/>
       <Row className='mx-0'>
         <Col id='left-col' className='p-2' sm='3'>
-          <NavItem>
+          <NavItem to='/profile'>
             <RoundImage src={user.profile_photo}/>
 
             &nbsp;{user.displayName || user.first_name + ' ' + user.last_name}
           </NavItem>
-          <NavItem>
+          <NavItem to='/friends'>
             <FaUserFriends size={36} fill='royalblue' />
             &nbsp;Friends
           </NavItem>
@@ -49,7 +48,7 @@ const Home = ({setUser, user}) => {
           <PostForm user={user}/>
           {
             posts.map(post => 
-              <Post posts={posts} post={post}/>
+              <Post key={post._id} posts={posts} post={post}/>
             )
           }
         </Col>
