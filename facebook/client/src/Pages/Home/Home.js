@@ -25,6 +25,7 @@ const Home = ({setUser, user}) => {
   useEffect(() => {
     axios.get('/posts', /*jwt token header,*/)
     .then(res => {
+      console.log(res.data);
       setPosts(res.data)
     })
   }, [])
