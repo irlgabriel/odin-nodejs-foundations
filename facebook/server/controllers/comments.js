@@ -2,7 +2,11 @@ const { body, validationResult } = require('express-validator');
 const Comment = require('../models/comments');
 
 module.exports.get_comments = (req, res, next) => {
-  Comment.find((err, comments) => {
+  Comment.find()
+  .populate('post')
+  .populate('comment')
+  .populate('user')
+  .exec((err, comments) => {
     if(err) return res.status(400).json(err);
     res.json(comments);
   })
@@ -15,9 +19,13 @@ module.exports.create_comment = [
 
     if(!errors.isEmpty()) return res.status(400).json(errors.array());
 
-    const { content } = req.body;
+    const { content, comment } = req.body;
 
-    Comment.create({content, user: req.user._id}, (err, comment) => {
+    Comment.create({content, user: req.user._id, post: req.params.post_id, comment})
+    .populate('user')
+    .populate('post')
+    .populate('comment')
+    .exec((err, comment) => {
       if(err) return res.status(400).json(err);
       res.json(comment);
     })
@@ -32,7 +40,11 @@ module.exports.edit_comment = [
 
     const { content } = req.body;
 
-    Comment.findOneAndUpdate({_id: req.params.comment_id}, {content}, {new: true}, (err, comment) => {
+    Comment.findOneAndUpdate({_id: req.params.comment_id}, {content}, {new: true})
+    .populate('user')
+    .populate('post')
+    .populate('comment')
+    .exec((err, comment) => {
       if(err) return res.status(400).json(err);
       res.json(comment);
     })

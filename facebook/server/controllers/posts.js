@@ -18,7 +18,9 @@ exports.create_post = [
   /* multer image middleware */
   (req, res, next) => {
     const { content } = req.body;
-    Post.create({content, user: req.user._id}, (err, post) => {
+    Post.create({content, user: req.user._id})
+    .populate('user')
+    .exec((err, post) => {
       if(err) return res.status(400).json(err);
       res.json(post);
     })
@@ -29,7 +31,9 @@ exports.edit_post = [
   body('content').trim().isLength({min: 1}).escape(),
   (req, res, next) => {
     const { content } = req.body;
-    Post.findOneAndUpdate({content}, {new: true}, (err, post) => {
+    Post.findOneAndUpdate({_id: req.params.post_id}, {content}, {new: true})
+    .populate('user')
+    .exec((err, post) => {
       if(err) return res.status(400).json(err);
       res.json(post);
     })
