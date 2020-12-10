@@ -1,6 +1,14 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+export const RegularLink = styled(Link)`
+  color: black;
+  &:hover {
+    text-decoration: none;
+    color: black;
+  }
+`
+
 export const NavMidItem = styled(Link)`
   width: 100px;
   height: 100%;
@@ -62,3 +70,24 @@ export const LinkGreyHover = styled(Link)`
     color: black;
   }
 `
+
+export const RoundedUserDiv = styled.div`
+  background: ${({active}) => (active ? 'rgba(0,44,200,.2)' : 'white')};
+  color: ${({active}) => (active ? 'royalblue' : 'black')};
+  font-weight: bold;
+  border-radius: 16px;
+  padding: .25rem;
+  display: flex;
+  align-items: center;
+  &:hover {
+    background: #f0f2f5;
+    cursor: pointer;
+  }
+`
+
+export const TopRightUserImg = styled.img`
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+`
+

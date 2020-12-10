@@ -29,9 +29,9 @@ function App() {
         {/* Page routes */}
         <Route exact path='/' render={() => <Index user={user} setUser={setUser}/>}></Route>
         <Route exact path='/home' render={() => <Home setUser={setUser} user={user} />}></Route>
-        <Route exact path='/profile' render={() => <Profile user={user}/>}></Route>
+        <Route exact path='/profile' render={() => <Profile setUser={setUser} user={user}/>}></Route>
         <Route exact path='/register' render={() => <Register user={user} setUser={setUser} />}></Route>
-        <Route exact path='/friends' render={() => <Friends user={user}/>}></Route>
+        <Route exact path='/friends' render={() => <Friends setUser={setUser} user={user}/>}></Route>
       </Container>
     </Router>
   );

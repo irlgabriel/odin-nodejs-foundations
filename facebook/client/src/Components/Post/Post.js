@@ -40,9 +40,10 @@ const Post = ({user, posts, post, setPosts}) => {
 
   const editHandler = (e) => {
     e.preventDefault();
-    axios.put(`/posts/${post._id}`, {content}, {headers: {Authorization: 'bearer ' + JSON.parse(localStorage.getItem('user')).token}})
+    axios.put(`/posts/${post._id}`, {content: content}, {headers: {Authorization: 'bearer ' + JSON.parse(localStorage.getItem('user')).token}})
     .then(res => {
       setPosts(posts.map(post => post._id === res.data._id ? res.data : post));
+      setEdit(false);
     })
     .catch(err => console.log(err));
   }

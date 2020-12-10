@@ -12,7 +12,10 @@ import {
   CollapsableDiv,
   RoundImage,
   GrayHover,
-  LinkGreyHover
+  LinkGreyHover,
+  RoundedUserDiv,
+  TopRightUserImg,
+  RegularLink
 } from './Navbar.components';
 /* React Icons */
 import { FaFacebook, FaUserFriends, FaFacebookMessenger, FaDoorOpen} from 'react-icons/fa';
@@ -58,6 +61,8 @@ const Navbar = ({setUser, user}) => {
           </div>
         }
       </Col>
+
+
       <Col className='d-flex align-items-center'>
         <NavMidItem to='/home' active={location.pathname === '/home'} className='mid-nav-item'>
           <AiFillHome size={32} fill={location.pathname === '/home' ? 'royalblue' : 'gray'} className='mr-2'/>
@@ -66,7 +71,15 @@ const Navbar = ({setUser, user}) => {
           <FaUserFriends fill={location.pathname === '/friends' ? 'royalblue' : 'gray'} size={32} />
         </NavMidItem>
       </Col>
+
+
       <Col className='d-flex justify-content-end align-items-center'>
+        <RegularLink to='/profile'>
+          <RoundedUserDiv active={location.pathname === '/profile'} className='mr-1'>
+            <TopRightUserImg src={user.profile_photo} className='mr-2' />
+            <p className='mb-0'>{user.first_name}</p>
+          </RoundedUserDiv>
+        </RegularLink>
         <RoundWrapper className='mr-2'>
           <GrAdd size={16} fill='black'/>
         </RoundWrapper>
