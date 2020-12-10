@@ -13,6 +13,8 @@ router.post('/', passport.authenticate('jwt'), postController.create_post);
 // PUT edit post
 router.put('/:post_id', postController.edit_post);
 
+router.post('/:post_id/like', passport.authenticate('jwt'), postController.like_post)
+
 // DELETE delete post
 router.delete('/:post_id', postController.delete_post);
 

@@ -1,5 +1,5 @@
 const { body, validationResult} = require('express-validator');
-const { findOneAndDelete } = require('../models/posts');
+const { findOneAndDelete, update } = require('../models/posts');
 const Post = require('../models/posts');
 
 exports.get_posts = (req, res, next) => {
@@ -36,6 +36,24 @@ exports.edit_post = [
     })
   }
 ]
+
+exports.like_post = (req, res, next) => {
+  const user_id = req.user._id
+  Post.findOne({_id: req.params.post_id}, (err, post) => {
+    if(err) return res.status(400).json(err);
+    if(post.likes.includes(user_id)) {
+      Post.findOneAndUpdate({_id: req.params.post_id}, {$pull: {likes: user_id}}, {new: true}, (err, updatedPost) => {
+        if(err) return res.status(400).json(err);
+        return res.json(updatedPost);
+      })
+    } else {
+      Post.findOneAndUpdate({_id: req.params.post_id}, {$push: {likes: user_id}}, {new: true}, (err, updatedPost) => {
+        if(err) return res.status(400).json(err);
+        return res.json(updatedPost);
+      })
+    }
+  })
+}
 
 exports.delete_post = (req, res, next) => {
   Post.findOneAndDelete({_id: req.params.post_id}, (err, post) => {
