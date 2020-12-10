@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router({mergeParams: true});
+const passport = require('passport');
 
 const commentController = require('../controllers/comments');
 
@@ -7,12 +8,12 @@ const commentController = require('../controllers/comments');
 router.get('/', commentController.get_comments);
 
 // POST create comment
-router.post('/', commentController.create_comment);
+router.post('/', passport.authenticate('jwt'), commentController.create_comment);
 
 // PUT edit comment
-router.put('/:comment_id', commentController.edit_comment);
+router.put('/:comment_id', passport.authenticate('jwt'), commentController.edit_comment);
 
 // DELETE delete comment
-router.delete('/:comment_id', commentController.delete_comment);
+router.delete('/:comment_id', passport.authenticate('jwt'), commentController.delete_comment);
 
 module.exports = router;
