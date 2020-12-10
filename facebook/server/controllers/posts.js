@@ -8,7 +8,6 @@ exports.get_posts = (req, res, next) => {
 
     Post.populate(posts, {path: 'user'}, (err, populatedPosts) => {
       if(err) return res.status(400).json(err);
-      console.log(populatedPosts)
       res.json(populatedPosts);
     })
   })
@@ -38,16 +37,20 @@ exports.edit_post = [
 ]
 
 exports.like_post = (req, res, next) => {
-  const user_id = req.user._id
+  const user_id = req.user._id;
   Post.findOne({_id: req.params.post_id}, (err, post) => {
     if(err) return res.status(400).json(err);
     if(post.likes.includes(user_id)) {
-      Post.findOneAndUpdate({_id: req.params.post_id}, {$pull: {likes: user_id}}, {new: true}, (err, updatedPost) => {
+      Post.findOneAndUpdate({_id: req.params.post_id}, {$pull: {likes: user_id}}, {new: true})
+        .populate('user')
+        .exec((err, updatedPost) => {
         if(err) return res.status(400).json(err);
         return res.json(updatedPost);
       })
     } else {
-      Post.findOneAndUpdate({_id: req.params.post_id}, {$push: {likes: user_id}}, {new: true}, (err, updatedPost) => {
+      Post.findOneAndUpdate({_id: req.params.post_id}, {$push: {likes: user_id}}, {new: true})
+      .populate('user')
+      .exec((err, updatedPost) => {
         if(err) return res.status(400).json(err);
         return res.json(updatedPost);
       })

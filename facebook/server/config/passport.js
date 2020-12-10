@@ -14,6 +14,7 @@ passport.use(new JWTStrategy(
     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   },
   (user, done) => {
+    //console.log('user in passport jwt strategy mw: ', user);
     if(!user) return done(null, false);
     return done(null, user);
   }
