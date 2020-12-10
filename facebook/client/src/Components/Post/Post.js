@@ -12,12 +12,21 @@ import {
   BottomFooter,
   RoundWrapper,
   FooterItem,
+  RoundedContainer,
+  RoundedWrapper,
+  CommentsContainer,
 } from './Post.components';
+import { Comment, CommentForm } from '..'
 import { AiFillLike } from 'react-icons/ai';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
-const Post = ({posts, post}) => {
+
+const Post = ({user, posts, post}) => {
 
   const [comments, setComments] = useState([])
+  const [settingsDropdown, setSettingsDropdown] = useState(false);
+  const [commentsDropdown, setCommentsDropdown] = useState(false);
+
 
   useEffect(() => {
     axios.get(`/posts/${post._id}/comments`)
@@ -29,12 +38,24 @@ const Post = ({posts, post}) => {
 
   return (
     <PostContainer>
-      <Header>
+      <Header className='mb-2'>
         <RoundImage src={post.user.profile_photo}/>
         <FlexContainer>
-          <h4 className='mb-0'>{post.user.display_name || post.user.first_name + ' ' + post.user.last_name}</h4>
-          <p className='mb-0 text-muted'>{moment(post.createdAt).fromNow()}</p>
+          <div>
+            <h4 className='mb-0'>{post.user.display_name || post.user.first_name + ' ' + post.user.last_name}</h4>
+            <p style={{fontSize: '13px'}} className='mb-0 text-muted'>{moment(post.createdAt).fromNow()}</p>
+          </div>
+          <RoundedWrapper onClick={() => setSettingsDropdown(!settingsDropdown)}>
+            <BsThreeDotsVertical size='24'/>
+          </RoundedWrapper>
         </FlexContainer>
+
+        {/** Settings Dropdown  */}
+        { settingsDropdown && 
+          <RoundedContainer>
+            asdsadsa
+          </RoundedContainer>
+        }
       </Header>
 
       <Body>
@@ -49,13 +70,28 @@ const Post = ({posts, post}) => {
             </RoundWrapper>
             <p style={{fontSize: '14px'}} className='mb-0'>{post.likes.length}</p>
           </div>
-          <p>{comments.length} Comments</p>
+          <p className='mb-0'>{comments.length} Comments</p>
         </TopFooter>
+        <hr className='my-1'/>
         <BottomFooter>
           <FooterItem>Like</FooterItem>
-          <FooterItem>Comment</FooterItem>
+          <FooterItem onClick={() => setCommentsDropdown(!commentsDropdown)} >Comment</FooterItem>
         </BottomFooter>
       </Footer>
+
+      {/** Comment dropdown */}
+      {
+        commentsDropdown &&
+        <CommentsContainer>
+          <hr className='my-1'/>
+          {
+            comments.map(comment => 
+              <Comment key={comment._id} user={user} comment={comment} setComments={setComments}/>
+            )
+          }
+          <CommentForm user={user} setComments={setComments} comments={comments}/>
+        </CommentsContainer>
+      }
     </PostContainer>
   )
 }

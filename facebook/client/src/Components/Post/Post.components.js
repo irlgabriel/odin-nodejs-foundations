@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const PostContainer = styled.div`
   background: white;
-  padding: .5rem;
+  padding: .5rem 1rem;
   border-radius: 5px;
 `
 export const RoundImage = styled.img`
@@ -14,11 +14,13 @@ export const RoundImage = styled.img`
 export const Header = styled.div`
   display: flex;
   align-items: center;
+  position: relative;
 `
 export const FlexContainer = styled.div`
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
 `
 export const Body = styled.div`
   display: flex;
@@ -62,4 +64,32 @@ export const FooterItem = styled.div`
     background: #f0f2f5;
     cursor: pointer;
   }
+`
+
+export const RoundedContainer = styled.div`
+  border-radius: 5px;
+  padding: .5rem;
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  background: white;
+
+`
+
+export const RoundedWrapper = styled.div`
+  background: #f0f2f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  &:hover {
+    cursor: pointer;
+    background: lightgray;
+  }
+`
+
+
+export const CommentsContainer = styled.div`
 `

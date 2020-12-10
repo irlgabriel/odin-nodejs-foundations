@@ -45,10 +45,10 @@ const Home = ({setUser, user}) => {
           </NavItem>
         </Col>
         <Col id='mid-col' sm='6'>
-          <PostForm user={user}/>
+          <PostForm posts={posts} setPosts={setPosts} user={user}/>
           {
             posts.map(post => 
-              <Post key={post._id} posts={posts} post={post}/>
+              <Post key={post._id} user={user} posts={posts} post={post}/>
             )
           }
         </Col>
