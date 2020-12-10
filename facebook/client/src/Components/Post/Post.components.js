@@ -59,6 +59,7 @@ export const FooterItem = styled.div`
   justify-content: center;
   align-items: center;
   padding: .5rem;
+  color: gray;
   font-weight: bold;
   &:hover {
     background: #f0f2f5;
@@ -67,6 +68,7 @@ export const FooterItem = styled.div`
 `
 
 export const RoundedContainer = styled.div`
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
   border-radius: 5px;
   padding: .5rem;
   position: absolute;
@@ -90,6 +92,27 @@ export const RoundedWrapper = styled.div`
   }
 `
 
+export const ClickDiv = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`
 
 export const CommentsContainer = styled.div`
+`
+
+export const FunctionalItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding: .25rem .5rem;
+  border-radius: 6px;
+  color: black;
+  font-size: 18px;
+  transition: all .2s ease-in-out;
+  &:hover {
+    cursor: pointer;
+    color: black;
+    background: lightgray;
+    text-decoration: none;
+  }
 `

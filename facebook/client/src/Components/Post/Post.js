@@ -2,6 +2,12 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import {
+  Form,
+  Input,
+  Button,
+  FormGroup
+} from 'reactstrap';
+import {
   PostContainer,
   RoundImage,
   Header,
@@ -15,18 +21,49 @@ import {
   RoundedContainer,
   RoundedWrapper,
   CommentsContainer,
+  ClickDiv,
+  FunctionalItem
 } from './Post.components';
 import { Comment, CommentForm } from '..'
-import { AiFillLike } from 'react-icons/ai';
+import { AiFillLike, AiOutlineLike, AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import { VscComment } from 'react-icons/vsc';
 
 
-const Post = ({user, posts, post}) => {
+const Post = ({user, posts, post, setPosts}) => {
 
-  const [comments, setComments] = useState([])
+  const [content, setContent] = useState(post.content);
+  const [edit, setEdit] = useState(false);
+  const [comments, setComments] = useState([]);
   const [settingsDropdown, setSettingsDropdown] = useState(false);
   const [commentsDropdown, setCommentsDropdown] = useState(false);
 
+  const editHandler = (e) => {
+    e.preventDefault();
+    axios.put(`/posts/${post._id}`, {content}, {headers: {Authorization: 'bearer ' + JSON.parse(localStorage.getItem('user')).token}})
+    .then(res => {
+      setPosts(posts.map(post => post._id === res.data._id ? res.data : post));
+    })
+    .catch(err => console.log(err));
+  }
+
+  const deleteHandler = () => {
+    window.confirm('Are you sure you want to delete this post? This action cannot be undone!') && 
+    axios.delete(`/posts/${post._id}`, {}, {headers: 'bearer ' + {Authorization: JSON.parse(localstorage.getItem('user')).token}})
+    .then(res => {
+      setPosts(posts.filter(post => post._id !== res.data._id))
+      setSettingsDropdown(false);
+    })
+    .catch(err => console.log(err));
+  }
+
+  const likePost = () => {
+    const token = JSON.parse(localStorage.getItem('user')).token;
+    axios.post(`/posts/${post._id}/like`, {}, {headers: {Authorization: `bearer ${token}`}})
+    .then(res => {
+      setPosts(posts.map(post => post._id === res.data._id ? res.data : post));
+    })
+  }
 
   useEffect(() => {
     axios.get(`/posts/${post._id}/comments`)
@@ -45,23 +82,48 @@ const Post = ({user, posts, post}) => {
             <h4 className='mb-0'>{post.user.display_name || post.user.first_name + ' ' + post.user.last_name}</h4>
             <p style={{fontSize: '13px'}} className='mb-0 text-muted'>{moment(post.createdAt).fromNow()}</p>
           </div>
-          <RoundedWrapper onClick={() => setSettingsDropdown(!settingsDropdown)}>
-            <BsThreeDotsVertical size='24'/>
-          </RoundedWrapper>
+          {
+            user._id === post.user._id &&
+            <RoundedWrapper onClick={() => setSettingsDropdown(!settingsDropdown)}>
+              <BsThreeDotsVertical size='24'/>
+            </RoundedWrapper>
+          }
         </FlexContainer>
 
         {/** Settings Dropdown  */}
         { settingsDropdown && 
           <RoundedContainer>
-            asdsadsa
+            <FunctionalItem onClick={() => {setEdit(true); setSettingsDropdown(false)}}>
+              <AiFillEdit color='palegoldenrod' size={32}/>
+              &nbsp;Edit Post
+            </FunctionalItem>
+            <hr className='my-2'/>
+            <FunctionalItem onClick={() => deleteHandler()}>
+              <AiFillDelete color='red' size={32} />
+              &nbsp;Delete Post
+            </FunctionalItem>
           </RoundedContainer>
         }
       </Header>
-
+      {
+      !edit &&
       <Body>
         <p>{post.content}</p>
         {post.image && <img src='post.image' />}
       </Body>
+      }
+      {
+        edit &&
+      <Form onSubmit={(e) => editHandler(e)}>
+        <FormGroup>
+          <Input type='textarea' rows='10' value={content} onChange={(e) => setContent(e.target.value)} />
+        </FormGroup>
+        <FormGroup className='d-flex align-items-center'>
+          <Button className='ml-auto mr-2' type='submit' color='primary' size='sm'>Edit</Button>
+          <Button type='button' onClick={() => setEdit(false)} color='danger' size='sm'>Cancel</Button>
+        </FormGroup>
+      </Form>
+      }
       <Footer>
         <TopFooter>
           <div className='d-flex'>
@@ -70,12 +132,24 @@ const Post = ({user, posts, post}) => {
             </RoundWrapper>
             <p style={{fontSize: '14px'}} className='mb-0'>{post.likes.length}</p>
           </div>
-          <p className='mb-0'>{comments.length} Comments</p>
+          <ClickDiv onClick={() => setCommentsDropdown(!commentsDropdown)}>
+            <p className='mb-0'>{comments.length} Comments</p>
+          </ClickDiv>
         </TopFooter>
         <hr className='my-1'/>
         <BottomFooter>
-          <FooterItem>Like</FooterItem>
-          <FooterItem onClick={() => setCommentsDropdown(!commentsDropdown)} >Comment</FooterItem>
+          <FooterItem onClick={() => likePost()}>
+            {
+              !post.likes.includes(user._id) 
+              ? <AiOutlineLike size={20} />
+              : <AiFillLike size={20} fill='royalblue'/>
+            }
+            &nbsp;Like
+            </FooterItem>
+          <FooterItem onClick={() => setCommentsDropdown(!commentsDropdown)} >
+            <VscComment size={20}/>
+            &nbsp;Comment
+            </FooterItem>
         </BottomFooter>
       </Footer>
 
