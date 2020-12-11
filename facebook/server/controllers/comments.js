@@ -2,10 +2,11 @@ const { body, validationResult } = require('express-validator');
 const Comment = require('../models/comments');
 
 module.exports.get_comments = (req, res, next) => {
-  Comment.find()
+  Comment.find({post: req.params.post_id})
   .populate('post')
   .populate('comment')
   .populate('user')
+  .sort('-createdAt')
   .exec((err, comments) => {
     if(err) return res.status(400).json(err);
     res.json(comments);

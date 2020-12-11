@@ -3,7 +3,7 @@ const { findOneAndDelete, update } = require('../models/posts');
 const Post = require('../models/posts');
 
 exports.get_posts = (req, res, next) => {
-  Post.find((err, posts) => {
+  Post.find().sort('-createdAt').exec((err, posts) => {
     if(err) return res.status(400).json(err);
 
     Post.populate(posts, {path: 'user'}, (err, populatedPosts) => {
