@@ -27,7 +27,9 @@ module.exports.create_comment = [
       .populate('user')
       .populate('comment')
       .populate('post')
-      res.json(comment);
+      .execPopulate()
+      .then(comm => res.json(comm))
+      .catch(err => console.log(err))
     })
 }]
 
