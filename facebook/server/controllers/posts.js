@@ -130,7 +130,6 @@ exports.delete_post = (req, res, next) => {
     if(err) return res.status(400).json(err);
 
     // Delete image from AWS, if there's any
-    console.log('Post in delete callback: ', post);
     if(post.image) {
       const params = {
         Bucket: process.env.AWS_BUCKET,
@@ -138,9 +137,9 @@ exports.delete_post = (req, res, next) => {
       }
       S3.deleteObject(params, (err, data) => {
         if(err) {
-          console.log('Error: ', err);
+          next(err);
         } else {
-          console.log('Data: ', data);
+          //console.log('Data: ', data);
         }
       })
     } 

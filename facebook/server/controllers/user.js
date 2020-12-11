@@ -59,7 +59,8 @@ exports.register = [
 exports.update_profile_photo = [
   upload,
   (req, res, next) => {
-    const original_file = req.file.split('.');
+    console.log(req.file);
+    const original_file = req.file.originalname.split('.');
     const format = original_file[original_file.length - 1];
 
     User.findById(req.params.user_id, (err, user) => {
@@ -70,6 +71,12 @@ exports.update_profile_photo = [
         Key: `${user._id}_profile.${format}`,
         Body: req.file.buffer
       }
+
+      //Delete previous instance from s3
+      S3.deleteObject({Bucket: params.Bucket, Key: params.Key}, (err, data) => {
+        if(err) return res.status(500).json(err);
+        console.log(data);
+      })
 
       S3.upload(params, (err, data) => {
         if(err) return res.status(500).json(err);
@@ -86,7 +93,7 @@ exports.update_profile_photo = [
 exports.update_cover_photo = [
   upload,
   (req, res, next) => {
-    const original_file = req.file.split('.');
+    const original_file = req.file.originalname.split('.');
     const format = original_file[original_file.length - 1];
 
     User.findById(req.params.user_id, (err, user) => {
@@ -97,6 +104,12 @@ exports.update_cover_photo = [
         Key: `${user._id}_cover.${format}`,
         Body: req.file.buffer
       }
+
+      //Delete previous instance from s3
+      S3.deleteObject({Bucket: params.Bucket, Key: params.Key}, (err, data) => {
+        if(err) return res.status(500).json(err);
+        console.log(data);
+      })
 
       S3.upload(params, (err, data) => {
         if(err) return res.status(500).json(err);
