@@ -3,6 +3,19 @@ const bcrypt = require('bcrypt');
 const User = require('../models/users');
 const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
+const multer = require('multer');
+const AWS = require('aws-sdk');
+
+// AWS
+const S3 = new AWS.S3();
+
+const storage = multer.memoryStorage({
+  destination: (req, file, callback) => {
+    callback(null, '')
+  }
+})
+
+const upload = multer({storage: storage, }).single('image');
 
 exports.login = [
   passport.authenticate('local', {session: false}),
@@ -37,6 +50,59 @@ exports.register = [
             req.token = token;
             next();
           })
+        })
+      })
+    })
+  }
+]
+
+exports.update_profile_photo = [
+  upload,
+  (req, res, next) => {
+    const original_file = req.file.split('.');
+    const format = original_file[original_file.length - 1];
+
+    User.findById(req.params.user_id, (err, user) => {
+      if(err) return res.status(400).json(err);
+
+      const params = {
+        Bucket: process.env.AWS_BUCKET,
+        Key: `${user._id}_profile.${format}`,
+        Body: req.file.buffer
+      }
+
+      S3.upload(params, (err, data) => {
+        if(err) return res.status(500).json(err);
+        User.findOneAndUpdate({_id: req.params.user_id}, {profile_photo: data.Location}, {new: true}, (err, updatedUser) => {
+          if(err) return res.status(400).json(err);
+          return res.json(updatedUser);
+        })
+      })
+    })
+
+  }
+]
+
+exports.update_cover_photo = [
+  upload,
+  (req, res, next) => {
+    const original_file = req.file.split('.');
+    const format = original_file[original_file.length - 1];
+
+    User.findById(req.params.user_id, (err, user) => {
+      if(err) return res.status(400).json(err);
+
+      const params = {
+        Bucket: process.env.AWS_BUCKET,
+        Key: `${user._id}_cover.${format}`,
+        Body: req.file.buffer
+      }
+
+      S3.upload(params, (err, data) => {
+        if(err) return res.status(500).json(err);
+        User.findOneAndUpdate({_id: req.params.user_id}, {cover_photo: data.Location}, {new: true}, (err, updatedUser) => {
+          if(err) return res.status(400).json(err);
+          return res.json(updatedUser);
         })
       })
     })
