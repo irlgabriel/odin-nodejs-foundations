@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import {
@@ -28,6 +28,8 @@ import { Comment, CommentForm } from '..'
 import { AiFillLike, AiOutlineLike, AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { VscComment } from 'react-icons/vsc';
+import autosize from 'autosize';
+
 
 
 const Post = ({user, posts, post, setPosts}) => {
@@ -48,6 +50,7 @@ const Post = ({user, posts, post, setPosts}) => {
     .catch(err => console.log(err));
   }
 
+
   const deleteHandler = () => {
     window.confirm('Are you sure you want to delete this post? This action cannot be undone!') && 
     axios.delete(`/posts/${post._id}`, {}, {headers: 'bearer ' + {Authorization: JSON.parse(localstorage.getItem('user')).token}})
@@ -66,7 +69,25 @@ const Post = ({user, posts, post, setPosts}) => {
     })
   }
 
+  const  onChangeHandler = (e) => {
+    // Reset field height
+    e.target.style.height = 'inherit';
+
+    // Get the computed styles for the element
+    const computed = window.getComputedStyle(e.target);
+
+    // Calculate the height
+    const height = parseInt(computed.getPropertyValue('border-top-width'), 10)
+                 + parseInt(computed.getPropertyValue('padding-top'), 10)
+                 + e.target.scrollHeight
+                 + parseInt(computed.getPropertyValue('padding-bottom'), 10)
+                 + parseInt(computed.getPropertyValue('border-bottom-width'), 10);
+
+    e.target.style.height = `${height}px`;
+  }
+
   useEffect(() => {
+    // GET Components
     axios.get(`/posts/${post._id}/comments`)
     .then(res => {
       setComments(res.data);
@@ -74,8 +95,22 @@ const Post = ({user, posts, post, setPosts}) => {
     .catch(err => console.log(err));
   }, [])
 
+  useEffect(() => {
+    const textarea = document.querySelector('textarea');
+    if(textarea) {
+      textarea.style.height = 'inherit';
+      const computed = window.getComputedStyle(textarea);
+      const height = parseInt(computed.getPropertyValue('border-top-width'), 10)
+                  + parseInt(computed.getPropertyValue('padding-top'), 10)
+                  + textarea.scrollHeight
+                  + parseInt(computed.getPropertyValue('padding-bottom'), 10)
+                  + parseInt(computed.getPropertyValue('border-bottom-width'), 10);
+      textarea.style.height = height + 'px';
+    }
+  }, [edit])
+
   return (
-    <PostContainer>
+    <PostContainer className='mb-2'>
       <Header className='mb-2'>
         <RoundImage src={post.user.profile_photo}/>
         <FlexContainer>
@@ -94,7 +129,7 @@ const Post = ({user, posts, post, setPosts}) => {
         {/** Settings Dropdown  */}
         { settingsDropdown && 
           <RoundedContainer>
-            <FunctionalItem onClick={() => {setEdit(true); setSettingsDropdown(false)}}>
+            <FunctionalItem onClick={() => {setEdit(true); setSettingsDropdown(false);}}>
               <AiFillEdit color='palegoldenrod' size={32}/>
               &nbsp;Edit Post
             </FunctionalItem>
@@ -117,7 +152,7 @@ const Post = ({user, posts, post, setPosts}) => {
         edit &&
       <Form onSubmit={(e) => editHandler(e)}>
         <FormGroup>
-          <Input type='textarea' rows='10' value={content} onChange={(e) => setContent(e.target.value)} />
+          <Input type='textarea' onFocus={(e) => onChangeHandler(e)} value={content} onChange={(e) => {setContent(e.target.value); onChangeHandler(e)}} />
         </FormGroup>
         <FormGroup className='d-flex align-items-center'>
           <Button className='ml-auto mr-2' type='submit' color='primary' size='sm'>Edit</Button>
@@ -164,7 +199,7 @@ const Post = ({user, posts, post, setPosts}) => {
               <Comment key={comment._id} user={user} comment={comment} setComments={setComments}/>
             )
           }
-          <CommentForm user={user} setComments={setComments} comments={comments}/>
+          <CommentForm post={post} user={user} setComments={setComments} comments={comments}/>
         </CommentsContainer>
       }
     </PostContainer>
