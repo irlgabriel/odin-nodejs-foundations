@@ -22,11 +22,16 @@ const PostForm = ({user, setPosts, posts}) => {
   const [showImageForm, setImageForm] = useState(false);
   const [expandForm, setExpandForm] = useState(false);
   const [content, setContent] = useState('');
+  const [file, setFile] = useState(null);
+
 
   const submitHandler = (e) => {
     e.preventDefault();
     const token = JSON.parse(localStorage.getItem('user')).token;
-    axios.post('/posts', {content}, {headers: {Authorization: 'bearer ' + token}})
+    const formData = new FormData();
+    formData.append('content', content);
+    formData.append('file', file);
+    axios.post('/posts', formData, {headers: {Authorization: 'bearer ' + token}})
     .then(res => {
       setPosts([res.data, ...posts]);
       setContent(false);
@@ -53,7 +58,7 @@ const PostForm = ({user, setPosts, posts}) => {
 
   return (
     <Container fluid className='my-3 p-2' style={{boxShadow: '0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1)' ,background: 'white', borderRadius: '5px'}}>
-      <Form onSubmit={(e) => submitHandler(e)}>
+      <Form enctype="multipart/form-data" onSubmit={(e) => submitHandler(e)}>
         <div className='d-flex align-items-center mb-2'>
           <RoundImage className='mr-2' src={user.profile_photo} width='36px'/>
           <Input onFocus={() => setExpandForm(true)} value={content} onChange={(e) => {setContent(e.target.value); onChangeHandler(e)}} style={{borderRadius: '24px', background: '#f0f2f5'}} className='border-0' type='textarea' rows='1' placeholder={`What's on your mind, ${user.first_name}?`} />
@@ -65,7 +70,7 @@ const PostForm = ({user, setPosts, posts}) => {
           unmountOnExit
         >   
           <FormGroup style={{marginLeft: '48px'}}>
-            <Input type='file' name='image' />
+            <Input onChange={(e) => setFile(e.target.files[0])} type='file' name='image' />
             <em>Max 5MB (Accepted formats: jpg, jpeg, png)</em>
           </FormGroup>
         </CSSTransition>
