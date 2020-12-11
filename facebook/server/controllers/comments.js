@@ -21,12 +21,12 @@ module.exports.create_comment = [
 
     const { content, comment } = req.body;
 
-    Comment.create({content, user: req.user._id, post: req.params.post_id, comment})
-    .populate('user')
-    .populate('post')
-    .populate('comment')
-    .exec((err, comment) => {
+    Comment.create({content, user: req.user._id, post: req.params.post_id, comment}, (err, comment) => {
       if(err) return res.status(400).json(err);
+      comment
+      .populate('user')
+      .populate('comment')
+      .populate('post')
       res.json(comment);
     })
 }]
