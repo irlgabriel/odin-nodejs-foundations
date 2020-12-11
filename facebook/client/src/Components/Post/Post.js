@@ -196,7 +196,7 @@ const Post = ({user, posts, post, setPosts}) => {
           <hr className='my-1'/>
           {
             comments.map(comment => 
-              <Comment key={comment._id} user={user} comment={comment} setComments={setComments}/>
+              <Comment key={comment._id} comments={comments} post={post} user={user} comment={comment} setComments={setComments}/>
             )
           }
           <CommentForm post={post} user={user} setComments={setComments} comments={comments}/>
