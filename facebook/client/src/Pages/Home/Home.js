@@ -13,22 +13,13 @@ import { Navbar, PostForm, Post } from "../../Components";
 import { FaUserFriends } from 'react-icons/fa';
 import axios from 'axios';
 
-const Home = ({setUser, user}) => {
+const Home = ({posts, setPosts, setUser, user}) => {
   const history = useHistory();
-
-  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     if(!user) history.push('/');
   }, [user])
-
-  useEffect(() => {
-    axios.get('/posts', /*jwt token header,*/)
-    .then(res => {
-      setPosts(res.data)
-    })
-  }, [])
-
+  
   return (
     <Container fluid className='px-0'>
       <Navbar setUser={setUser} user={user}/>
