@@ -36,7 +36,6 @@ export const FooterLink = styled.p`
   margin-right: .5rem;
   &:hover {
     text-decoration: none;
-    color: black;
     cursor: pointer;
   }
 `

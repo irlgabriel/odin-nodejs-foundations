@@ -118,9 +118,7 @@ const Comment = ({comments, comment, setComments, user, post}) => {
           <FooterLink bold>
             Comment
           </FooterLink>
-          <FooterLink color='lightgray'>
-            {moment(comment.createdAt).fromNow()}
-          </FooterLink>
+          
           {
             user._id === comment.user._id &&
             <FooterLink bold onClick={() => deleteHandler()} color='red'>
@@ -129,10 +127,13 @@ const Comment = ({comments, comment, setComments, user, post}) => {
           }
            {
             user._id === comment.user._id &&
-            <FooterLink bold onClick={() => setEdit(!showEdit)} color='goldenrodyellow'>
+            <FooterLink bold onClick={() => setEdit(!showEdit)} color='khaki'>
               Edit
             </FooterLink>
           }
+          <FooterLink color='lightgray'>
+            {moment(comment.createdAt).fromNow()}
+          </FooterLink>
         </CommentFooter>
 
 
