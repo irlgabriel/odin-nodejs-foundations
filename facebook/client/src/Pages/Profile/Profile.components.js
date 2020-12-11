@@ -1,21 +1,59 @@
 import styled from 'styled-components';
 
-export const CoverPhoto = styled.img`
+export const CoverPhoto = styled.div`
+  width: 100%;
+  height: 320px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  background-image: ${({src}) => (`url(${src})`)};
+  background-repeat: no-repeat;
+  background-size: cover;
+`
+
+export const DefaultCoverPhoto = styled.div`
+  background: rgb(239,239,241);
+  background: linear-gradient(180deg, rgba(239,239,241,1) 0%, rgba(115,113,113,1) 96%);
   width: 100%;
   height: 320px;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
 `
 
-export const ProfilePhoto = styled.img`
+export const ProfilePhotoWrapper = styled.div`
   position: absolute;
+  left: calc(50% - 96px);
+  bottom: -25px;
+  border: 1px solid darkgray;
+  border-radius: 96px;
+`
+
+export const ProfilePhoto = styled.div`
   width: 192px;
   height: 192px;
-  border-radius: 96px;
-  left: calc(50% - 96px);
-  bottom: -15px;
-  border: 3px solid white;
   z-index: 5;
+  background-image: ${({src}) => (`url(${src})`)};
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 96px;
+  border: 4px solid white;
+`
+
+export const ChangeProfilePhoto = styled.div`
+  padding: .25rem;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: lightgray;
+  width: 36px;
+  height: 36px;
+  position: absolute;
+  right: 10px;
+  bottom: 15px;
+  z-index: 6;
+  &:hover {
+    background: darkgray;
+    cursor: pointer;
+  }
 `
 
 export const ProfileSection = styled.div`
