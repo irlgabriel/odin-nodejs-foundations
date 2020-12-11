@@ -1,5 +1,4 @@
 const { body, validationResult} = require('express-validator');
-const { findOneAndDelete, update } = require('../models/posts');
 const Post = require('../models/posts');
 
 exports.get_posts = (req, res, next) => {
@@ -17,7 +16,9 @@ exports.create_post = [
   body('content').trim().isLength({min: 1}).escape(),
   /* multer image middleware */
   (req, res, next) => {
-    const { content } = req.body;
+    console.log('fields', req.fields);
+    console.log('files', req.files);
+    const { content } = req.fields;
     Post.create({content, user: req.user._id}, (err, post) => {
       if(err) return res.status(400).json(err);
       post
