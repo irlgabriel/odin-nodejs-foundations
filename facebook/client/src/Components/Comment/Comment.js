@@ -50,13 +50,13 @@ const Comment = ({comments, comment, setComments, user, post}) => {
     e.preventDefault();
     axios.put(`/posts/${post._id}/comments/${comment._id}`, {content}, config)
     .then(res => {
-      setComments(comments.map(comment => comment._id === res.data ? res.data : comment))
+      setComments(comments.map(comment => comment._id === res.data._id ? res.data : comment))
       setEdit(false);
     })
     .catch(err => console.log(err));
   }
 
-  const  onChangeHandler = (target) => {
+  const onChangeHandler = (target) => {
     // Reset field height
     target.style.height = 'inherit';
 
@@ -90,7 +90,7 @@ const Comment = ({comments, comment, setComments, user, post}) => {
           !showEdit 
           ? <p className='mb-0'>{comment.content}</p>
           : 
-          <Form className='w-100'>
+          <Form onSubmit={(e) => editHandler(e)} className='w-100'>
             <FormGroup>
               <Input type='textarea' value={content} onChange={(e) => {setContent(e.target.value); onChangeHandler(e.target)}}/>  
             </FormGroup>
