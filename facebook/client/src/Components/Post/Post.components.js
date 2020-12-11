@@ -4,6 +4,7 @@ export const PostContainer = styled.div`
   background: white;
   padding: .5rem 1rem;
   border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 `
 export const RoundImage = styled.img`
   border-radius: 21px;
