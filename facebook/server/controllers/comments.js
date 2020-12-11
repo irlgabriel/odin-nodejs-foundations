@@ -53,6 +53,34 @@ module.exports.edit_comment = [
   }
 ]
 
+module.exports.like_comment = (req, res, next) => {
+  const user_id = req.user._id
+  Comment.findOne({_id: req.params.comment_id}, (err, comment) => {
+    if(err) return res.status(400).json(err)
+    if(comment.likes.includes(user_id)) {
+      Comment.findOneAndUpdate({_id: req.params.comment_id}, {$pull: {likes: user_id}}, {new: true}, (err, updatedComment) => {
+        if(err) return res.status(400).json(err)
+        updatedComment
+        .populate('user')
+        .populate('comment')
+        .populate('post')
+        .execPopulate()
+        .then(populatedComment => res.json(populatedComment))
+      })
+    } else {
+      Comment.findOneAndUpdate({_id: req.params.comment_id}, {$push: {likes: user_id}}, {new: true}, (err, updatedComment) => {
+        if(err) return res.status(400).json(err)
+        updatedComment
+        .populate('user')
+        .populate('comment')
+        .populate('post')
+        .execPopulate()
+        .then(populatedComment => res.json(populatedComment))
+      })
+    }
+  })
+}
+
 module.exports.delete_comment = (req, res, next) => {
   Comment.findOneAndRemove({_id: req.params.comment_id}, (err, comment) => {
     if(err) return res.status(400).json(err);

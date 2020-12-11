@@ -13,6 +13,9 @@ router.post('/', passport.authenticate('jwt'), commentController.create_comment)
 // PUT edit comment
 router.put('/:comment_id', passport.authenticate('jwt'), commentController.edit_comment);
 
+// PUT like comment
+router.post('/:comment_id', passport.authenticate('jwt'), commentController.like_comment);
+
 // DELETE delete comment
 router.delete('/:comment_id', passport.authenticate('jwt'), commentController.delete_comment);
 

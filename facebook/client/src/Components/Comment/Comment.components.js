@@ -16,6 +16,7 @@ export const CommentBody = styled.div`
   width: 100%;
   border-radius: 10px;
   background: #f0f2f5;
+  position: relative;
 `
 
 export const CommentWrapper = styled.div`
@@ -38,4 +39,13 @@ export const FooterLink = styled.p`
     color: black;
     cursor: pointer;
   }
+`
+
+export const LikesContainer = styled.div`
+  background: white;
+  border-radius: 6px;
+  position: absolute;
+  padding: 0 .2rem;
+  bottom: -12px;
+  right: 5px;
 `

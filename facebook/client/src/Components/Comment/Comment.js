@@ -6,20 +6,23 @@ import {
   CommentBody,
   CommentWrapper,
   CommentFooter,
-  FooterLink
+  FooterLink,
+  LikesContainer
 } from './Comment.components';
 import {
   Form, 
   Input,
   Button,
   FormGroup,
-
 } from 'reactstrap';
+import {AiFillLike} from 'react-icons/ai';
 import axios from 'axios';
+
 const Comment = ({comments, comment, setComments, user, post}) => {
 
   const [content, setContent] = useState(comment.content);
   const [showEdit, setEdit] = useState(false);
+  const liked = comment.likes.includes(user._id);
 
   const config = {
     headers: 
@@ -41,7 +44,7 @@ const Comment = ({comments, comment, setComments, user, post}) => {
   const likeComment = () => {
     axios.post(`/posts/${post._id}/comments/${comment._id}`, {}, config)
     .then(res => {
-      setComments(comments.map(comment => comment._id === res.data ? res.data : comment));
+      setComments(comments.map(comment => comment._id === res.data._id ? res.data : comment));
     })
     .catch(err => console.log(err));
   }
@@ -99,9 +102,17 @@ const Comment = ({comments, comment, setComments, user, post}) => {
             </FormGroup>
           </Form>
         }
+        {
+          !showEdit && 
+          <LikesContainer>
+            <AiFillLike fill={liked ? 'royalblue' : ''} size={12}/>
+            &nbsp;
+            <p style={{fontSize: '12px'}} className='d-inline-block mb-0'>{comment.likes.length}</p>
+          </LikesContainer>
+        }
         </CommentBody>
         <CommentFooter>
-          <FooterLink onClick={() => likeComment()} bold>
+          <FooterLink color={liked ? 'royalblue' : 'black'} onClick={() => likeComment()} bold>
             Like
           </FooterLink>
           <FooterLink bold>
