@@ -1,23 +1,58 @@
-import { useState } from 'react';
+import Axios from 'axios';
+import { useState, useRef } from 'react';
 import {
   Form,
-  Input
+  Input,
+  FormGroup,
+  Button
 } from 'reactstrap';
 import {
-  UserImage
+  UserImage,
 } from './CommentForm.components';
 
-const CommentForm = ({user, comments, setComments}) => {
+const CommentForm = ({post, user, comments, setComments}) => {
 
   const [content, setContent] = useState('');
+  const [showSubmit, setSubmit] = useState(false);
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+    Axios.post(`/posts/${post._id}/comments`, {content}, {headers: {Authorization: JSON.parse(localStorage.getItem('user')).token}})
+    .then(res)
+  }
+
+  const onChangeHandler = (e) => {
+    // Reset field height
+    e.target.style.height = 'inherit';
+
+    // Get the computed styles for the element
+    const computed = window.getComputedStyle(e.target);
+
+    // Calculate the height
+    const height = parseInt(computed.getPropertyValue('border-top-width'), 10)
+                 + parseInt(computed.getPropertyValue('padding-top'), 10)
+                 + e.target.scrollHeight
+                 + parseInt(computed.getPropertyValue('padding-bottom'), 10)
+                 + parseInt(computed.getPropertyValue('border-bottom-width'), 10);
+
+    e.target.style.height = `${height}px`;
+}
   return (
-    <div className='d-flex align-items-center'>
-      <UserImage className='mr-2' src={user.profile_photo}/>
-      <Form className='w-100'>
-        <Input  style={{borderRadius: '16px'}} className='w-100 py-1' placeholder='Write a comment..' type='text' name='content' onChange={(e) => setContent(e.target.value)}/>
-      </Form>
-    </div>
+    <Form onSubmit={(e) => submitHandler(e)}>
+      <div className='d-flex align-items-center mb-2'>
+        <UserImage className='mr-2' src={user.profile_photo}/>
+          <FormGroup className='mb-0 w-100'>
+            <Input  style={{borderRadius: '16px'}} className='w-100 py-1' placeholder='Write a comment..' type='textarea' rows={1} name='content' onChange={(e) => {setContent(e.target.value); onChangeHandler(e)}}/>         
+          </FormGroup>
+      </div>
+      {
+        showSubmit &&
+        <FormGroup className='text-right'>
+          <Button type='submit' color='primary' size='sm'>Comment!</Button>
+        </FormGroup>
+      }
+    </Form>
+
   )
 }
 
