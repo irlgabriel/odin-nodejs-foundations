@@ -2,7 +2,10 @@ import styled from 'styled-components';
 
 export const CommentContainer = styled.div`
   display: flex;
-  margin-bottom: .5rem;
+  margin-top: .5rem;
+  &:last-child{
+    margin-bottom: .5rem;
+  }
 `
 
 export const UserPhoto = styled.img`
@@ -22,6 +25,7 @@ export const CommentBody = styled.div`
 export const CommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  padding-bottom: .5rem;
 `
 
 export const CommentFooter = styled.div`
@@ -34,6 +38,7 @@ export const FooterLink = styled.p`
   font-size: 12px;
   color: ${({color}) => (color ? color : 'black')};
   margin-right: .5rem;
+  margin-bottom: 0;
   &:hover {
     text-decoration: none;
     cursor: pointer;

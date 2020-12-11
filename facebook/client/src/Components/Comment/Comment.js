@@ -16,10 +16,15 @@ import {
   FormGroup,
 } from 'reactstrap';
 import {AiFillLike} from 'react-icons/ai';
+import { BsArrow90DegDown } from 'react-icons/bs';
+import { ReplyForm } from '..';
 import axios from 'axios';
+import { FcRotateCamera } from 'react-icons/fc';
 
 const Comment = ({comments, comment, setComments, user, post}) => {
 
+  const [showReplyForm, setShowReply] = useState(false);
+  const [replies, setReplies] = useState([]);
   const [content, setContent] = useState(comment.content);
   const [showEdit, setEdit] = useState(false);
   const liked = comment.likes.includes(user._id);
@@ -77,6 +82,14 @@ const Comment = ({comments, comment, setComments, user, post}) => {
   }
 
   useEffect(() => {
+    axios.get(`/posts/${post._id}/comments/${comment._id}`)
+    .then(res => {
+      setReplies(res.data);
+    })
+    .catch(err => console.log(err))
+  }, [])
+
+  useEffect(() => {
     const textarea = document.querySelector('textarea');
     if (textarea) {
       onChangeHandler(textarea);
@@ -118,7 +131,9 @@ const Comment = ({comments, comment, setComments, user, post}) => {
           <FooterLink bold>
             Comment
           </FooterLink>
-          
+          <FooterLink onClick={() => setShowReply(!showReplyForm)}>
+            Reply
+          </FooterLink>
           {
             user._id === comment.user._id &&
             <FooterLink bold onClick={() => deleteHandler()} color='red'>
@@ -135,8 +150,22 @@ const Comment = ({comments, comment, setComments, user, post}) => {
             {moment(comment.createdAt).fromNow()}
           </FooterLink>
         </CommentFooter>
-
-
+      {
+        replies.length && !showReplyForm ?
+        <div onClick={() => setShowReply(true)} className='pl-3 pt-2 d-flex align-items-center'>
+          <BsArrow90DegDown size={24} fill='black' style={{transform: 'rotate(-90deg)'}}/>&nbsp;
+          <p className='mb-0 font-weight-bold'>{replies.length} Replies</p>
+        </div>
+        : ''
+      }
+      {
+        showReplyForm && 
+        replies.map(reply => <Comment user={user} setComments={setReplies} comments={replies} comment={reply} post={comment} />)
+      }
+      {
+        showReplyForm && 
+        <ReplyForm user={user} post={post} comment={comment} setComments={setComments} replies={replies} setReplies={setReplies} />
+      } 
       </CommentWrapper>
     </CommentContainer>
   )
