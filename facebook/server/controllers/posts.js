@@ -18,11 +18,13 @@ exports.create_post = [
   /* multer image middleware */
   (req, res, next) => {
     const { content } = req.body;
-    Post.create({content, user: req.user._id})
-    .populate('user')
-    .exec((err, post) => {
+    Post.create({content, user: req.user._id}, (err, post) => {
       if(err) return res.status(400).json(err);
-      res.json(post);
+      post
+      .populate('user')
+      .execPopulate()
+      .then(populatedPost => res.json(populatedPost))
+      .catch(err => console.log(err))
     })
   }
 ]
