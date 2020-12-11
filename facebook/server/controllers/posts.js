@@ -1,5 +1,19 @@
 const { body, validationResult} = require('express-validator');
 const Post = require('../models/posts');
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
+const AWS = require('aws-sdk');
+
+// AWS
+const S3 = new AWS.S3();
+
+const storage = multer.memoryStorage({
+  destination: (req, file, callback) => {
+    callback(null, '')
+  }
+})
+
+const upload = multer({storage: storage, }).single('image');
 
 exports.get_posts = (req, res, next) => {
   Post.find().sort('-createdAt').exec((err, posts) => {
@@ -14,19 +28,65 @@ exports.get_posts = (req, res, next) => {
 
 exports.create_post = [
   body('content').trim().isLength({min: 1}).escape(),
-  /* multer image middleware */
+  upload,
   (req, res, next) => {
-    console.log('fields', req.fields);
-    console.log('files', req.files);
-    const { content } = req.fields;
+    const { content } = req.body;
+    
     Post.create({content, user: req.user._id}, (err, post) => {
       if(err) return res.status(400).json(err);
-      post
-      .populate('user')
-      .execPopulate()
-      .then(populatedPost => res.json(populatedPost))
-      .catch(err => console.log(err))
+    
+      if(req.file) {
+        const originalName = req.file.originalname.split('.');
+        const format = originalName[originalName.length - 1];
+
+        const params = {
+          Bucket: process.env.AWS_BUCKET,
+          Key: `${post._id}.${format}`,
+          Body: req.file.buffer
+        };
+        S3.upload(params, (err, data) => {
+          if(err) {
+            console.log(err) 
+          } else {
+            post.image = {url: data.Location, id: post._id.toString() + '.' + format}
+            post.save((err, post) => {
+              if(err) return res.status(400).json(err);
+              post
+              .populate('user')
+              .execPopulate()
+              .then(post => res.json(post))
+              .catch(err => res.json(err))
+            });
+          }
+        })
+      } else {
+        post
+        .populate('user')
+        .execPopulate()
+        .then(post => res.json(post))
+        .catch(err => res.json(err))
+      }
     })
+
+    /*
+    S3.upload(params, (error, data) => {
+      if(error) {
+        console.log(error) 
+      } else {
+        Post.create({content, user: req.user._id, image: {url: data.Location, id: data.Key}}, (err, post) => {
+          if(err) return res.status(400).json(err);
+          post
+          .populate('user')
+          .execPopulate()
+          .then(populatedPost => res.json(populatedPost))
+          .catch(err => console.log(err))
+        })
+      }
+    })
+    */
+    
+    // Add document to mongodb
+    
   }
 ]
 
@@ -68,6 +128,22 @@ exports.like_post = (req, res, next) => {
 exports.delete_post = (req, res, next) => {
   Post.findOneAndDelete({_id: req.params.post_id}, (err, post) => {
     if(err) return res.status(400).json(err);
+
+    // Delete image from AWS, if there's any
+    console.log('Post in delete callback: ', post);
+    if(post.image) {
+      const params = {
+        Bucket: process.env.AWS_BUCKET,
+        Key: post.image.id
+      }
+      S3.deleteObject(params, (err, data) => {
+        if(err) {
+          console.log('Error: ', err);
+        } else {
+          console.log('Data: ', data);
+        }
+      })
+    } 
     res.json(post);
   })
 }
