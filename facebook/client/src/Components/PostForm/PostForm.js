@@ -53,9 +53,9 @@ const PostForm = ({user, setPosts, posts}) => {
   return (
     <Container fluid className='my-3 p-2' style={{boxShadow: '0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1)' ,background: 'white', borderRadius: '5px'}}>
       <Form onSubmit={(e) => submitHandler(e)}>
-        <div className='d-flex align-items-center'>
+        <div className='d-flex align-items-center mb-2'>
           <RoundImage className='mr-2' src={user.profile_photo} width='36px'/>
-          <Input onFocus={() => setExpandForm(true)} onBlur={() => setExpandForm(false)} value={content} onChange={(e) => {setContent(e.target.value); onChangeHandler(e)}} style={{borderRadius: '24px', background: '#f0f2f5'}} className='border-0' type='textarea' rows='1' placeholder={`What's on your mind, ${user.first_name}?`} />
+          <Input onFocus={() => setExpandForm(true)} value={content} onChange={(e) => {setContent(e.target.value); onChangeHandler(e)}} style={{borderRadius: '24px', background: '#f0f2f5'}} className='border-0' type='textarea' rows='1' placeholder={`What's on your mind, ${user.first_name}?`} />
         </div>
         <CSSTransition
           in={showImageForm}
