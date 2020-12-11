@@ -16,9 +16,11 @@ import {
   FcStackOfPhotos
 } from 'react-icons/fc';
 import { CSSTransition } from 'react-transition-group';
+import { LoadingOverlay } from '..';
 
 const PostForm = ({user, setPosts, posts}) => {
 
+  const [loading, setLoading] = useState(false);
   const [showImageForm, setImageForm] = useState(false);
   const [expandForm, setExpandForm] = useState(false);
   const [content, setContent] = useState('');
@@ -28,13 +30,20 @@ const PostForm = ({user, setPosts, posts}) => {
   const submitHandler = (e) => {
     e.preventDefault();
     const token = JSON.parse(localStorage.getItem('user')).token;
+    
     const formData = new FormData();
     formData.append('content', content);
-    formData.append('file', file);
+    formData.append('image', file);
+
+    setLoading(true);
     axios.post('/posts', formData, {headers: {Authorization: 'bearer ' + token}})
     .then(res => {
       setPosts([res.data, ...posts]);
-      setContent(false);
+      setContent('');
+      setFile(null);
+      setExpandForm(false);
+      setImageForm(false);
+      setLoading(false);
     })
     .catch(err => console.log(err));
   }
@@ -57,7 +66,10 @@ const PostForm = ({user, setPosts, posts}) => {
   }
 
   return (
-    <Container fluid className='my-3 p-2' style={{boxShadow: '0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1)' ,background: 'white', borderRadius: '5px'}}>
+    <Container fluid className='my-3 p-2 p-relative' style={{boxShadow: '0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1)' ,background: 'white', borderRadius: '5px'}}>
+      {
+        loading && <LoadingOverlay />
+      }
       <Form enctype="multipart/form-data" onSubmit={(e) => submitHandler(e)}>
         <div className='d-flex align-items-center mb-2'>
           <RoundImage className='mr-2' src={user.profile_photo} width='36px'/>

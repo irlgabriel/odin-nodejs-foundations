@@ -117,3 +117,6 @@ export const FunctionalItem = styled.div`
     text-decoration: none;
   }
 `
+export const PostImage = styled.img`
+  width: 100%;
+`

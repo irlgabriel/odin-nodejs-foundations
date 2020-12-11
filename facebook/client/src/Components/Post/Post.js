@@ -5,7 +5,7 @@ import {
   Form,
   Input,
   Button,
-  FormGroup
+  FormGroup,
 } from 'reactstrap';
 import {
   PostContainer,
@@ -39,6 +39,7 @@ const Post = ({user, posts, post, setPosts}) => {
   const [comments, setComments] = useState([]);
   const [settingsDropdown, setSettingsDropdown] = useState(false);
   const [commentsDropdown, setCommentsDropdown] = useState(false);
+
 
   const config = {
     headers: {
@@ -150,8 +151,8 @@ const Post = ({user, posts, post, setPosts}) => {
       {
       !edit &&
       <Body>
-        <p>{post.content}</p>
-        {post.image && <img src='post.image' />}
+        <p className='mb-1'>{post.content}</p>
+        {post.image && post.image.url && <img className='mb-2' width="100%" src={post.image.url} />}
       </Body>
       }
       {
