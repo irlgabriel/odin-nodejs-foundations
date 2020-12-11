@@ -13,6 +13,18 @@ module.exports.get_comments = (req, res, next) => {
   })
 }
 
+// GET REPLIES
+module.exports.get_replies = (req, res, next) => {
+  Comment.find({comment: req.params.comment_id})
+  .populate('comment')
+  .populate('user')
+  .populate('user')
+  .exec((err, replies) => {
+    if(err) return res.status(400).json(err);
+    res.json(replies);
+  })
+}
+
 module.exports.create_comment = [
   body('content').trim().isLength({min: 1}).escape(),
   (req, res, next) => {
