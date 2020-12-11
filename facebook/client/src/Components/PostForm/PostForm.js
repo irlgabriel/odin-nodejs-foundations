@@ -64,8 +64,9 @@ const PostForm = ({user, setPosts, posts}) => {
           classNames='fade'
           unmountOnExit
         >   
-          <FormGroup>
+          <FormGroup style={{marginLeft: '48px'}}>
             <Input type='file' name='image' />
+            <em>Max 5MB (Accepted formats: jpg, jpeg, png)</em>
           </FormGroup>
         </CSSTransition>
         
@@ -75,8 +76,8 @@ const PostForm = ({user, setPosts, posts}) => {
           classNames='fade'
           unmountOnExit
         >
-          <FormGroup className='py-2 text-center'>
-            <Button type='submit' className='px-5' color='secondary'>Post!</Button>
+          <FormGroup className='py-2'>
+            <Button type='submit' className='w-100 px-5' color='secondary'>Post!</Button>
           </FormGroup>
         </CSSTransition>
         <hr className='my-2'/>

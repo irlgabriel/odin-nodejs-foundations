@@ -137,6 +137,7 @@ const Comment = ({comments, comment, setComments, user, post}) => {
           {
             user._id === comment.user._id &&
             <FooterLink bold onClick={() => deleteHandler()} color='red'>
+              <span style={{color: 'black'}}>&middot;&nbsp;&nbsp;</span>
               Delete
             </FooterLink>
           }
