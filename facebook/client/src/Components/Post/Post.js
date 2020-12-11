@@ -40,9 +40,15 @@ const Post = ({user, posts, post, setPosts}) => {
   const [settingsDropdown, setSettingsDropdown] = useState(false);
   const [commentsDropdown, setCommentsDropdown] = useState(false);
 
+  const config = {
+    headers: {
+      Authorization: 'bearer ' + JSON.parse(localStorage.getItem('user')).token
+    }
+  }
+
   const editHandler = (e) => {
     e.preventDefault();
-    axios.put(`/posts/${post._id}`, {content: content}, {headers: {Authorization: 'bearer ' + JSON.parse(localStorage.getItem('user')).token}})
+    axios.put(`/posts/${post._id}`, {content: content}, config)
     .then(res => {
       setPosts(posts.map(post => post._id === res.data._id ? res.data : post));
       setEdit(false);
@@ -53,7 +59,7 @@ const Post = ({user, posts, post, setPosts}) => {
 
   const deleteHandler = () => {
     window.confirm('Are you sure you want to delete this post? This action cannot be undone!') && 
-    axios.delete(`/posts/${post._id}`, {}, {headers: 'bearer ' + {Authorization: JSON.parse(localstorage.getItem('user')).token}})
+    axios.delete(`/posts/${post._id}`, config)
     .then(res => {
       setPosts(posts.filter(post => post._id !== res.data._id))
       setSettingsDropdown(false);
