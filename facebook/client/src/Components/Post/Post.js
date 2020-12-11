@@ -28,7 +28,7 @@ import { Comment, CommentForm } from '..'
 import { AiFillLike, AiOutlineLike, AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { VscComment } from 'react-icons/vsc';
-import autosize from 'autosize';
+import { Link } from 'react-router-dom';
 
 
 
@@ -119,7 +119,9 @@ const Post = ({user, posts, post, setPosts}) => {
   return (
     <PostContainer className='mb-2'>
       <Header className='mb-2'>
-        <RoundImage src={post.user.profile_photo}/>
+        <Link to='/profile'>
+          <RoundImage src={post.user.profile_photo}/>
+        </Link>
         <FlexContainer>
           <div>
             <h4 className='mb-0'>{post.user.display_name || post.user.first_name + ' ' + post.user.last_name}</h4>

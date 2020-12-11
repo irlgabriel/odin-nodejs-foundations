@@ -7,7 +7,7 @@ export const CoverPhoto = styled.div`
   border-bottom-right-radius: 6px;
   background-image: ${({src}) => (`url(${src})`)};
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100%;
 `
 
 export const DefaultCoverPhoto = styled.div`
@@ -91,4 +91,18 @@ export const Main = styled.div`
   display: flex;
   width: min(100%, 950px);
   margin: 0 auto;
+`
+
+export const ChangeCoverPhoto = styled.div`
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 6px;
+  background: #f0f2f5;
+
+  padding: .5rem .25rem;
+  &:hover {
+    background: lightgray;
+    cursor: pointer;
+  }
 `

@@ -6,11 +6,14 @@ export const PostContainer = styled.div`
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 `
-export const RoundImage = styled.img`
+export const RoundImage = styled.div`
   border-radius: 21px;
-  width: 42px;
-  height: 42px;
+  width: 42px !important;
+  height: 42px !important;
   margin-right: .5rem;
+  background-image: ${({src}) => (`url(${src})`)};
+  background-repeat: no-repeat;
+  background-size: cover;
 `
 export const Header = styled.div`
   display: flex;
@@ -18,7 +21,7 @@ export const Header = styled.div`
   position: relative;
 `
 export const FlexContainer = styled.div`
-  width: 100%;
+  width: 90%;
   display: flex;
   align-items: center;
   justify-content: space-between;

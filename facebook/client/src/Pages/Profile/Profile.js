@@ -15,7 +15,8 @@ import {
   NavItem,
   Main,
   DefaultCoverPhoto,
-  ChangeProfilePhoto
+  ChangeProfilePhoto,
+  ChangeCoverPhoto
 } from './Profile.components';
 import { Post, PostForm, ImageForm } from '../../Components';
 import { useHistory } from 'react-router-dom';
@@ -28,7 +29,8 @@ import { FaShower } from 'react-icons/fa';
 const Profile = ({posts, setPosts, user, setUser}) => {
   const history = useHistory();
 
-  const [imageForm, setImageForm] = useState(false);
+  const [coverPhotoForm, setCoverPhotoForm] = useState(false);
+  const [profilePhotoForm, setProfilePhotoForm] = useState(false);
 
   useEffect(() => {
     if(!user) history.push('/');
@@ -37,20 +39,31 @@ const Profile = ({posts, setPosts, user, setUser}) => {
   return (
     <Container fluid className='px-0'>
       {
-        imageForm &&
-        <ImageForm setImageForm={setImageForm} user={user} setUser={setUser}/>
+        profilePhotoForm &&
+        <ImageForm path={`/${user._id}/profile_photo`} setResource={setUser} resource={user} setImageForm={setProfilePhotoForm}/>
+      }
+      {
+        coverPhotoForm && 
+        <ImageForm path={`/${user._id}/cover_photo`} setResource={setUser} resource={user} setImageForm={setCoverPhotoForm} />
       }
       <div style={{background: 'white'}}>
         <Navbar user={user} setUser={setUser} />
         <ProfileSection className='px-0'>
           {
             user.cover_photo 
-            ? <CoverPhoto src=''></CoverPhoto>
+            ? <a href={user.cover_photo}>
+              <CoverPhoto src={user.cover_photo}></CoverPhoto>
+              </a>
             : <DefaultCoverPhoto></DefaultCoverPhoto>
           }
+          <ChangeCoverPhoto onClick={() => setCoverPhotoForm(true)}>
+            <p className='mb-0'>Change Cover Photo</p>
+          </ChangeCoverPhoto>
           <ProfilePhotoWrapper>
-            <ProfilePhoto src={user.profile_photo}></ProfilePhoto>
-            <ChangeProfilePhoto onClick={() => setImageForm(true)}>
+            <a href={user.profile_photo}>
+              <ProfilePhoto src={user.profile_photo}></ProfilePhoto>
+            </a>
+            <ChangeProfilePhoto onClick={() => setProfilePhotoForm(true)}>
               <AiFillCamera fill='black' size={24}/>
             </ChangeProfilePhoto>
           </ProfilePhotoWrapper>

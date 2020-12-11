@@ -6,7 +6,7 @@ import {
   FormGroup,
   Button
 } from 'reactstrap';
-import { RoundImage } from './ReplyForm.components';
+import { RoundImage, PhotoImage } from './ReplyForm.components';
 
 const ReplyForm = ({post, user, comment, replies, setReplies}) => {
 
@@ -48,14 +48,15 @@ const ReplyForm = ({post, user, comment, replies, setReplies}) => {
 
   return (
     <Form onSubmit={(e) => submitHandler(e)}>
-      <FormGroup className='mb-2 mt-1 d-flex align-items-center'>
+      <FormGroup className='mb-2 mt-1 d-flex align-items-center position-relative'>
         <RoundImage className='mr-2' src={user.profile_photo}/>
         <Input value={content} onFocus={() => setShowSubmit(true)} onChange={(e) => {setContent(e.target.value); onChangeHandler(e)}} placeholder='Reply..' rows={1} style={{borderRadius: '16px'}} type='textarea' />
+        <PhotoImage size={24} fill='green' />
       </FormGroup>
       {
         showSubmit &&
       <FormGroup className='mb-0 text-right'>
-        <Button type='submit'>Reply</Button>
+        <Button type='submit' size='sm'>Reply</Button>
       </FormGroup>
       }
     </Form>
