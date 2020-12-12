@@ -33,7 +33,14 @@ router.put('/:user_id/profile_photo', userController.update_profile_photo);
 router.put('/:user_id/cover_photo', userController.update_cover_photo);
 
 /** Notifications */
+// GET
 router.get('/:user_id/notifications', userController.get_notification);
+
+// PUT - read notification
+router.put('/notifications/:notification_id', userController.read_notification);
+
+// DELETE - delete notification
+router.delete('/notifications/:notification_id', userController.delete_notification);
 
 /* Logout */
 router.get('/logout', (req, res, next) => {

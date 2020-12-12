@@ -1,11 +1,11 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-const User = require('../models/users');
 const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const multer = require('multer');
 const AWS = require('aws-sdk');
 
+const User = require('../models/users');
 const Notification = require('../models/notifications');
 
 // AWS
@@ -128,5 +128,19 @@ exports.get_notification = (req, res, next) => {
   Notification.find({to: req.params.user_id}, (err, notifications) => {
     if(err) return res.status(400).json(err);
     res.json(notifications);
+  })
+}
+
+exports.delete_notification = (req, res, next) => {
+  Notification.deleteOne({_id: req.params.notification_id}, (err, notification) => {
+    if(err) return res.status(400).json(err);
+    res.json(notification);
+  })
+}
+
+exports.read_notification = (req, res, next) => {
+  Notification.findOneAndUpdate({_id: req.params.notification_id}, (err, notification) => {
+    if(err) return res.status(400).json(err);
+    res.json(notification);
   })
 }

@@ -1,10 +1,11 @@
 const { body, validationResult} = require('express-validator');
-const Post = require('../models/posts');
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const AWS = require('aws-sdk');
 
+const Post = require('../models/posts');
 const Notification = require('../models/notifications');
+const User = require('../models/users');
 
 // AWS
 const S3 = new AWS.S3();
@@ -119,12 +120,13 @@ exports.like_post = (req, res, next) => {
     } else {
       Post.findOneAndUpdate({_id: req.params.post_id}, {$push: {likes: user_id}}, {new: true})
       .populate('user')
-      .exec((err, updatedPost) => {
+      .exec(async(err, updatedPost) => {
         if(err) return res.status(400).json(err);
 
         // Send notification to the post's author;
-        const from = user_id;
-        const to = updatedPost.user._id;
+        const from = await User.findOne({_id: user_id});
+        const from_name = from.display_name || from.fullName;
+        const to_name = updatedPost.user.display_name || updatedPost.user.full_name;
         Notification.create({from, to, message: `${from} liked your post`}, (err, notification) => {
           if(err) return res.status(400).json(err);
           return res.json(updatedPost);
