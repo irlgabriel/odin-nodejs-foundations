@@ -125,7 +125,7 @@ exports.like_post = (req, res, next) => {
 
         // Send notification to the post's author;
         const from = await User.findOne({_id: user_id});
-        const to = await User.findOne({_id: req.user._id});
+        const to = await User.findOne({_id: updatedPost.user._id});
         Notification.create({from, to, type:'like_post', url: `/posts/${req.params.post_id}`}, (err, notification) => {
           if(err) return res.status(400).json(err);
           return res.json(updatedPost);

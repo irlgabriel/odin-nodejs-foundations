@@ -9,7 +9,7 @@ const notificationSchema = new Schema({
   url: String,
   type: String,
   message: String,
-})
+}, {timestamps: true})
 
 notificationSchema.pre('save', function() {
   console.log(this.isNew)
@@ -29,7 +29,7 @@ notificationSchema.pre('save', function() {
         break;
     }
   }
-}, {timestamps: true})
+})
 
 
 module.exports = mongoose.model('Notification', notificationSchema);
