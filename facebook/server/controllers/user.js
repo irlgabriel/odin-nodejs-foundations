@@ -124,6 +124,13 @@ exports.update_cover_photo = [
   }
 ]
 
+exports.get_users = (req, res, next) => {
+  User.find((err, users) => {
+    if(err) return res.status(400).json(err);
+    res.json(users)
+  })
+}
+
 exports.get_notification = (req, res, next) => {
   Notification.find({to: req.params.user_id})
     .sort('-createdAt')

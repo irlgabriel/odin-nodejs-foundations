@@ -119,7 +119,7 @@ const Post = ({user, posts, post, setPosts}) => {
   return (
     <PostContainer className='mb-2'>
       <Header className='mb-2'>
-        <Link to='/profile'>
+        <Link to={post.user._id === user._id ? '/profile' : `/users/${post.user._id}`}>
           <RoundImage src={post.user.profile_photo}/>
         </Link>
         <FlexContainer>

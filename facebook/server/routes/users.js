@@ -24,8 +24,10 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
   failureRedirect: '/'}
 ))
 
-/** Photos pictures */
+/* GET all users */
+router.get('/users', userController.get_users);
 
+/** Photos pictures */
 /** Update profile pic */
 router.put('/:user_id/profile_photo', userController.update_profile_photo);
 

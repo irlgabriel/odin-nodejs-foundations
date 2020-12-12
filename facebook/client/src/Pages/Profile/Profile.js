@@ -26,7 +26,7 @@ import axios from 'axios';
 import { FaShower } from 'react-icons/fa';
 
 
-const Profile = ({posts, setPosts, user, setUser}) => {
+const Profile = ({posts, setPosts, user, setUser, currentUser}) => {
   const history = useHistory();
 
   const [coverPhotoForm, setCoverPhotoForm] = useState(false);
@@ -56,16 +56,21 @@ const Profile = ({posts, setPosts, user, setUser}) => {
               </a>
             : <DefaultCoverPhoto></DefaultCoverPhoto>
           }
-          <ChangeCoverPhoto onClick={() => setCoverPhotoForm(true)}>
-            <p className='mb-0'>Change Cover Photo</p>
-          </ChangeCoverPhoto>
+          { currentUser === user &&
+            <ChangeCoverPhoto onClick={() => setCoverPhotoForm(true)}>
+              <p className='mb-0'>Change Cover Photo</p>
+            </ChangeCoverPhoto>
+          }
+          
           <ProfilePhotoWrapper>
             <a href={user.profile_photo}>
               <ProfilePhoto src={user.profile_photo}></ProfilePhoto>
             </a>
-            <ChangeProfilePhoto onClick={() => setProfilePhotoForm(true)}>
-              <AiFillCamera fill='black' size={24}/>
-            </ChangeProfilePhoto>
+            { currentUser === user &&
+              <ChangeProfilePhoto onClick={() => setProfilePhotoForm(true)}>
+                <AiFillCamera fill='black' size={24}/>
+              </ChangeProfilePhoto>
+            }
           </ProfilePhotoWrapper>
         </ProfileSection>
         <h1 className='text-center'>{user.display_name || user.first_name + ' ' + user.last_name}</h1>
@@ -80,8 +85,11 @@ const Profile = ({posts, setPosts, user, setUser}) => {
         <Col sm='5'>
           Photos
         </Col>
-        <Col>
+        <Col className='pt-3'>
+        {
+          currentUser._id === user._id &&
           <PostForm posts={posts} setPosts={setPosts} user={user}/>
+        }
           {
             posts.map(post => 
               <Post user={user} posts={posts} post={post} setPosts={setPosts}/>  
