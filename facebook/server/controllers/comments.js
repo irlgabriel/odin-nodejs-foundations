@@ -83,12 +83,18 @@ module.exports.like_comment = (req, res, next) => {
     } else {
       Comment.findOneAndUpdate({_id: req.params.comment_id}, {$push: {likes: user_id}}, {new: true}, (err, updatedComment) => {
         if(err) return res.status(400).json(err)
-        updatedComment
-        .populate('user')
-        .populate('comment')
-        .populate('post')
-        .execPopulate()
-        .then(populatedComment => res.json(populatedComment))
+         // Send notification to the post's author;
+         const from = user_id;
+         const to = updatedPost.user._id;
+         Notification.create({from, to, message: `${from} liked your post`}, (err, notification) => {
+           if(err) return res.status(400).json(err);
+           updatedComment
+          .populate('user')
+          .populate('comment')
+          .populate('post')
+          .execPopulate()
+          .then(populatedComment => res.json(populatedComment))
+         })
       })
     }
   })

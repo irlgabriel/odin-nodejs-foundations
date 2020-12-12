@@ -6,6 +6,8 @@ const { body, validationResult } = require('express-validator');
 const multer = require('multer');
 const AWS = require('aws-sdk');
 
+const Notification = require('../models/notifications');
+
 // AWS
 const S3 = new AWS.S3();
 
@@ -121,3 +123,10 @@ exports.update_cover_photo = [
     })
   }
 ]
+
+exports.get_notification = (req, res, next) => {
+  Notification.find({to: req.params.user_id}, (err, notifications) => {
+    if(err) return res.status(400).json(err);
+    res.json(notifications);
+  })
+}

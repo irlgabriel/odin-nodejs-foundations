@@ -24,11 +24,16 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
   failureRedirect: '/'}
 ))
 
+/** Photos pictures */
+
 /** Update profile pic */
 router.put('/:user_id/profile_photo', userController.update_profile_photo);
 
 /** Update Cover pic */
 router.put('/:user_id/cover_photo', userController.update_cover_photo);
+
+/** Notifications */
+router.get('/:user_id/notifications', userController.get_notification);
 
 /* Logout */
 router.get('/logout', (req, res, next) => {

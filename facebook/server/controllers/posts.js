@@ -4,6 +4,8 @@ const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const AWS = require('aws-sdk');
 
+const Notification = require('../models/notifications');
+
 // AWS
 const S3 = new AWS.S3();
 
@@ -119,7 +121,14 @@ exports.like_post = (req, res, next) => {
       .populate('user')
       .exec((err, updatedPost) => {
         if(err) return res.status(400).json(err);
-        return res.json(updatedPost);
+
+        // Send notification to the post's author;
+        const from = user_id;
+        const to = updatedPost.user._id;
+        Notification.create({from, to, message: `${from} liked your post`}, (err, notification) => {
+          if(err) return res.status(400).json(err);
+          return res.json(updatedPost);
+        })
       })
     }
   })
