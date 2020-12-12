@@ -8,8 +8,10 @@ import {
   Home,
   Profile,
   Register,
-  Friends
+  Friends,
+  PostPage
 } from "./Pages";
+
 import {
   BrowserRouter as Router,
   Route,
@@ -26,7 +28,7 @@ function App() {
   }, [localStorage])
 
   useEffect(() => {
-    axios.get('/posts', /*jwt token header,*/)
+    axios.get('/posts')
     .then(res => {
       setPosts(res.data)
     })
@@ -44,6 +46,12 @@ function App() {
         <Route exact path='/profile' render={() => <Profile {...props} posts={posts.filter(post => post.user !== user._id)}/>}></Route>
         <Route exact path='/register' render={() => <Register {...props} />}></Route>
         <Route exact path='/friends' render={() => <Friends {...props}/>}></Route>
+        {/* Individual Post Routes */}
+        {
+          posts.map(post =>
+            <Route exact path={`/posts/${post._id}`} render={() => <PostPage {...props} post={post}/>}></Route>
+          )
+        }
       </Container>
     </Router>
   );

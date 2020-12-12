@@ -15,10 +15,11 @@ export const NavMidItem = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: ${({active}) => (active ? '3px solid royalblue' : '')};
+  border-bottom: ${({active}) => (active ? '3px solid royalblue' : '3px solid white')};
 `
 
 export const RoundWrapper = styled.div`
+  position: relative;
   background: #f0f2f5;
   display: flex;
   align-items: center;
@@ -91,3 +92,21 @@ export const TopRightUserImg = styled.img`
   border-radius: 14px;
 `
 
+export const NewNotifications = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  right: -5px;
+  bottom: -5px;
+  position: absolute;
+  background: red;
+  color: white;
+  font-size: 13px;
+
+  &:before {
+    content: '${({count}) => (count)}'
+  }
+`
