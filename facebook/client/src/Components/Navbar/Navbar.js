@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import {
   Nav,
@@ -24,7 +25,7 @@ import { GrAdd } from 'react-icons/gr';
 import { GoTriangleDown } from 'react-icons/go';
 import { BsArrowLeft } from 'react-icons/bs';
 import { CSSTransition } from 'react-transition-group';
-
+import { Notification } from '..';
 
 
 const Navbar = ({setUser, user}) => {
@@ -34,12 +35,22 @@ const Navbar = ({setUser, user}) => {
   const [showSearch, setShowSearch] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [notificationDropdown, setNotificationDropdown] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+
 
   const logoutHandler = () => {
     localStorage.removeItem('user');
     setUser(undefined);
     history.push('/');
   }
+
+  useEffect(() => {
+    axios.get(`${user._id}/notifications`)
+    .then(res => {
+      setNotifications(res.data);
+    })
+    .catch(err => console.log(err))
+  }, [])
 
   return (
     <Nav className='px-1'>
@@ -138,6 +149,11 @@ const Navbar = ({setUser, user}) => {
         <CollapsableDiv>
           <h3>Notifications</h3>
           <p>New</p>
+          {
+            notifications.map(notification => 
+              <Notification notification={notification} notifications={notifications} setNotifications={setNotifications} />
+            )
+          }
         </CollapsableDiv>
       </CSSTransition>
     </Nav>
