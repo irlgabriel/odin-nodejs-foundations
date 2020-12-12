@@ -12,17 +12,16 @@ const postSchema = new Schema({
 
 }, {timestamps: true})
 
-postSchema.pre('findOneAndDelete', async function() {
+postSchema.pre('findOneAndDelete', function() {
   console.log('running post delete middleware')
-  this.findOne((err, doc) => {
+  this.find((err, doc) => {
     if(err) return res.status(400).json(err);
     console.log(doc);
     Comment.deleteMany({post: doc._id}, (err, deletedComments) => {
       if(err) return res.status(400).json(err);
-      console.log(deletedComments);
+      //console.log(deletedComments);
     })
   })
-  
 })
 
 module.exports = mongoose.model('Post', postSchema);
