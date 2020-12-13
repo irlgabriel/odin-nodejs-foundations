@@ -156,7 +156,11 @@ exports.read_notification = (req, res, next) => {
 }
 
 exports.get_friends_requests = (req, res, next) => {
-  FriendRequest.find({to: req.user._id}, (err, requests) => {
+
+  FriendRequest.find({to: req.params.user_id})
+  .populate('to')
+  .populate('from')
+  .exec((err, requests) => {
     if(err) return res.status(400).json(err);
     res.json(requests);
   })

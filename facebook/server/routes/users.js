@@ -46,7 +46,7 @@ router.delete('/notifications/:notification_id', userController.delete_notificat
 
 /** Friend Requests */
 // GET
-router.get('/friend_requests', userController.get_friends_requests);
+router.get('/:user_id/friend_requests', userController.get_friends_requests);
 
 // POST Send
 router.post('/send_friend_request/:user_id');
