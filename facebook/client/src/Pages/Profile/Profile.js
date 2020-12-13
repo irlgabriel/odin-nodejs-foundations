@@ -26,7 +26,7 @@ import axios from 'axios';
 import { FaShower } from 'react-icons/fa';
 
 
-const Profile = ({posts, setPosts, user, setUser, currentUser}) => {
+const Profile = ({showNav, posts, setPosts, user, setUser, currentUser}) => {
   const history = useHistory();
 
   const [coverPhotoForm, setCoverPhotoForm] = useState(false);
@@ -47,7 +47,7 @@ const Profile = ({posts, setPosts, user, setUser, currentUser}) => {
         <ImageForm path={`/${user._id}/cover_photo`} setResource={setUser} resource={user} setImageForm={setCoverPhotoForm} />
       }
       <div style={{background: 'white'}}>
-        <Navbar user={user} setUser={setUser} />
+        {showNav && <Navbar user={user} setUser={setUser} />}
         <ProfileSection className='px-0'>
           {
             user.cover_photo 
@@ -82,7 +82,7 @@ const Profile = ({posts, setPosts, user, setUser, currentUser}) => {
         </ProfileHeader>
       </div>
       <Main>
-        <Col sm='5'>
+        <Col className='d-md-none' sm='5'>
           Photos
         </Col>
         <Col className='pt-3'>
