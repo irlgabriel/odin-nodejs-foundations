@@ -44,6 +44,19 @@ router.put('/notifications/:notification_id', userController.read_notification);
 // DELETE - delete notification
 router.delete('/notifications/:notification_id', userController.delete_notification);
 
+/** Friend Requests */
+// GET
+router.get('/friend_requests', userController.get_friends_requests);
+
+// POST Send
+router.post('/send_friend_request/:user_id');
+
+// POST Accept
+router.post('/accept_friend_request/:request_id', userController.accept_friend_request);
+
+// POST Decline
+router.post('/decline_friend_request/:request_id', userController.reject_friend_request)
+
 /* Logout */
 router.get('/logout', (req, res, next) => {
   req.logout();
