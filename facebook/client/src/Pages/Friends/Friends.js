@@ -4,17 +4,14 @@ import {
   Container,
   Row,
   Col,
-  ButtonGroup,
   Button
 } from 'reactstrap';
 import {
-  FriendsContainer,
-  FriendInfo,
-  RoundImage
-} from './Friends.components';
-import {
   Profile
 } from "../../Pages/"
+import {
+  FriendRequest
+} from '../../Components'
 import Axios from 'axios';
 
 const Friends = ({user, posts, setPosts}) => {
@@ -22,6 +19,10 @@ const Friends = ({user, posts, setPosts}) => {
   const [requests, setRequests] = useState([]);
   const [previewUserPosts, setPreviewUserPosts] = useState([]);
   const [previewUser, setPreviewUser] = useState([]);
+
+  const sendFriendRequest = () => {
+
+  }
 
   useEffect(() => {
     // get current user's requests
@@ -41,16 +42,13 @@ const Friends = ({user, posts, setPosts}) => {
         <Col id='friends-col' className='box-shadow-right p-0 pl-2' sm='4' style={{background: 'white'}}>
           <h2>Friends</h2>
           <h5>{requests.length} Friend Requests</h5>
-          <FriendsContainer>
-            <RoundImage src={user.profile_photo} />
-            <FriendInfo className='w-100'>
-              <h4>{user.display_name || user.first_name + ' ' + user.last_name}</h4>
-            <div className='d-flex w-100 align-items-center'>
-              <Button color='primary' className='mr-2 w-100'>Confirm</Button>
-              <Button className='w-100' color='secondary'>Delete</Button>
-            </div>
-            </FriendInfo>
-          </FriendsContainer>
+          <FriendRequest key={user._id} from={user} to={user} />
+          <h5>People you may know</h5>
+          {
+            requests.map(request => 
+              <FriendRequest key={request._id} request={request} />
+            )
+          }
         </Col>
         <Col id='friends-profile' className='p-0'>
           <Profile showNav={false} user={user} posts={posts} setPosts={setPosts} currentUser={user}/>

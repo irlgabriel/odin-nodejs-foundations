@@ -7,3 +7,4 @@ export { default as ReplyForm } from './ReplyForm/ReplyForm';
 export { default as LoadingOverlay } from './LoadingOverlay/LoadingOverlay';
 export { default as ImageForm } from './ImageForm/ImageForm';
 export { default as Notification } from './Notification/Notification';
+export { default as FriendRequest } from './FriendRequest/FriendRequest';
