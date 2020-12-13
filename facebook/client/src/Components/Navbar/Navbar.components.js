@@ -48,7 +48,7 @@ export const RoundImage = styled.img`
   border-radius: 32px;
   width: 64px;
   height: 64px;
-  z-index: 2;
+  
 `
 
 export const GrayHover = styled.div`

@@ -153,7 +153,7 @@ const Post = ({user, posts, post, setPosts}) => {
       {
       !edit &&
       <Body>
-        <p className='mb-1'>{post.content}</p>
+        <p className='mb-1' dangerouslySetInnerHTML={{__html: post.content}}></p>
         {post.image && post.image.url && <img className='mb-2' width="100%" src={post.image.url} />}
       </Body>
       }

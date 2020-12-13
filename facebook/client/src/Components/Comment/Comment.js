@@ -105,7 +105,7 @@ const Comment = ({level = 0, comments, comment, setComments, user, post}) => {
         <h6 className='mb-0'>{comment.user.display_name || comment.user.first_name + ' ' + comment.user.last_name}</h6>
         {
           !showEdit 
-          ? <p className='mb-0'>{comment.content}</p>
+          ? <p className='mb-0' dangerouslySetInnerHTML={{__html: comment.content}} ></p>
           : 
           <Form onSubmit={(e) => editHandler(e)} className='w-100'>
             <FormGroup>
