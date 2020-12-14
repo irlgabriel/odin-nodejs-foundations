@@ -11,10 +11,11 @@ import {
 } from './Home.components';
 import { Navbar, PostForm, Post } from "../../Components";
 import { FaUserFriends } from 'react-icons/fa';
-import axios from 'axios';
 
 const Home = ({posts, setPosts, setUser, user}) => {
   const history = useHistory();
+
+
 
   useEffect(() => {
     if(!user) history.push('/');

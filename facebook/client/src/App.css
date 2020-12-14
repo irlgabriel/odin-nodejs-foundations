@@ -67,6 +67,9 @@
   position: relative;
 }
 
+textarea {
+  resize: none !important;
+}
 .box-shadow-right {
   box-shadow: 3px 0px 15px 1px rgba(0,0,0,0.41);
 }
@@ -121,3 +124,12 @@
   opacity: 0;
   transition: all .3s ease-in-out;
 }
+
+/* Media queries */
+
+@media screen and (max-width: 768px) {
+  #nav-mid {
+    display: none !important;
+  }
+}
+

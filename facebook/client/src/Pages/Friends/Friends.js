@@ -10,7 +10,8 @@ import {
   Profile
 } from "../../Pages/"
 import {
-  FriendRequest
+  FriendRequest,
+  LoadingOverlay
 } from '../../Components'
 import Axios from 'axios';
 
@@ -20,6 +21,7 @@ const Friends = ({user, posts, setUser, setPosts}) => {
   const [previewUserPosts, setPreviewUserPosts] = useState([]);
   const [previewUser, setPreviewUser] = useState(undefined);
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const config = {
     headers: {
@@ -28,18 +30,20 @@ const Friends = ({user, posts, setUser, setPosts}) => {
   }
 
   useEffect(() => {
-    // get current user's requests
-    Axios.get(`/friend_requests/${user._id}`, config)
-    .then(res => {
-      setRequests(res.data);
-    })
-    .catch(err => console.log(err));
-
-    // Get friends recommendations
-    Axios.get('/friend_requests/recommendations', config)
-    .then(res => {
-      setUsers(res.data);
-    })
+    setLoading(false);
+    // get current user's friend requests
+    Promise.all([
+      Axios.get(`/friend_requests/${user._id}`, config)
+      .then(res => {
+        setRequests(res.data);
+      }),
+      // Get friends recommendations
+      Axios.get('/friend_requests/recommendations', config)
+      .then(res => {
+        setUsers(res.data);
+      })])
+    .then(results => setLoading(false))
+    
   }, [])
 
   
@@ -52,6 +56,8 @@ const Friends = ({user, posts, setUser, setPosts}) => {
 
   return (
     <Container fluid className='px-0'>
+      {/* Loading overlay */}
+      { loading && <LoadingOverlay /> }
       <Navbar key='friends' setUser={setUser} user={user}/>
       <Row className='p-0 m-0' style={{height: 'auto'}}>
         <Col id='friends-col' className='box-shadow-right p-0 px-2' sm='4' style={{background: 'white'}}>

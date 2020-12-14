@@ -11,6 +11,7 @@ import {
   Friends,
   PostPage
 } from "./Pages";
+import { LoadingOverlay } from './Components';
 import {
   BrowserRouter as Router,
   Route,
@@ -20,7 +21,9 @@ import axios from 'axios';
 function App() {
   const [user, setUser] = useState(undefined);
   const [posts, setPosts] = useState([]);
-  const [users, setUsers] = useState([])
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem('user'));
@@ -28,16 +31,20 @@ function App() {
   }, [localStorage])
 
   useEffect(() => {
-    // Get posts
-    axios.get('/posts')
-    .then(res => {
-      setPosts(res.data)
-    })
-    // Get users 
-    axios.get('/users')
-    .then(res => {
-      setUsers(res.data)
-    })
+    Promise.all([
+     // Get posts
+      axios.get('/posts')
+      .then(res => {
+        setPosts(res.data)
+      }),
+      // Get users (for route paths)
+      axios.get('/users')
+      .then(res => {
+        setUsers(res.data)
+      })
+    ])
+    .then(results => setLoading(false))
+    
   }, [])
   
 
@@ -46,6 +53,8 @@ function App() {
   return (
     <Router>
       <Container fluid className='p-0'>
+        {/* Loading overlay */}
+        {loading && <LoadingOverlay />}
         {/* Page routes */}
         <Route exact path='/' render={() => <Index {...props}/>}></Route>
         <Route exact path='/home' render={() => <Home {...props} />}></Route>
@@ -58,7 +67,7 @@ function App() {
             <Route exact path={`/posts/${post._id}`} render={() => <PostPage {...props} post={post}/>}></Route>
           )
         }
-        {/* Individual Profile Pages */}
+        {/* Individual User Pages */}
         {
           users.map(currentUser =>
             <Route exact path={`/users/${currentUser._id}`} render={() => <Profile {...props} currentUser={currentUser}/>}></Route>

@@ -20,8 +20,9 @@ import {
   NewNotifications
 } from './Navbar.components';
 /* React Icons */
-import { FaFacebook, FaUserFriends, FaFacebookMessenger, FaDoorOpen} from 'react-icons/fa';
-import { AiOutlineSearch, AiFillHome, AiFillBell } from 'react-icons/ai';
+import { FaFacebook, FaUserFriends, FaFacebookMessenger, FaDoorOpen, FaRoad} from 'react-icons/fa';
+import { AiOutlineSearch, AiFillHome, AiOutlineHome, AiFillBell } from 'react-icons/ai';
+import { HiOutlineUsers } from 'react-icons/hi'
 import { GrAdd } from 'react-icons/gr';
 import { GoTriangleDown } from 'react-icons/go';
 import { BsArrowLeft } from 'react-icons/bs';
@@ -65,7 +66,7 @@ const Navbar = ({setUser, user}) => {
 
   return (
     <Nav className='sticky-top px-1'>
-      <Col sm='3' className='align-items-center d-flex'>
+      <Col className='align-items-center d-flex'>
       {!showSearch && <Link to='/home'><FaFacebook className='mr-2' fill='royalblue' size={40} /></Link>}
         {
           !showSearch &&
@@ -85,12 +86,22 @@ const Navbar = ({setUser, user}) => {
       </Col>
 
 
-      <Col className='d-flex align-items-center'>
+      <Col sm='5' id='nav-mid' className='d-flex justify-content-center align-items-center'>
         <NavMidItem to='/home' active={location.pathname === '/home'} className='mid-nav-item'>
-          <AiFillHome size={32} fill={location.pathname === '/home' ? 'royalblue' : 'gray'} className='mr-2'/>
+          {
+            location.pathname === '/home' 
+            ? <AiFillHome size={32} fill={'royalblue'} className='mr-2'/>
+            : <AiOutlineHome size={32} color='black' className='mr-2'/>
+          
+          }
         </NavMidItem>
         <NavMidItem to='/friends' active={location.pathname === '/friends'} className='mid-nav-item'>
-          <FaUserFriends fill={location.pathname === '/friends' ? 'royalblue' : 'gray'} size={32} />
+          {
+            location.pathname === '/friends'
+            ? <FaUserFriends fill={ 'royalblue'} size={32} />
+            : <HiOutlineUsers size={32} color='black' />
+            
+          }
         </NavMidItem>
       </Col>
 
