@@ -33,6 +33,12 @@ const Navbar = ({setUser, user}) => {
   const location = useLocation();
   const history = useHistory();
   
+  const config = {
+    headers: {
+      Authorization: `bearer ${JSON.parse(localStorage.getItem('user')).token}`
+    }
+  }
+
   const [showSearch, setShowSearch] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [notificationDropdown, setNotificationDropdown] = useState(false);
@@ -46,7 +52,7 @@ const Navbar = ({setUser, user}) => {
   }
 
   useEffect(() => {
-    axios.get(`${user._id}/notifications`)
+    axios.get(`/notifications`, config)
     .then(res => {
       setNotifications(res.data);
     })

@@ -20,9 +20,9 @@ const FriendRequest = ({requests, setRequests, isSuggestion = false, setPreviewU
   }
 
   const sendRequest = () => {
-    Axios.post(`/send_friend_request/${to._id}`, {}, config)
+    Axios.post(`/send_friend_request/${from._id}`, {}, config)
     .then(res => {
-      setRequests([...requests, res.data]);
+      // no need to do anything.
     })
   }
 

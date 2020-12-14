@@ -29,14 +29,14 @@ const Friends = ({user, posts, setUser, setPosts}) => {
 
   useEffect(() => {
     // get current user's requests
-    Axios.get(`/${user._id}/friend_requests`, config)
+    Axios.get(`/friend_requests/${user._id}`, config)
     .then(res => {
       setRequests(res.data);
     })
     .catch(err => console.log(err));
 
     // Get friends recommendations
-    Axios.get('/friend_recommendations', config)
+    Axios.get('/friend_requests/recommendations', config)
     .then(res => {
       setUsers(res.data);
     })
@@ -68,7 +68,7 @@ const Friends = ({user, posts, setUser, setPosts}) => {
           <hr className='my-1'></hr>
           {
             users.map(from => 
-              <FriendRequest requests={requests} setRequests={setRequests} isSuggestion setPreviewUser={setPreviewUser} to={user} from={from} />
+              <FriendRequest key={from._id} requests={requests} setRequests={setRequests} isSuggestion setPreviewUser={setPreviewUser} to={user} from={from} />
             )
           }
         </Col>
