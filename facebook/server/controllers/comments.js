@@ -1,6 +1,6 @@
 const { body, validationResult } = require('express-validator');
 const Comment = require('../models/comments');
-
+const Notification = require('../models/notifications');
 module.exports.get_comments = (req, res, next) => {
   Comment.find({post: req.params.post_id})
   .populate('post')
@@ -85,7 +85,7 @@ module.exports.like_comment = (req, res, next) => {
         if(err) return res.status(400).json(err)
          // Send notification to the post's author;
          const from = user_id;
-         const to = updatedPost.user._id;
+         const to = updatedComment.user._id;
          Notification.create({from, to, message: `${from} liked your post`}, (err, notification) => {
            if(err) return res.status(400).json(err);
            updatedComment
