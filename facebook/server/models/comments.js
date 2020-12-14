@@ -11,14 +11,5 @@ const commentSchema = new Schema({
   likes: [{type: Schema.Types.ObjectId, ref: 'User'}]
 }, {timestamps: true})
 
-commentSchema.pre('findOneAndRemove', function() {
-  this.findOne((err, comment) => {
-    if(err) return res.status(400).json(err);
-      Comment.deleteMany({comment_id: comment}, (err, deletedComments) => {
-        if(err) return res.status(400).json(err);
-        //console.log(deletedComments)
-      })
-  }) 
-})
 
 module.exports = mongoose.model('Comment', commentSchema);

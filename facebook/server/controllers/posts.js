@@ -101,6 +101,7 @@ exports.edit_post = [
     const { content } = req.body;
     Post.findOneAndUpdate({_id: req.params.post_id}, {content}, {new: true})
     .populate('user')
+    .populate('likes')
     .exec((err, post) => {
       if(err) return res.status(400).json(err);
       res.json(post);
@@ -115,6 +116,7 @@ exports.like_post = (req, res, next) => {
     if(post.likes.includes(user_id)) {
       Post.findOneAndUpdate({_id: req.params.post_id}, {$pull: {likes: user_id}}, {new: true})
         .populate('user')
+        .populate('likes')
         .exec((err, updatedPost) => {
         if(err) return res.status(400).json(err);
         return res.json(updatedPost);
@@ -122,6 +124,7 @@ exports.like_post = (req, res, next) => {
     } else {
       Post.findOneAndUpdate({_id: req.params.post_id}, {$push: {likes: user_id}}, {new: true})
       .populate('user')
+      .populate('likes')
       .exec(async(err, updatedPost) => {
         if(err) return res.status(400).json(err);
 
