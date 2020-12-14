@@ -19,7 +19,9 @@ const storage = multer.memoryStorage({
 const upload = multer({storage: storage, }).single('image');
 
 exports.get_posts = (req, res, next) => {
-  Post.find().sort('-createdAt').exec((err, posts) => {
+  Post.find().sort('-createdAt')
+  .populate('likes')
+  .exec((err, posts) => {
     if(err) return res.status(400).json(err);
 
     Post.populate(posts, {path: 'user'}, (err, populatedPosts) => {
