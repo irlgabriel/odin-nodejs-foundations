@@ -14,44 +14,67 @@ import {
 } from '../../Components'
 import Axios from 'axios';
 
-const Friends = ({user, posts, setPosts}) => {
+const Friends = ({user, posts, setUser, setPosts}) => {
 
   const [requests, setRequests] = useState([]);
   const [previewUserPosts, setPreviewUserPosts] = useState([]);
-  const [previewUser, setPreviewUser] = useState([]);
+  const [previewUser, setPreviewUser] = useState(undefined);
+  const [users, setUsers] = useState([]);
 
-  const sendFriendRequest = () => {
-
+  const config = {
+    headers: {
+      Authorization: 'bearer ' + JSON.parse(localStorage.getItem('user')).token
+    }
   }
 
   useEffect(() => {
     // get current user's requests
-    Axios.get(`/${user._id}/friend_requests`)
+    Axios.get(`/${user._id}/friend_requests`, config)
     .then(res => {
-
+      setRequests(res.data);
     })
     .catch(err => console.log(err));
 
-    // show
+    // Get friends recommendations
+    Axios.get('/friend_recommendations', config)
+    .then(res => {
+      setUsers(res.data);
+    })
   }, [])
+
+  
+  // when previewUser changes we change the posts to match theirs
+  useEffect(() => {
+    if(previewUser) {
+      setPreviewUserPosts(posts.filter(post => post.user._id === previewUser._id));
+    }
+  }, [previewUser])
 
   return (
     <Container fluid className='px-0'>
-      <Navbar user={user}/>
+      <Navbar setUser={setUser} user={user}/>
       <Row className='p-0 m-0'>
         <Col id='friends-col' className='box-shadow-right p-0 pl-2' sm='4' style={{background: 'white'}}>
           <h2>Friends</h2>
           <h5>{requests.length} Friend Requests</h5>
-          <FriendRequest key={user._id} from={user} to={user} />
-          <h5>People you may know</h5>
+          {/* Friend Requests */}
           {
             requests.map(request => 
-              <FriendRequest key={request._id} request={request} />
+              <FriendRequest requests={requests} setRequests={setRequests} setPreviewUser={setPreviewUser} key={request._id} {...request} />
+            )
+          }
+          <h5>People you may know</h5>
+          {
+            users.map(from => 
+              <FriendRequest requests={requests} setRequests={setRequests} isSuggestion setPreviewUser={setPreviewUser} to={user} from={from} />
             )
           }
         </Col>
         <Col id='friends-profile' className='p-0'>
-          <Profile showNav={false} user={user} posts={posts} setPosts={setPosts} currentUser={user}/>
+          {
+            previewUser &&
+            <Profile showNav={false} user={user} posts={previewUserPosts} setPosts={setPreviewUserPosts} currentUser={previewUser}/>
+          }
         </Col>
       </Row>
     </Container>

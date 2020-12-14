@@ -26,7 +26,7 @@ import axios from 'axios';
 import { FaShower } from 'react-icons/fa';
 
 
-const Profile = ({showNav, posts, setPosts, user, setUser, currentUser}) => {
+const Profile = ({showNav = true, posts, setPosts, user, setUser, currentUser}) => {
   const history = useHistory();
 
   const [coverPhotoForm, setCoverPhotoForm] = useState(false);
@@ -37,7 +37,7 @@ const Profile = ({showNav, posts, setPosts, user, setUser, currentUser}) => {
   }, [user])
 
   return (
-    <Container fluid className='px-0'>
+    <Container fluid className='p-0'>
       {
         profilePhotoForm &&
         <ImageForm path={`/${user._id}/profile_photo`} setResource={setUser} resource={user} setImageForm={setProfilePhotoForm}/>
@@ -50,30 +50,38 @@ const Profile = ({showNav, posts, setPosts, user, setUser, currentUser}) => {
         {showNav && <Navbar user={user} setUser={setUser} />}
         <ProfileSection className='px-0'>
           {
-            user.cover_photo 
+            currentUser.cover_photo 
             ? <a href={user.cover_photo}>
-              <CoverPhoto src={user.cover_photo}></CoverPhoto>
+              <CoverPhoto src={currentUser.cover_photo}></CoverPhoto>
               </a>
             : <DefaultCoverPhoto></DefaultCoverPhoto>
           }
-          { currentUser === user &&
+          { currentUser._id === user._id ?
             <ChangeCoverPhoto onClick={() => setCoverPhotoForm(true)}>
               <p className='mb-0'>Change Cover Photo</p>
+            </ChangeCoverPhoto>
+            : !currentUser.friends.includes(user._id) ?
+            <ChangeCoverPhoto>
+              <p className='mb-0'>Send Friend Request</p>
+            </ChangeCoverPhoto>
+            :
+            <ChangeCoverPhoto>
+              <p className='mb-0'>Friends</p>
             </ChangeCoverPhoto>
           }
           
           <ProfilePhotoWrapper>
-            <a href={user.profile_photo}>
-              <ProfilePhoto src={user.profile_photo}></ProfilePhoto>
+            <a href={currentUser.profile_photo}>
+              <ProfilePhoto src={currentUser.profile_photo}></ProfilePhoto>
             </a>
-            { currentUser === user &&
+            { currentUser._id === user._id &&
               <ChangeProfilePhoto onClick={() => setProfilePhotoForm(true)}>
                 <AiFillCamera fill='black' size={24}/>
               </ChangeProfilePhoto>
             }
           </ProfilePhotoWrapper>
         </ProfileSection>
-        <h1 className='text-center'>{user.display_name || user.first_name + ' ' + user.last_name}</h1>
+        <h1 className='text-center'>{currentUser.display_name || currentUser.first_name + ' ' + currentUser.last_name}</h1>
         <ProfileHeader>
           <hr className='my-2'/>
           <ProfileNav>
