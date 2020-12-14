@@ -33,7 +33,7 @@ export const ProfilePhoto = styled.div`
   z-index: 5;
   background-image: ${({src}) => (`url(${src})`)};
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100% 100%;
   border-radius: 96px;
   border: 4px solid white;
 `
