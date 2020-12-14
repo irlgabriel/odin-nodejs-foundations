@@ -13,7 +13,7 @@ const Notification = ({notification, notifications, setNotifications}) => {
   const clickHandler = () => {
     axios.put(`/notifications/${notification._id}`)
     .then(res => {
-      setNotifications(notifications.map(notification => notification._id === res.data._id ? res.data._id : notifications));
+      setNotifications(notifications.map(notification => notification._id === res.data._id ? res.data : notification));
       history.push(notification.url);
     })
   }
@@ -27,8 +27,8 @@ const Notification = ({notification, notifications, setNotifications}) => {
   }
 
   return (
-    <NotificationContainer onClick={() => clickHandler()} clicked={notification.clicked}>
-      <UserImage src/>
+    <NotificationContainer className='mb-1' onClick={() => clickHandler()} clicked={notification.clicked}>
+      <UserImage className='mr-2' src={notification.from.profile_photo}/>
       <p className='mb-0'>{notification.message}</p>
       <DeleteButton onClick={(e) => deleteHandler(e)} />
     </NotificationContainer>

@@ -23,7 +23,7 @@ import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AiFillCamera } from 'react-icons/ai';
 import axios from 'axios';
-import { FaShower } from 'react-icons/fa';
+import { FaShower, FaCheck } from 'react-icons/fa';
 
 
 const Profile = ({showNav = true, posts, setPosts, user, setUser, currentUser}) => {
@@ -66,7 +66,8 @@ const Profile = ({showNav = true, posts, setPosts, user, setUser, currentUser}) 
             </ChangeCoverPhoto>
             :
             <ChangeCoverPhoto>
-              <p className='mb-0'>Friends</p>
+              <p className='mb-0'><FaCheck /> Friends</p>
+              
             </ChangeCoverPhoto>
           }
           

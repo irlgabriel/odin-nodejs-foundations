@@ -53,3 +53,9 @@ export const LikesContainer = styled.div`
   bottom: -12px;
   right: 5px;
 `
+export const ReplyCount = styled.p`
+  user-select: none;
+  &:hover {
+    cursor: pointer;
+  }
+`

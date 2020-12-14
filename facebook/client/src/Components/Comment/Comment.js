@@ -7,7 +7,8 @@ import {
   CommentWrapper,
   CommentFooter,
   FooterLink,
-  LikesContainer
+  LikesContainer,
+  ReplyCount
 } from './Comment.components';
 import {
   Form, 
@@ -156,7 +157,7 @@ const Comment = ({level = 0, comments, comment, setComments, user, post}) => {
         replies.length && !showReplies ?
         <div onClick={() => setShowReplies(true)} className='pl-3 pt-2 d-flex align-items-center'>
           <BsArrow90DegDown size={24} fill='black' style={{transform: 'rotate(-90deg)'}}/>&nbsp;
-          <p className='mb-0 font-weight-bold'>{replies.length} Replies</p>
+          <ReplyCount className='mb-0 font-weight-bold'>{replies.length} Replies</ReplyCount>
         </div>
         : ''
       }

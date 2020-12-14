@@ -18,7 +18,7 @@ export const UserImage = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 18px;
-  background-image: ${({src}) => (`(${src})`)};
+  background-image: ${({src}) => (`url(${src})`)};
   background-size: 100%;
   background-repeat: no-repeat;
 `
