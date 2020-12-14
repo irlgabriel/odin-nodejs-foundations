@@ -155,9 +155,16 @@ exports.read_notification = (req, res, next) => {
   })
 }
 
+exports.get_friends_recommendations = (req, res, next) => {
+  User.find({friends: {$nin: req.user._id}, _id: {$ne: req.user._id}}, (err, recommendations) => {
+    if(err) return res.status(400).json(err);
+    res.json(recommendations);
+  })
+}
+
 exports.get_friends_requests = (req, res, next) => {
 
-  FriendRequest.find({to: req.params.user_id})
+  FriendRequest.find({to: req.user._id})
   .populate('to')
   .populate('from')
   .exec((err, requests) => {
@@ -169,7 +176,11 @@ exports.get_friends_requests = (req, res, next) => {
 exports.send_friend_request = (req, res, next) => {
   FriendRequest.create({from: req.user._id, to: req.params.user_id}, (err, request) => {
     if(err) return res.status(400).json(err);
-    res.json(request);
+    request
+    .populate('from')
+    .populate('to')
+    .execPopulate()
+    .then(req => res.json(req))
   })
 }
 
