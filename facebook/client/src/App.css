@@ -80,6 +80,9 @@
   height: calc(100vh - 55px);
   overflow: scroll;
 }
+#right-col {
+  padding: .5rem .25rem .5rem 2.25rem;
+}
 
 /* hide scrollbars */
 ::-webkit-scrollbar {

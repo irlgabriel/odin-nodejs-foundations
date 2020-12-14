@@ -62,7 +62,7 @@ function App() {
         {/* Individual Profile Pages */}
         {
           users.map(currentUser =>
-            <Route exact path={`/users/${currentUser._id}`} render={() => <Profile {...props} currentUser={user} user={currentUser}/>}></Route>
+            <Route exact path={`/users/${currentUser._id}`} render={() => <Profile {...props} currentUser={currentUser}/>}></Route>
             )
         }
       </Container>
