@@ -11,7 +11,6 @@ import {
   Friends,
   PostPage
 } from "./Pages";
-
 import {
   BrowserRouter as Router,
   Route,

@@ -24,7 +24,7 @@ import {
   ClickDiv,
   FunctionalItem
 } from './Post.components';
-import { Comment, CommentForm } from '..'
+import { Comment, CommentForm, UserList } from '..'
 import { AiFillLike, AiOutlineLike, AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { VscComment } from 'react-icons/vsc';
@@ -173,7 +173,7 @@ const Post = ({user, posts, post, setPosts}) => {
         <TopFooter>
           <div className='d-flex'>
             <RoundWrapper className='mr-1' bgColor='royalblue'>
-              <AiFillLike size={12} fill='white'/>
+              <AiFillLike data-toggle='tooltip' data-html="true" title={<em>asd</em>} size={12} fill='white'/>
             </RoundWrapper>
             <p style={{fontSize: '14px'}} className='mb-0'>{post.likes.length}</p>
           </div>
