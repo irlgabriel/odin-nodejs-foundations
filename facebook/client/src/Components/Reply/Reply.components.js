@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const CommentContainer = styled.div`
+export const ReplyContainer = styled.div`
   display: flex;
   margin-top: .5rem;
   &:last-child{
@@ -14,7 +14,7 @@ export const UserPhoto = styled.img`
   border-radius: 16px;
 `
 
-export const CommentBody = styled.div`
+export const ReplyBody = styled.div`
   padding: .5rem;
   width: 100%;
   border-radius: 10px;
@@ -22,13 +22,13 @@ export const CommentBody = styled.div`
   position: relative;
 `
 
-export const CommentWrapper = styled.div`
+export const ReplyWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding-bottom: .5rem;
 `
 
-export const CommentFooter = styled.div`
+export const ReplyFooter = styled.div`
   display: flex;
   align-items: center;
 `

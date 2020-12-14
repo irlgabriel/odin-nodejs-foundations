@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import {
   Nav,
@@ -15,7 +16,8 @@ import {
   LinkGreyHover,
   RoundedUserDiv,
   TopRightUserImg,
-  RegularLink
+  RegularLink,
+  NewNotifications
 } from './Navbar.components';
 /* React Icons */
 import { FaFacebook, FaUserFriends, FaFacebookMessenger, FaDoorOpen} from 'react-icons/fa';
@@ -24,7 +26,7 @@ import { GrAdd } from 'react-icons/gr';
 import { GoTriangleDown } from 'react-icons/go';
 import { BsArrowLeft } from 'react-icons/bs';
 import { CSSTransition } from 'react-transition-group';
-
+import { Notification } from '..';
 
 
 const Navbar = ({setUser, user}) => {
@@ -34,6 +36,8 @@ const Navbar = ({setUser, user}) => {
   const [showSearch, setShowSearch] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [notificationDropdown, setNotificationDropdown] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [newNotifications, setNewNotifications] = useState([])
 
   const logoutHandler = () => {
     localStorage.removeItem('user');
@@ -41,8 +45,20 @@ const Navbar = ({setUser, user}) => {
     history.push('/');
   }
 
+  useEffect(() => {
+    axios.get(`${user._id}/notifications`)
+    .then(res => {
+      setNotifications(res.data);
+    })
+    .catch(err => console.log(err))
+  }, [])
+
+  useEffect(() => {
+    setNewNotifications(notifications.filter(notification => notification.clicked !== true))
+  }, [notifications])
+
   return (
-    <Nav className='px-1'>
+    <Nav className='sticky-top px-1'>
       <Col sm='3' className='align-items-center d-flex'>
       {!showSearch && <Link to='/home'><FaFacebook className='mr-2' fill='royalblue' size={40} /></Link>}
         {
@@ -88,6 +104,11 @@ const Navbar = ({setUser, user}) => {
         </RoundWrapper>
         <RoundWrapper active={notificationDropdown} onClick={() => setNotificationDropdown(!notificationDropdown)} className='mr-2'>
           <AiFillBell style={{transition: 'all .5s ease-in-out', fill: notificationDropdown ? 'royalblue' : 'black'}} size={16} fill='black'/>
+          {
+            newNotifications.length 
+            ? <NewNotifications count={newNotifications.length.toString()} />
+            : ''
+          }
         </RoundWrapper>
         <RoundWrapper onClick={() => setUserDropdown(!userDropdown)}>
           <GoTriangleDown  style={{
@@ -137,7 +158,12 @@ const Navbar = ({setUser, user}) => {
       >
         <CollapsableDiv>
           <h3>Notifications</h3>
-          <p>New</p>
+          <p className='mb-1'>New</p>
+          {
+            notifications.map(notification => 
+              <Notification notification={notification} notifications={notifications} setNotifications={setNotifications} />
+            )
+          }
         </CollapsableDiv>
       </CSSTransition>
     </Nav>

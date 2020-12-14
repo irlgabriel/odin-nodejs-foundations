@@ -27,7 +27,8 @@ passport.use(new FacebookStrategy({
   profileFields: ['id', 'displayName', 'photos', 'email']
   }, 
   (accessToken, refreshToken, profile, cb) => {
-    User.findOne({ facebookID: profile.id}, (err, user) => {
+    User.findOne({ facebookID: profile.id})
+    .populate('friends').exec((err, user) => {
       if(user) {
         return cb(err, user);
       } else {
@@ -44,7 +45,8 @@ passport.use(new LocalStrategy({
   passwordField: 'password'
 },
   (email, password, done) => {
-    User.findOne({email: email}, (err, user) => {
+    User.findOne({email: email})
+      .populate('friends').exec((err, user) => {
       if(err) return done(err);
       if(!user) return done(null, false);
       //check for password match

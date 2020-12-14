@@ -2,9 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import 'bootstrap/dist/js/bootstrap.bundle';
 import 'bootstrap/dist/css/bootstrap.css';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
+import $ from 'jquery'
+
+
+$(function() {
+  $('[data-toggle=tooltip]').tooltip({html: true})
+})
+
 
 axios.defaults.baseURL = 'http://localhost:5000/';
 

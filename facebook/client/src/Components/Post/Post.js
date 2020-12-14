@@ -24,7 +24,7 @@ import {
   ClickDiv,
   FunctionalItem
 } from './Post.components';
-import { Comment, CommentForm } from '..'
+import { Comment, CommentForm, UserList } from '..'
 import { AiFillLike, AiOutlineLike, AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { VscComment } from 'react-icons/vsc';
@@ -119,7 +119,7 @@ const Post = ({user, posts, post, setPosts}) => {
   return (
     <PostContainer className='mb-2'>
       <Header className='mb-2'>
-        <Link to='/profile'>
+        <Link to={post.user._id === user._id ? '/profile' : `/users/${post.user._id}`}>
           <RoundImage src={post.user.profile_photo}/>
         </Link>
         <FlexContainer>
@@ -153,7 +153,7 @@ const Post = ({user, posts, post, setPosts}) => {
       {
       !edit &&
       <Body>
-        <p className='mb-1'>{post.content}</p>
+        <p className='mb-1' dangerouslySetInnerHTML={{__html: post.content}}></p>
         {post.image && post.image.url && <img className='mb-2' width="100%" src={post.image.url} />}
       </Body>
       }
@@ -173,7 +173,7 @@ const Post = ({user, posts, post, setPosts}) => {
         <TopFooter>
           <div className='d-flex'>
             <RoundWrapper className='mr-1' bgColor='royalblue'>
-              <AiFillLike size={12} fill='white'/>
+              <AiFillLike data-toggle='tooltip' data-html="true" title={<em>asd</em>} size={12} fill='white'/>
             </RoundWrapper>
             <p style={{fontSize: '14px'}} className='mb-0'>{post.likes.length}</p>
           </div>
@@ -185,7 +185,7 @@ const Post = ({user, posts, post, setPosts}) => {
         <BottomFooter>
           <FooterItem onClick={() => likePost()}>
             {
-              !post.likes.includes(user._id) 
+              !post.likes.some(e => e._id === user._id)
               ? <AiOutlineLike size={20} />
               : <AiFillLike size={20} fill='royalblue'/>
             }
@@ -204,7 +204,7 @@ const Post = ({user, posts, post, setPosts}) => {
         <CommentsContainer>
           <hr className='my-1'/>
           {
-            comments.map(comment => 
+            comments.filter(comment => !comment.hasOwnProperty('comment')).map(comment => 
               <Comment key={comment._id} comments={comments} post={post} user={user} comment={comment} setComments={setComments}/>
             )
           }

@@ -12,12 +12,15 @@ const postSchema = new Schema({
 
 }, {timestamps: true})
 
-postSchema.post('findOneAndDelete', function(next) {
+postSchema.pre('findOneAndDelete', function() {
   console.log('running post delete middleware')
-  Comment.deleteMany({post: this._id}, (err, deletedComments) => {
-    if(err) return next(err);
-    console.log(deletedComments);
-    return next();
+  this.find((err, doc) => {
+    if(err) return res.status(400).json(err);
+    console.log(doc);
+    Comment.deleteMany({post: doc._id}, (err, deletedComments) => {
+      if(err) return res.status(400).json(err);
+      //console.log(deletedComments);
+    })
   })
 })
 

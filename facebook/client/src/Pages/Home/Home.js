@@ -22,7 +22,7 @@ const Home = ({posts, setPosts, setUser, user}) => {
   
   return (
     <Container fluid className='px-0'>
-      <Navbar setUser={setUser} user={user}/>
+      <Navbar key='home' setUser={setUser} user={user}/>
       <Row className='mx-0'>
         <Col id='left-col' className='p-2' sm='3'>
           <NavItem to='/profile'>
@@ -43,7 +43,19 @@ const Home = ({posts, setPosts, setUser, user}) => {
             )
           }
         </Col>
-        <Col id='right-col' sm='3'></Col>
+        <Col id='right-col' sm='3'>
+          <h5 style={{color: 'darkgray'}}>Contacts</h5>
+          <hr className='my-2' style={{backgroundColor: 'lightgray'}}></hr>
+          {
+            user.friends.map(friend =>
+              <NavItem to={`/users/${friend._id}`}>
+              <RoundImage src={friend.profile_photo}/>
+  
+              &nbsp;{friend.displayName || friend.first_name + ' ' + friend.last_name}
+            </NavItem>
+            )
+          }
+        </Col>
       </Row>
     </Container>
   )

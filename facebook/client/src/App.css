@@ -67,6 +67,29 @@
   position: relative;
 }
 
+.box-shadow-right {
+  box-shadow: 3px 0px 15px 1px rgba(0,0,0,0.41);
+}
+
+#friends-col {
+  z-index: 2;
+  height: calc(100vh - 55px);
+  overflow: scroll;
+}
+#friends-profile {
+  height: calc(100vh - 55px);
+  overflow: scroll;
+}
+#right-col {
+  padding: .5rem .25rem .5rem 2.25rem;
+}
+
+/* hide scrollbars */
+::-webkit-scrollbar {
+  width: 0px;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
 /* react-transition-group animation classnames */
 
 .slide-from-top-enter {

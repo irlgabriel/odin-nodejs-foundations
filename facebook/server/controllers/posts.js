@@ -1,8 +1,11 @@
 const { body, validationResult} = require('express-validator');
-const Post = require('../models/posts');
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const AWS = require('aws-sdk');
+
+const Post = require('../models/posts');
+const Notification = require('../models/notifications');
+const User = require('../models/users');
 
 // AWS
 const S3 = new AWS.S3();
@@ -16,7 +19,9 @@ const storage = multer.memoryStorage({
 const upload = multer({storage: storage, }).single('image');
 
 exports.get_posts = (req, res, next) => {
-  Post.find().sort('-createdAt').exec((err, posts) => {
+  Post.find().sort('-createdAt')
+  .populate('likes')
+  .exec((err, posts) => {
     if(err) return res.status(400).json(err);
 
     Post.populate(posts, {path: 'user'}, (err, populatedPosts) => {
@@ -96,6 +101,7 @@ exports.edit_post = [
     const { content } = req.body;
     Post.findOneAndUpdate({_id: req.params.post_id}, {content}, {new: true})
     .populate('user')
+    .populate('likes')
     .exec((err, post) => {
       if(err) return res.status(400).json(err);
       res.json(post);
@@ -110,6 +116,7 @@ exports.like_post = (req, res, next) => {
     if(post.likes.includes(user_id)) {
       Post.findOneAndUpdate({_id: req.params.post_id}, {$pull: {likes: user_id}}, {new: true})
         .populate('user')
+        .populate('likes')
         .exec((err, updatedPost) => {
         if(err) return res.status(400).json(err);
         return res.json(updatedPost);
@@ -117,9 +124,17 @@ exports.like_post = (req, res, next) => {
     } else {
       Post.findOneAndUpdate({_id: req.params.post_id}, {$push: {likes: user_id}}, {new: true})
       .populate('user')
-      .exec((err, updatedPost) => {
+      .populate('likes')
+      .exec(async(err, updatedPost) => {
         if(err) return res.status(400).json(err);
-        return res.json(updatedPost);
+
+        // Send notification to the post's author;
+        const from = await User.findOne({_id: user_id});
+        const to = await User.findOne({_id: updatedPost.user._id});
+        Notification.create({from, to, type:'like_post', url: `/posts/${req.params.post_id}`}, (err, notification) => {
+          if(err) return res.status(400).json(err);
+          return res.json(updatedPost);
+        })
       })
     }
   })

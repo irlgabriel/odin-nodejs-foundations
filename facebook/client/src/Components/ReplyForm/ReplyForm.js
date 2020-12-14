@@ -8,7 +8,7 @@ import {
 } from 'reactstrap';
 import { RoundImage, PhotoImage } from './ReplyForm.components';
 
-const ReplyForm = ({post, user, comment, replies, setReplies}) => {
+const ReplyForm = ({post, setShowReply, user, comment, replies, setReplies}) => {
 
   const [content, setContent] = useState('');
   const [showSubmit, setShowSubmit] = useState(false);
@@ -23,8 +23,10 @@ const ReplyForm = ({post, user, comment, replies, setReplies}) => {
     e.preventDefault();
     Axios.post(`/posts/${post._id}/comments/`, {content, comment: comment._id}, config)
     .then(res => {
-      setReplies([...replies, res.data])
+      setShowReply(false);
       setContent('');
+      setReplies([res.data, ...replies])
+
     })
     .catch(err => console.log(err));
   }

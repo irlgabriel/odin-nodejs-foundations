@@ -7,7 +7,8 @@ import {
   CommentWrapper,
   CommentFooter,
   FooterLink,
-  LikesContainer
+  LikesContainer,
+  ReplyCount
 } from './Comment.components';
 import {
   Form, 
@@ -15,6 +16,7 @@ import {
   Button,
   FormGroup,
 } from 'reactstrap';
+import { Reply } from '..';
 import {AiFillLike} from 'react-icons/ai';
 import { BsArrow90DegDown } from 'react-icons/bs';
 import { ReplyForm } from '..';
@@ -28,7 +30,6 @@ const Comment = ({level = 0, comments, comment, setComments, user, post}) => {
   const [replies, setReplies] = useState([]);
   const [content, setContent] = useState(comment.content);
   const [showEdit, setEdit] = useState(false);
-  const liked = comment.likes.includes(user._id);
 
   const config = {
     headers: 
@@ -83,11 +84,9 @@ const Comment = ({level = 0, comments, comment, setComments, user, post}) => {
   }
 
   useEffect(() => {
-    axios.get(`/posts/${post._id}/comments/${comment._id}`)
-    .then(res => {
-      setReplies(res.data);
-    })
-    .catch(err => console.log(err))
+    if(comments && comment) {
+      setReplies(comments.filter(comm => comm.hasOwnProperty('comment') && comm.comment._id === comment._id))
+    }
   }, [])
 
   useEffect(() => {
@@ -100,12 +99,12 @@ const Comment = ({level = 0, comments, comment, setComments, user, post}) => {
   return (
     <CommentContainer>
       <UserPhoto className='mr-2' src={comment.user.profile_photo} />
-      <CommentWrapper className={showEdit ? 'w-100' : ''}>
+      <CommentWrapper className={'w-100'}>
         <CommentBody>
         <h6 className='mb-0'>{comment.user.display_name || comment.user.first_name + ' ' + comment.user.last_name}</h6>
         {
           !showEdit 
-          ? <p className='mb-0'>{comment.content}</p>
+          ? <p className='mb-0' dangerouslySetInnerHTML={{__html: comment.content}} ></p>
           : 
           <Form onSubmit={(e) => editHandler(e)} className='w-100'>
             <FormGroup>
@@ -119,14 +118,14 @@ const Comment = ({level = 0, comments, comment, setComments, user, post}) => {
         {
           !showEdit && 
           <LikesContainer>
-            <AiFillLike fill={liked ? 'royalblue' : ''} size={12}/>
+            <AiFillLike fill={comment.likes.some(e => e._id === user._id) ? 'royalblue' : ''} size={12}/>
             &nbsp;
             <p style={{fontSize: '12px'}} className='d-inline-block mb-0'>{comment.likes.length}</p>
           </LikesContainer>
         }
         </CommentBody>
         <CommentFooter>
-          <FooterLink color={liked ? 'royalblue' : 'black'} onClick={() => likeComment()} bold>
+          <FooterLink color={comment.likes.some(e => e._id === user._id) ? 'royalblue' : 'black'} onClick={() => likeComment()} bold>
             Like
           </FooterLink>
           {
@@ -156,17 +155,17 @@ const Comment = ({level = 0, comments, comment, setComments, user, post}) => {
         replies.length && !showReplies ?
         <div onClick={() => setShowReplies(true)} className='pl-3 pt-2 d-flex align-items-center'>
           <BsArrow90DegDown size={24} fill='black' style={{transform: 'rotate(-90deg)'}}/>&nbsp;
-          <p className='mb-0 font-weight-bold'>{replies.length} Replies</p>
+          <ReplyCount className='mb-0 font-weight-bold'>{replies.length} Replies</ReplyCount>
         </div>
         : ''
       }
       {
         showReplies && 
-        replies.map(reply => <Comment level={level + 1} setShowReply={setShowReply} user={user} setComments={setReplies} comments={replies} comment={reply} post={comment} />)
+        replies.map(reply => <Reply key={reply._id} reply={reply} user={user} setReplies={setReplies} replies={replies} comment={comment} post={post} />)
       }
       {
         showReplyForm && 
-        <ReplyForm user={user} post={post} comment={comment} setShowReply={setShowReply} setComments={setComments} replies={replies} setReplies={setReplies} />
+        <ReplyForm key={comment._id} user={user} post={post} comment={comment} replies={replies} setReplies={setReplies} setShowReply={setShowReply} setComments={setComments}/>
       } 
       </CommentWrapper>
     </CommentContainer>
