@@ -49,7 +49,7 @@ const CommentForm = ({post, user, comments, setComments}) => {
     <Form onSubmit={(e) => submitHandler(e)}>
       {
         imageForm && 
-        <ImageForm resources={comments} setResource={setComments} setImageForm={setImageForm} path={`/posts/${post._id}/comments/${comment._id}`} />
+        {/*<ImageForm resources={comments} setResource={setComments} setImageForm={setImageForm} path={`/posts/${post._id}/comments/${comment._id}`} />*/}
       }
       <div className='d-flex align-items-center mb-2'>
         <UserImage className='mr-2' src={user.profile_photo}/>
