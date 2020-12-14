@@ -7,12 +7,12 @@ const notificationsController = require('../controllers/notifications')
 
 /** Notifications */
 // GET
-router.get('/', notificationsController.get_notification);
+router.get('/', passport.authenticate('jwt'), notificationsController.get_notification);
 
 // PUT - read notification
-router.put('/:notification_id', notificationsController.read_notification);
+router.put('/:notification_id', passport.authenticate('jwt'), notificationsController.read_notification);
 
 // DELETE - delete notification
-router.delete('/:notification_id', notificationsController.delete_notification);
+router.delete('/:notification_id', passport.authenticate('jwt'), notificationsController.delete_notification);
 
 module.exports = router;
