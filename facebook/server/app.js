@@ -13,6 +13,8 @@ const mongoose = require('mongoose')
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
 const commentsRouter = require('./routes/comment');
+const friendRequestsRouter = require('./routes/friend_requests');
+const notificationsRouter = require('./routes/notifications');
 
 mongoose.connect(process.env.DB_STRING, {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true});
 mongoose.connection.on('open', () => console.log('Connected to mongoDB'));
@@ -31,7 +33,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', usersRouter);
 app.use('/posts', postsRouter);
 app.use('/posts/:post_id/comments', commentsRouter);
-
+app.use('/notifcations', notificationsRouter);
+app.use('/friend_requests', friendRequestsRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
