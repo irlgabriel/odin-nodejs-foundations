@@ -136,6 +136,8 @@ exports.get_users = (req, res, next) => {
 exports.get_notification = (req, res, next) => {
   Notification.find({to: req.params.user_id})
     .sort('-createdAt')
+    .populate('to')
+    .populate('from')
     .exec((err, notifications) => {
     if(err) return res.status(400).json(err);
     res.json(notifications);
