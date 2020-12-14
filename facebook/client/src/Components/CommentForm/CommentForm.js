@@ -54,7 +54,7 @@ const CommentForm = ({post, user, comments, setComments}) => {
       <div className='d-flex align-items-center mb-2'>
         <UserImage className='mr-2' src={user.profile_photo}/>
           <FormGroup className='mb-0 w-100 position-relative'>
-            <Input onFocus={() => setSubmit(true)} style={{borderRadius: '16px'}} value={content} className='w-100 py-1' placeholder='Write a comment..' type='textarea' rows={1} name='content' onChange={(e) => {setContent(e.target.value); onChangeHandler(e)}}/>
+            <Input onFocus={() => setSubmit(true)} style={{borderRadius: '16px'}} value={content} className='w-100 py-1 pr-5' placeholder='Write a comment..' type='textarea' rows={1} name='content' onChange={(e) => {setContent(e.target.value); onChangeHandler(e)}}/>
             <PhotoImage onClick={() => setImageForm(true)} size={24} fill='green'/>
           </FormGroup>
       </div>

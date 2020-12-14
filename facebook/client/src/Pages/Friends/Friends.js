@@ -53,7 +53,7 @@ const Friends = ({user, posts, setUser, setPosts}) => {
   return (
     <Container fluid className='px-0'>
       <Navbar key='friends' setUser={setUser} user={user}/>
-      <Row className='p-0 m-0'>
+      <Row className='p-0 m-0' style={{height: 'auto'}}>
         <Col id='friends-col' className='box-shadow-right p-0 px-2' sm='4' style={{background: 'white'}}>
           <h2>Friends</h2>
           <h5>{requests.length} Friend Requests</h5>

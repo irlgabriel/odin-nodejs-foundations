@@ -52,7 +52,7 @@ const ReplyForm = ({post, setShowReply, user, comment, replies, setReplies}) => 
     <Form onSubmit={(e) => submitHandler(e)}>
       <FormGroup className='mb-2 mt-1 d-flex align-items-center position-relative'>
         <RoundImage className='mr-2' src={user.profile_photo}/>
-        <Input value={content} onFocus={() => setShowSubmit(true)} onChange={(e) => {setContent(e.target.value); onChangeHandler(e)}} placeholder='Reply..' rows={1} style={{borderRadius: '16px'}} type='textarea' />
+        <Input value={content} onFocus={() => setShowSubmit(true)} onChange={(e) => {setContent(e.target.value); onChangeHandler(e)}} placeholder='Reply..' rows={1} style={{borderRadius: '16px', paddingRight: '3rem'}} type='textarea' />
         <PhotoImage size={24} fill='green' />
       </FormGroup>
       {

@@ -120,14 +120,14 @@ const Reply = ({level = 0, reply, replies, setReplies, comment, user, post}) => 
           </FooterLink>
           {
             user._id === reply.user._id &&
-            <FooterLink bold onClick={() => deleteHandler()} color='red'>
+            <FooterLink bold onClick={() => deleteHandler()} color='gray'>
               <span style={{color: 'black'}}>&middot;&nbsp;&nbsp;</span>
               Delete
             </FooterLink>
           }
            {
             user._id === reply.user._id &&
-            <FooterLink bold onClick={() => setEdit(!showEdit)} color='khaki'>
+            <FooterLink bold onClick={() => setEdit(!showEdit)} color='gray'>
               Edit
             </FooterLink>
           }
