@@ -9,3 +9,4 @@ export { default as ImageForm } from './ImageForm/ImageForm';
 export { default as Notification } from './Notification/Notification';
 export { default as FriendRequest } from './FriendRequest/FriendRequest';
 export { default as UserList } from './UserList/UserList';
+export { default as Reply } from './Reply/Reply';

@@ -47,7 +47,7 @@ const Profile = ({showNav = true, posts, setPosts, user, setUser, currentUser}) 
         <ImageForm path={`/${user._id}/cover_photo`} setResource={setUser} resource={user} setImageForm={setCoverPhotoForm} />
       }
       <div style={{background: 'white'}}>
-        {showNav && <Navbar user={user} setUser={setUser} />}
+        {showNav && <Navbar key='profile' user={user} setUser={setUser} />}
         <ProfileSection className='px-0'>
           {
             currentUser.cover_photo 

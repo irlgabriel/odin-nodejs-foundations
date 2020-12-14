@@ -52,11 +52,12 @@ const Friends = ({user, posts, setUser, setPosts}) => {
 
   return (
     <Container fluid className='px-0'>
-      <Navbar setUser={setUser} user={user}/>
+      <Navbar key='friends' setUser={setUser} user={user}/>
       <Row className='p-0 m-0'>
-        <Col id='friends-col' className='box-shadow-right p-0 pl-2' sm='4' style={{background: 'white'}}>
+        <Col id='friends-col' className='box-shadow-right p-0 px-2' sm='4' style={{background: 'white'}}>
           <h2>Friends</h2>
           <h5>{requests.length} Friend Requests</h5>
+          <hr className='my-1'></hr>
           {/* Friend Requests */}
           {
             requests.map(request => 
@@ -64,6 +65,7 @@ const Friends = ({user, posts, setUser, setPosts}) => {
             )
           }
           <h5>People you may know</h5>
+          <hr className='my-1'></hr>
           {
             users.map(from => 
               <FriendRequest requests={requests} setRequests={setRequests} isSuggestion setPreviewUser={setPreviewUser} to={user} from={from} />

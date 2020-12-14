@@ -185,7 +185,7 @@ const Post = ({user, posts, post, setPosts}) => {
         <BottomFooter>
           <FooterItem onClick={() => likePost()}>
             {
-              !post.likes.includes(user._id) 
+              !post.likes.some(e => e._id === user._id)
               ? <AiOutlineLike size={20} />
               : <AiFillLike size={20} fill='royalblue'/>
             }
@@ -204,7 +204,7 @@ const Post = ({user, posts, post, setPosts}) => {
         <CommentsContainer>
           <hr className='my-1'/>
           {
-            comments.map(comment => 
+            comments.filter(comment => !comment.hasOwnProperty('comment')).map(comment => 
               <Comment key={comment._id} comments={comments} post={post} user={user} comment={comment} setComments={setComments}/>
             )
           }
