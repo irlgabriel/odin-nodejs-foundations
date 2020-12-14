@@ -39,7 +39,8 @@ exports.register = [
 
     const {email, first_name, last_name, password} = req.body;
 
-    User.findOne({email: email}, (err, user) => {
+    User.findOne({email: email})
+      .populate('friends').exec((err, user) => {
       if(err) return res.status(400).json(err);
       if(user) return res.status(400).json({msg: 'Email already in use'});
       
