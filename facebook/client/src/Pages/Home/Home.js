@@ -25,7 +25,7 @@ const Home = ({posts, setPosts, setUser, user}) => {
     <Container fluid className='px-0'>
       <Navbar key='home' setUser={setUser} user={user}/>
       <Row className='mx-0'>
-        <Col id='left-col' className='p-2' sm='3'>
+        <Col id='left-col' className='p-2 d-sm-none d-lg-block' sm='3' lg='3'>
           <NavItem to='/profile'>
             <RoundImage src={user.profile_photo}/>
 
@@ -36,7 +36,7 @@ const Home = ({posts, setPosts, setUser, user}) => {
             &nbsp;Friends
           </NavItem>
         </Col>
-        <Col id='mid-col' sm='6'>
+        <Col id='mid-col' sm='12' md='8' lg='6'>
           <PostForm posts={posts} setPosts={setPosts} user={user}/>
           {
             posts.map(post => 
@@ -44,7 +44,7 @@ const Home = ({posts, setPosts, setUser, user}) => {
             )
           }
         </Col>
-        <Col id='right-col' sm='3'>
+        <Col id='right-col' sm='5' md='4' lg='3' className='d-sm-none d-md-block'>
           <h5 style={{color: 'darkgray'}}>Contacts</h5>
           <hr className='my-2' style={{backgroundColor: 'lightgray'}}></hr>
           {
