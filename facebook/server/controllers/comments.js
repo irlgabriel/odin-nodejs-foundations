@@ -1,8 +1,22 @@
 const { body, validationResult } = require('express-validator');
+const multer = require('multer');
+const AWS = require('aws-sdk');
+const async = require('async');
 
 const Comment = require('../models/comments');
 const Notification = require('../models/notifications');
 const User = require('../models/users');
+
+// AWS
+const S3 = new AWS.S3();
+
+const storage = multer.memoryStorage({
+  destination: (req, file, callback) => {
+    callback(null, '')
+  }
+})
+
+const upload = multer({storage: storage, }).single('image');
 
 module.exports.get_comments = (req, res, next) => {
   Comment.find({post: req.params.post_id})
@@ -30,24 +44,58 @@ module.exports.get_replies = (req, res, next) => {
 }
 
 module.exports.create_comment = [
-  body('content').trim().isLength({min: 1}).escape(),
+  //body('content').trim().isLength({min: 1}).escape(),
+  upload,
   (req, res, next) => {
     const errors = validationResult(req);
 
     if(!errors.isEmpty()) return res.status(400).json(errors.array());
 
-    const { content, comment } = req.body;
-    console.log(req.params);
-    Comment.create({content, user: req.user._id, post: req.params.post_id, comment}, (err, comment) => {
+    const newComment = 
+    {
+      content: req.body.content, 
+      comment: req.body.comment,
+      user: req.user._id, 
+      post: req.params.post_id,
+    };
+
+    Comment.create(newComment, (err, comment) => {
       if(err) return res.status(400).json(err);
-      comment
-      .populate('user')
-      .populate('comment')
-      .populate('post')
-      .execPopulate()
-      .then(comm => res.json(comm))
-      .catch(err => console.log(err))
+      if(req.file) {
+        const originalName = req.file.originalname.split('.');
+        const format = originalName[originalName.length - 1];
+
+        const params = {
+          Bucket: process.env.AWS_BUCKET,
+          Key: `${comment._id}.${format}`,
+          Body: req.file.buffer
+        };
+        
+        S3.upload(params, (err, data) => {
+          if(err) {
+            console.log(err);
+          } else {
+            Comment.findOneAndUpdate({_id: comment._id}, {image: {url: data.Location, id: comment._id.toString() + '.' + format}}, {new: true}, (err, comment) =>{
+              if(err) console.log(err);
+              comment
+              .populate('user')
+              .populate('comment')
+              .populate('post')
+              .execPopulate()
+              .then(comment => res.json(comment))
+            })
+          }
+        })
+      } else {
+        comment
+        .populate('user')
+        .populate('comment')
+        .populate('post')
+        .execPopulate()
+        .then(comment => res.json(comment))
+      }
     })
+
 }]
 
 module.exports.edit_comment = [
@@ -121,6 +169,18 @@ module.exports.like_comment = (req, res, next) => {
 module.exports.delete_comment = (req, res, next) => {
   Comment.findOneAndRemove({_id: req.params.comment_id}, (err, comment) => {
     if(err) return res.status(400).json(err);
+
+    // Delete image from AWS if there's any
+    if(comment.image) {
+      const params = {
+        Bucket: process.env.AWS_BUCKET,
+        Key: comment.image.id,
+      }
+      S3.deleteObject(params, (err, data) => {
+        if(err) next(err);
+      })
+    }
+
     Comment.deleteMany({comment_id: comment._id}, (err, deletedComments) => {
       if(err) return res.status(400).json(err);
     })
