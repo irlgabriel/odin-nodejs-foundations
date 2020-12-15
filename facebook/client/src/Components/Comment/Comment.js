@@ -21,6 +21,7 @@ import { AiFillLike } from 'react-icons/ai';
 import { BsArrow90DegDown } from 'react-icons/bs';
 import { ReplyForm } from '..';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { FcRotateCamera } from 'react-icons/fc';
 
 const Comment = ({level = 0, comments, comment, setComments, user, post}) => {
@@ -98,7 +99,7 @@ const Comment = ({level = 0, comments, comment, setComments, user, post}) => {
 
   return (
     <CommentContainer>
-      <UserPhoto className='mr-2' src={comment.user.profile_photo} />
+      <Link to={user._id === comment.user._id ? '/profile' : `/users/${comment.user._id}`}><UserPhoto className='mr-2' src={comment.user.profile_photo} /></Link>
       <CommentWrapper className={'w-100'}>
         <CommentBody>
         <h6 className='mb-0'>{comment.user.display_name || comment.user.first_name + ' ' + comment.user.last_name}</h6>
@@ -106,7 +107,7 @@ const Comment = ({level = 0, comments, comment, setComments, user, post}) => {
           !showEdit 
           ? <div>
               <p className='mb-0' dangerouslySetInnerHTML={{__html: comment.content}} ></p>
-              {comment.image && <img width='100%' src={comment.image.url} />}
+              {comment.image && <Link to='/profile'><img width='100%' src={comment.image.url} /></Link>}
             </div>
           : 
           <Form onSubmit={(e) => editHandler(e)} className='w-100'>

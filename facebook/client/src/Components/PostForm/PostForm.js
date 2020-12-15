@@ -16,6 +16,7 @@ import {
   FcStackOfPhotos
 } from 'react-icons/fc';
 import { CSSTransition } from 'react-transition-group';
+import { Link } from 'react-router-dom';
 import { LoadingOverlay } from '..';
 
 const PostForm = ({user, setPosts, posts}) => {
@@ -51,7 +52,7 @@ const PostForm = ({user, setPosts, posts}) => {
   const  onChangeHandler = (e) => {
     // Reset field height
     e.target.style.height = 'inherit';
-    
+
     // Calculate the height
     const height = e.target.scrollHeight
 
@@ -65,8 +66,8 @@ const PostForm = ({user, setPosts, posts}) => {
       }
       <Form encType="multipart/form-data" onSubmit={(e) => submitHandler(e)}>
         <div className='d-flex align-items-center mb-2'>
-          <RoundImage className='mr-2' src={user.profile_photo} width='36px'/>
-          <Input onFocus={() => setExpandForm(true)} value={content} onChange={(e) => {setContent(e.target.value); onChangeHandler(e)}} style={{width: '90%', borderRadius: '24px', background: '#f0f2f5', height: 'auto'}} className='border-0' type='textarea' rows='1' placeholder={`What's on your mind, ${user.first_name}?`} />
+          <Link to='/profile'><RoundImage className='mr-2' src={user.profile_photo} width='36px'/></Link>
+          <Input onFocus={() => setExpandForm(true)} value={content} onChange={(e) => {setContent(e.target.value); onChangeHandler(e)}} style={{width: '90%', borderRadius: '24px', background: '#f0f2f5', height: '36px'}} className='border-0' type='textarea' rows='1' placeholder={`What's on your mind, ${user.first_name}?`} />
         </div>
         <CSSTransition
           in={showImageForm}

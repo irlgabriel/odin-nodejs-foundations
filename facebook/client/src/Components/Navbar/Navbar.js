@@ -88,22 +88,12 @@ const Navbar = ({setUser, user}) => {
       </Col>
 
       {/** >768px */} 
-      <Col sm='5' id='nav-mid' className='d-flex justify-content-center align-items-center'>
+      <Col sm='5' id='nav-mid' className='d-flex align-items-center'>
         <NavMidItem to='/home' active={location.pathname === '/home'} className='mid-nav-item'>
-          {
-            location.pathname === '/home' 
-            ? <AiFillHome size={32} fill={'royalblue'} className='mr-2'/>
-            : <AiOutlineHome size={32} color='black' className='mr-2'/>
-          
-          }
+          <AiFillHome size={32} fill={location.pathname === '/home' ? 'royalblue' : 'gray'} className='mr-2'/>
         </NavMidItem>
         <NavMidItem to='/friends' active={location.pathname === '/friends'} className='mid-nav-item'>
-          {
-            location.pathname === '/friends'
-            ? <FaUserFriends fill={ 'royalblue'} size={32} />
-            : <HiOutlineUsers size={32} color='black' />
-            
-          }
+          <FaUserFriends fill={location.pathname === '/friends' ? 'royalblue' : 'gray'} size={32} />
         </NavMidItem>
       </Col>
       {/** <768px */}
