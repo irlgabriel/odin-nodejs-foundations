@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import {
   Form,
   Input,
@@ -11,9 +11,12 @@ import {
   PhotoImage
 } from './CommentForm.components';
 import { ImageForm } from '..';
+import autosize from 'autosize';
+
 
 const CommentForm = ({post, user, comments, setComments}) => {
 
+  const textArea = useRef(null);
   const [file, setFile] = useState(null);
   const [imageForm, setImageForm] = useState(false);
   const [content, setContent] = useState('');
@@ -38,18 +41,15 @@ const CommentForm = ({post, user, comments, setComments}) => {
     // Reset field height
     e.target.style.height = 'inherit';
 
-    // Get the computed styles for the element
-    const computed = window.getComputedStyle(e.target);
-
     // Calculate the height
-    const height = parseInt(computed.getPropertyValue('border-top-width'), 10)
-                 + parseInt(computed.getPropertyValue('padding-top'), 10)
-                 + e.target.scrollHeight
-                 + parseInt(computed.getPropertyValue('padding-bottom'), 10)
-                 + parseInt(computed.getPropertyValue('border-bottom-width'), 10);
+    const height = e.target.scrollHeight
+
 
     e.target.style.height = `${height}px`;
 }
+  useEffect(() => {
+    autosize(textArea)
+  }, [textArea])
   return (
     <Form onSubmit={(e) => submitHandler(e)}>
 
