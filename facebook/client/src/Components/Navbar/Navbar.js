@@ -17,7 +17,8 @@ import {
   RoundedUserDiv,
   TopRightUserImg,
   RegularLink,
-  NewNotifications
+  NewNotifications,
+  MenuIcon
 } from './Navbar.components';
 /* React Icons */
 import { FaFacebook, FaUserFriends, FaFacebookMessenger, FaDoorOpen, FaRoad} from 'react-icons/fa';
@@ -40,6 +41,7 @@ const Navbar = ({setUser, user}) => {
     }
   }
 
+  const [menu, setMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [notificationDropdown, setNotificationDropdown] = useState(false);
@@ -85,7 +87,7 @@ const Navbar = ({setUser, user}) => {
         }
       </Col>
 
-
+      {/** >768px */} 
       <Col sm='5' id='nav-mid' className='d-flex justify-content-center align-items-center'>
         <NavMidItem to='/home' active={location.pathname === '/home'} className='mid-nav-item'>
           {
@@ -103,6 +105,10 @@ const Navbar = ({setUser, user}) => {
             
           }
         </NavMidItem>
+      </Col>
+      {/** <768px */}
+      <Col className='align-items-center d-sm-flex d-md-none'>
+        <MenuIcon onClick={() => setMenu(true)} />
       </Col>
 
 

@@ -12,22 +12,40 @@ import {
   TransparentBackground
 } from './ImageForm.components'
 
-const ImageForm = ({path, setImageForm, setResource, resources}) => {
+const ImageForm = ({method = 'PUT', content, path, setImageForm, setResource, resources}) => {
 
   const [file, setFile] = useState(null);
 
+  const config = {
+    headers: {
+      Authorization: `bearer ${JSON.parse(localStorage.getItem('user')).token}`
+    }
+  }
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    e.stopPropagation(); // stop propagating submit the the comment form
     const formData = new FormData();
+    if(content) formData.append('content', content);
     formData.append('image', file)
-    Axios.put(path, formData)
-    .then(res => {
-      setImageForm(false);
-      typeof resources === 'Array'
-      ? setResource([...resources, res.data])
-      : setResource(res.data);
-    })
-    .catch(err => console.log(err))
+    if (method === 'PUT') {
+      Axios.put(path, formData, config)
+      .then(res => {
+        setImageForm(false);
+        typeof resources === 'Array'
+        ? setResource([...resources, res.data])
+        : setResource(res.data);
+      })
+      .catch(err => console.log(err))
+    } else {
+      Axios.post(path, fromData, config)
+      .then( res => {
+        setImageForm(false);
+        typeof resources === 'Array' 
+        ? setResource([...resources, res.data])
+        : setResource(res.data);
+      })
+    }
   }
 
   return (

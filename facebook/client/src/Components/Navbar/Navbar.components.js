@@ -1,5 +1,14 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { FiMenu } from 'react-icons/fi';
+
+export const MenuIcon = styled(FiMenu)`
+  font-size: 32px;
+  &:hover {
+    cursor: pointer;
+    opacity: .75;
+  }
+`
 
 export const RegularLink = styled(Link)`
   color: black;

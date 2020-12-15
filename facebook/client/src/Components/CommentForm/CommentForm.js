@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import {
   Form,
   Input,
@@ -14,17 +14,22 @@ import { ImageForm } from '..';
 
 const CommentForm = ({post, user, comments, setComments}) => {
 
+  const [file, setFile] = useState(null);
   const [imageForm, setImageForm] = useState(false);
   const [content, setContent] = useState('');
   const [showSubmit, setSubmit] = useState(false);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    Axios.post(`/posts/${post._id}/comments`, {content}, {headers: {Authorization: 'bearer ' + JSON.parse(localStorage.getItem('user')).token}})
+    const formData = new FormData();
+    formData.append('content', content)
+    if(file) formData.append('image', file);
+    Axios.post(`/posts/${post._id}/comments`, formData, {headers: {Authorization: 'bearer ' + JSON.parse(localStorage.getItem('user')).token}})
     .then(res => {
-      console.log(res.data);
       setContent('');
-      setComments([...comments, res.data]);
+      setImageForm(false);
+      setFile(null);
+      setComments([res.data, ...comments]);
     })
     .catch(err => console.log(err));
   }
@@ -47,17 +52,18 @@ const CommentForm = ({post, user, comments, setComments}) => {
 }
   return (
     <Form onSubmit={(e) => submitHandler(e)}>
-      {
-        imageForm && 
-        {/*<ImageForm resources={comments} setResource={setComments} setImageForm={setImageForm} path={`/posts/${post._id}/comments/${comment._id}`} />*/}
-      }
+
       <div className='d-flex align-items-center mb-2'>
         <UserImage className='mr-2' src={user.profile_photo}/>
           <FormGroup className='mb-0 w-100 position-relative'>
             <Input onFocus={() => setSubmit(true)} style={{borderRadius: '16px'}} value={content} className='w-100 py-1 pr-5' placeholder='Write a comment..' type='textarea' rows={1} name='content' onChange={(e) => {setContent(e.target.value); onChangeHandler(e)}}/>
-            <PhotoImage onClick={() => setImageForm(true)} size={24} fill='green'/>
+            <PhotoImage onClick={() => setImageForm(!imageForm)} size={24} fill='green'/>
           </FormGroup>
       </div>
+      {
+        imageForm && 
+        <Input onChange={(e) => setFile(e.target.files[0])} type='file' name='image' />
+      }      
       {
         showSubmit &&
         <FormGroup className='text-right'>
