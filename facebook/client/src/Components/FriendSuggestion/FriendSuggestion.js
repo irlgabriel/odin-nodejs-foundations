@@ -1,44 +1,30 @@
-import {
-  Container,
-  Row,
-  Col,
-  Button
-} from 'reactstrap';
+import { Container, Row, Col, Button } from "reactstrap";
 import {
   FriendsContainer,
   FriendInfo,
-  RoundImage
-} from './FriendSuggestion.components';
+  RoundImage,
+} from "./FriendSuggestion.components";
 
-const FriendSuggestion = ({setPreviewUser, suggestions, setSuggestions, from, to, _id}) => {
-
-  const clickHandler = (e) => {
-    e.stopPropagation();
-    setPreviewUser(to);
-  }
-
-  
-  const sendRequest = () => {
-    Axios.post(`/friend_requests/${to._id}/send`, {}, config)
-    .then(res => {
-      setSuggestions(suggestions.filter(suggestion => suggestion._id !== res.data.to._id));
-    })
-  }
-
+const FriendSuggestion = ({ onClick, sendRequest, to }) => {
   return (
-    <FriendsContainer onClick={(e) => clickHandler(e)} dataId={to._id}>
+    <FriendsContainer data-id={to._id} onClick={(e) => onClick(e)}>
       <RoundImage src={to.profile_photo} />
-      <FriendInfo className='w-100'>
-        <h4>{to.display_name || to.first_name + ' ' + to.last_name}</h4>
+      <FriendInfo className="w-100">
+        <h4>{to.display_name || to.first_name + " " + to.last_name}</h4>
         {
-        <div>
-          <Button onClick={() => sendRequest()} color='primary' className='w-100'>Send Friend Request</Button>
-        </div>
+          <div>
+            <Button
+              onClick={() => sendRequest(to._id)}
+              color="primary"
+              className="w-100"
+            >
+              Send Friend Request
+            </Button>
+          </div>
         }
-        
       </FriendInfo>
     </FriendsContainer>
-  )
-}
+  );
+};
 
 export default FriendSuggestion;

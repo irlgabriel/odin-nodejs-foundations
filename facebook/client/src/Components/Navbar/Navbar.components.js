@@ -1,14 +1,14 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { FiMenu } from 'react-icons/fi';
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { FiMenu } from "react-icons/fi";
 
 export const MenuIcon = styled(FiMenu)`
   font-size: 32px;
   &:hover {
     cursor: pointer;
-    opacity: .75;
+    opacity: 0.75;
   }
-`
+`;
 
 export const RegularLink = styled(Link)`
   color: black;
@@ -16,7 +16,7 @@ export const RegularLink = styled(Link)`
     text-decoration: none;
     color: black;
   }
-`
+`;
 
 export const NavMidItem = styled(Link)`
   width: 100px;
@@ -24,8 +24,9 @@ export const NavMidItem = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: ${({active}) => (active ? '3px solid royalblue' : '3px solid white')};
-`
+  border-bottom: ${({ active }) =>
+    active ? "3px solid royalblue" : "3px solid white"};
+`;
 
 export const RoundWrapper = styled.div`
   position: relative;
@@ -40,37 +41,36 @@ export const RoundWrapper = styled.div`
     cursor: pointer;
     background: lightgray;
   }
-`
+`;
 
 export const CollapsableDiv = styled.div`
-  padding: .5rem;
+  padding: 0.5rem;
   border-radius: 6px;
   background: white;
   position: absolute;
   top: 60px;
   right: 15px;
   width: 350px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
-`
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+`;
 
 export const RoundImage = styled.img`
   border-radius: 32px;
   width: 64px;
   height: 64px;
-  
-`
+`;
 
 export const GrayHover = styled.div`
   display: flex;
   align-items: center;
-  padding: .5rem;
+  padding: 0.5rem;
   background: white;
   border-radius: 6px;
   &:hover {
     background: #f0f2f5;
     cursor: pointer;
   }
-`
+`;
 
 export const LinkGreyHover = styled(Link)`
   color: black;
@@ -79,27 +79,27 @@ export const LinkGreyHover = styled(Link)`
     text-decoration: none;
     color: black;
   }
-`
+`;
 
 export const RoundedUserDiv = styled.div`
-  background: ${({active}) => (active ? 'rgba(0,44,200,.2)' : 'white')};
-  color: ${({active}) => (active ? 'royalblue' : 'black')};
+  background: ${({ active }) => (active ? "rgba(0,44,200,.2)" : "white")};
+  color: ${({ active }) => (active ? "royalblue" : "black")};
   font-weight: bold;
   border-radius: 16px;
-  padding: .25rem;
+  padding: 0.25rem;
   display: flex;
   align-items: center;
   &:hover {
     background: #f0f2f5;
     cursor: pointer;
   }
-`
+`;
 
 export const TopRightUserImg = styled.img`
   width: 28px;
   height: 28px;
   border-radius: 14px;
-`
+`;
 
 export const NewNotifications = styled.div`
   display: flex;
@@ -116,6 +116,6 @@ export const NewNotifications = styled.div`
   font-size: 13px;
 
   &:before {
-    content: '${({count}) => (count)}'
+    content: "${({ count }) => count}";
   }
-`
+`;

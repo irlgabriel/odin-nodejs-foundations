@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const AbsoluteContainer = styled.div`
   position: absolute;
@@ -9,5 +9,5 @@ export const AbsoluteContainer = styled.div`
   display: grid;
   place-items: center;
   background: white;
-  opacity: .75;
-`
+  opacity: 0.75;
+`;

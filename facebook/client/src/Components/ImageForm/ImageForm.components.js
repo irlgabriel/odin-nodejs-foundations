@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const TransparentBackground = styled.div`
   position: fixed;
@@ -6,6 +6,6 @@ export const TransparentBackground = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,60,100,.45);
+  background: rgba(0, 60, 100, 0.45);
   z-index: 570;
-`
+`;
