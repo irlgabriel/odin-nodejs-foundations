@@ -10,8 +10,14 @@ import axios from 'axios';
 const Notification = ({notification, notifications, setNotifications}) => {
   const history = useHistory();
 
+  const config = {
+    headers: {
+      Authorization: 'bearer ' + JSON.parse(localStorage.getItem('user')).token
+    }
+  }
+
   const clickHandler = () => {
-    axios.put(`/notifications/${notification._id}`)
+    axios.put(`/notifications/${notification._id}`, {}, config)
     .then(res => {
       setNotifications(notifications.map(notification => notification._id === res.data._id ? res.data : notification));
       history.push(notification.url);
@@ -20,7 +26,7 @@ const Notification = ({notification, notifications, setNotifications}) => {
 
   const deleteHandler = (e) => {
     e.stopPropagation();
-    axios.delete(`/notifications/${notification._id}`)
+    axios.delete(`/notifications/${notification._id}`, config)
     .then(res => {
       setNotifications(notifications.filter(notification => notification._id !== res.data._id));
     })
