@@ -31,6 +31,7 @@ function App() {
   }, [localStorage])
 
   useEffect(() => {
+    setLoading(true);
     Promise.all([
      // Get posts
       axios.get('/posts')

@@ -15,8 +15,6 @@ import { FaUserFriends } from 'react-icons/fa';
 const Home = ({posts, setPosts, setUser, user}) => {
   const history = useHistory();
 
-
-
   useEffect(() => {
     if(!user) history.push('/');
   }, [user])
