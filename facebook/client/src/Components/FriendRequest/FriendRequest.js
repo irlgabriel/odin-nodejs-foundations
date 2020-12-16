@@ -6,7 +6,7 @@ import {
 import { Button } from 'reactstrap';
 import Axios from 'axios';
 
-const FriendRequest = ({requests, setRequests, isSuggestion = false, setPreviewUser, to, from, _id}) => {
+const FriendRequest = ({suggestions, setSuggestions, users, requests, setRequests, isSuggestion = false, setPreviewUser, to, from, _id}) => {
 
   const config = {
     headers: {
@@ -16,25 +16,25 @@ const FriendRequest = ({requests, setRequests, isSuggestion = false, setPreviewU
 
   const clickHandler = (e) => {
     e.stopPropagation();
-    setPreviewUser(from);
+    setPreviewUser(to);
   }
 
   const sendRequest = () => {
-    Axios.post(`/send_friend_request/${from._id}`, {}, config)
+    Axios.post(`/friend_requests/${to._id}/send`, {}, config)
     .then(res => {
-      // no need to do anything.
+      setSuggestions(suggestions.filter(suggestion => suggestion._id !== res.data.to._id));
     })
   }
 
   const confirmFriend = () => {
-    Axios.post(`/accept_friend_request/${_id}`, {}, config)
+    Axios.post(`/friend_requests/${_id}/accept`, {}, config)
     .then(res => {
       setRequests(requests.filter(request => request._id !== res.data._id))
     })
   }
 
   const declineFriend = () => {
-    Axios.post(`/decline_friend_request/${_id}`, {}, config)
+    Axios.post(`/friend_requests/${_id}/decline`, {}, config)
     .then(res => {
       setRequests(requests.filter(request => request._id !== res.data._id))
     })
@@ -42,9 +42,9 @@ const FriendRequest = ({requests, setRequests, isSuggestion = false, setPreviewU
 
   return (
     <FriendsContainer onClick={(e) => clickHandler(e)} dataId={to._id}>
-      <RoundImage src={from.profile_photo} />
+      <RoundImage src={to.profile_photo} />
       <FriendInfo className='w-100'>
-        <h4>{from.display_name || from.first_name + ' ' + from.last_name}</h4>
+        <h4>{to.display_name || to.first_name + ' ' + to.last_name}</h4>
         {
           !isSuggestion ?
           <div className='d-flex w-100 align-items-center'>

@@ -67,14 +67,14 @@ const Friends = ({user, posts, setUser, setPosts}) => {
           {/* Friend Requests */}
           {
             requests.map(request => 
-              <FriendRequest requests={requests} setRequests={setRequests} setPreviewUser={setPreviewUser} key={request._id} {...request} />
+              <FriendRequest setSuggestions={setUsers} suggestions={users} requests={requests} setRequests={setRequests} setPreviewUser={setPreviewUser} key={request._id} {...request} />
             )
           }
           <h5>People you may know</h5>
           <hr className='my-1'></hr>
           {
-            users.map(from => 
-              <FriendRequest key={from._id} requests={requests} setRequests={setRequests} isSuggestion setPreviewUser={setPreviewUser} to={user} from={from} />
+            users.map(to => 
+              <FriendRequest setSuggestions={setUsers} suggestions={users} key={to._id} requests={requests} setRequests={setRequests} isSuggestion setPreviewUser={setPreviewUser} to={to} from={user} />
             )
           }
         </Col>
