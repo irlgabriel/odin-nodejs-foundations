@@ -68,7 +68,6 @@ const Profile = ({
       });
     } else {
       if (currentUser._id === user._id) setSameUser(true);
-
     }
   }, [currentUser]);
 
@@ -121,7 +120,7 @@ const Profile = ({
               {/* Collapsed div for friend options */}
               {collapse && 
                 <CollapseDiv>
-                  <Option onClick={() => deleteUser()}>Remove Friend</Option>
+                  <Option onClick={() => deleteFriend(currentUser._id)}>Remove Friend</Option>
                 </CollapseDiv>
               }
             </GrayHoverDiv>

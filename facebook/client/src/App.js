@@ -4,16 +4,26 @@ import { Container } from "reactstrap";
 import { Index, Home, Profile, Register, Friends, PostPage } from "./Pages";
 import { LoadingOverlay } from "./Components";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import axios from "axios";
+import Axios from "axios";
 
 function App() {
   const [user, setUser] = useState(undefined);
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [suggestions, setSuggestions] = useState([]);
+  const [requests, setRequests] = useState([]);
 
+  const config = user && {
+    headers: {
+      Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
+    },
+  };
+
+  /* Friend request logic functions */
   const sendRequest = (to) => {
     //const to = e.target.getAttribute('data-id');
+
     Axios.post(`/friend_requests/${to}/send`, {}, config).then((res) => {
       setSuggestions(
         suggestions.filter((suggestion) => suggestion._id !== res.data.to._id)
@@ -23,21 +33,23 @@ function App() {
 
   const confirmFriend = (_id) => {
     //const _id = e.target.getAttribute('data-id');
-    Axios.post(`/friend_requests/${_id}/accept`, {}, config).then((res) => {
+    Axios.post(`/friend_requests/${_id}/accept`).then((res) => {
       setRequests(requests.filter((request) => request._id !== res.data._id));
     });
   };
 
   const declineFriend = (_id) => {
     //const _id = e.target.getAttribute('data-id');
-    Axios.post(`/friend_requests/${_id}/decline`, {}, config).then((res) => {
+    Axios.post(`/friend_requests/${_id}/decline`).then((res) => {
       setRequests(requests.filter((request) => request._id !== res.data._id));
     });
   };
 
-  const deleteFriend = (_id) => {
-    Axios.delete('/friend_requests', config).then((res) => {
-      
+  const deleteFriend = (user_id) => {
+    Axios.delete(`/friend_requests/${user_id}/delete`, config).then((res) => {
+      const newUser = user;
+      newUser.friends = newUser.friends.filter(friend => friend._id !== user_id);
+      localStorage.setItem('user', JSON.stringify(newUser));
     })
   }
 
@@ -50,11 +62,11 @@ function App() {
     setLoading(true);
     Promise.all([
       // Get posts
-      axios.get("/posts").then((res) => {
+      Axios.get("/posts").then((res) => {
         setPosts(res.data);
       }),
       // Get users (for route paths)
-      axios.get("/users").then((res) => {
+      Axios.get("/users").then((res) => {
         setUsers(res.data);
       }),
     ]).then((results) => setLoading(false));
@@ -76,10 +88,7 @@ function App() {
           render={() => (
             <Profile
               {...props}
-              deleteFriend={deleteFriend}
-              declineFriend={declineFriend}
-              confirmFriend={confirmFriend}
-              sendRequest={sendRequest}
+              
               currentUser={user}
               posts={posts.filter((post) => post.user !== user._id)}
             />
@@ -96,6 +105,10 @@ function App() {
           render={() => 
           <Friends 
             {...props} 
+            setSuggestions={setSuggestions}
+            suggestions={suggestions}
+            setRequests={setRequests}
+            requests={setRequests}
             deleteFriend={deleteFriend}
             declineFriend={declineFriend}
             confirmFriend={confirmFriend}
@@ -114,7 +127,17 @@ function App() {
           <Route
             exact
             path={`/users/${currentUser._id}`}
-            render={() => <Profile {...props} currentUser={currentUser} />}
+            render={() => 
+            <Profile 
+              {...props} 
+              setSuggestions={setSuggestions}
+              suggestions={suggestions}
+              setRequests={setRequests}
+              requests={setRequests}
+              deleteFriend={deleteFriend}
+              declineFriend={declineFriend}
+              confirmFriend={confirmFriend}
+              sendRequest={sendRequest}currentUser={currentUser} />}
           ></Route>
         ))}
       </Container>
