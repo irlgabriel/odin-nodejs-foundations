@@ -31,19 +31,18 @@ router.post(
 // POST Accept
 router.post(
   "/:request_id/accept",
-  passport.authenticate("jwt"),
   friendsController.accept_friend_request
 );
 
 // POST Decline
 router.post(
   "/:request_id/decline",
-  passport.authenticate("jwt"),
   friendsController.reject_friend_request
 );
 
 router.delete(
-  "/delete",
+  "/:user_id/delete",
+  passport.authenticate('jwt'),
   friendsController.delete_friend
 )
 module.exports = router;

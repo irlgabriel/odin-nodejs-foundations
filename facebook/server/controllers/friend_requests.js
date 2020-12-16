@@ -104,6 +104,7 @@ exports.reject_friend_request = (req, res, next) => {
 };
 
 exports.delete_friend = (req, res, next) => {
+  /*
   FriendRequest.findById(req.params.request_id, (err, request) => {
     if(err) return res.status(400).json(err);
     User.findOneAndUpdate({_id: request.to}, {$pull: {friends: request.from}}, {new: true}, (err, doc) => {
@@ -112,6 +113,16 @@ exports.delete_friend = (req, res, next) => {
         if(err) return res.status(400).json(err); 
         res.sendStatus(200);
       })
+    })
+  })
+  */
+  const user1 = req.user._id;
+  const user2 = req.params.user_id;
+  User.findOneAndUpdate({_id: user1}, {$pull: {friends: user2}}, {}, (err) => {
+    if(err) return res.status(400).json(err);
+    User.findOneAndUpdate({_id: user2}, {$pull: {friends: user1}}, {}, (err) => {
+      if(err) return res.status(400).json(err);
+      res.sendStatus(200);
     })
   })
 }
