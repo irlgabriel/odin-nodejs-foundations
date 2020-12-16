@@ -4,9 +4,15 @@ const FriendRequest = require('../models/friend_request');
 const Notification = require('../models/notifications');
 
 exports.get_friends_recommendations = (req, res, next) => {
-  User.find({friends: {$nin: req.user._id}, _id: {$ne: req.user._id}}, (err, recommendations) => {
+  // Need to further filter recommendations to hide those users toward whom the logged in
+  // user has already sent friend requests.
+  FriendRequest.find({from: req.user._id}, (err, pending) => {
     if(err) return res.status(400).json(err);
-    res.json(recommendations);
+    toPending = pending.map(p => p.to);
+    User.find({friends: {$ne: req.user._id}, _id: {$ne: req.user._id, $nin: toPending}}, (err, reqs) => {
+      if(err) return res.status(400).json(err);
+      res.json(reqs);
+    })
   })
 }
 
