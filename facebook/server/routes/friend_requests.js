@@ -13,8 +13,7 @@ const friendsController = require('../controllers/friend_requests');
 router.get('/recommendations', passport.authenticate('jwt'), friendsController.get_friends_recommendations)
 
 // GET
-router.get('/:user_id', passport.authenticate('jwt'), friendsController.get_friends_requests);
-
+router.get('/', passport.authenticate('jwt'), friendsController.get_friends_requests);
 
 // POST Send
 router.post('/:user_id/send', passport.authenticate('jwt'), friendsController.send_friend_request);

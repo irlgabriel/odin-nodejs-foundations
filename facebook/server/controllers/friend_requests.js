@@ -6,18 +6,29 @@ const Notification = require('../models/notifications');
 exports.get_friends_recommendations = (req, res, next) => {
   // Need to further filter recommendations to hide those users toward whom the logged in
   // user has already sent friend requests.
-  FriendRequest.find({from: req.user._id}, (err, pending) => {
+
+  // Find requests that this user sent.
+  FriendRequest.find({from: req.user._id}, (err, pendingSent) => {
     if(err) return res.status(400).json(err);
-    toPending = pending.map(p => p.to);
-    User.find({friends: {$ne: req.user._id}, _id: {$ne: req.user._id, $nin: toPending}}, (err, reqs) => {
+    // filtering array
+    let pending = [];
+    // create an array of ids of users who received requests from the user.
+    pending.push(pendingSent.map(p => p.to));
+
+    // Find requests that this user received.
+    FriendRequest.find({to: req.user._id}, (err, pendingReceived) => {
       if(err) return res.status(400).json(err);
-      res.json(reqs);
+      // create an array of ids of users who sent request to the user 
+      pending.push(pendingReceived.map(p => p.from));
+      User.find({friends: {$ne: req.user._id}, _id: {$ne: req.user._id, $nin: pending}}, (err, reqs) => {
+        if(err) return res.status(400).json(err);
+        res.json(reqs);
+      })
     })
   })
 }
 
 exports.get_friends_requests = (req, res, next) => {
-
   FriendRequest.find({to: req.user._id})
   .populate('to')
   .populate('from')

@@ -27,6 +27,7 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
 /* GET all users */
 router.get('/users', userController.get_users);
 
+router.get('/users/:user_id', userController.get_user);
 
 /** Photos pictures */
 /** Update profile pic */

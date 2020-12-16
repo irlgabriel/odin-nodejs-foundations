@@ -130,3 +130,10 @@ exports.get_users = (req, res, next) => {
     res.json(users)
   })
 }
+
+exports.get_user = (req, res, next) => {
+  User.findById(req.params.user_id, (err, user) => {
+    if(err) return res.status(400).json(err);
+    return res.json(user);
+  })
+}
