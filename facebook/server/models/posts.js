@@ -1,27 +1,29 @@
-const mongoose = require('mongoose');
-const router = require('../routes/comment');
+const mongoose = require("mongoose");
+const router = require("../routes/comment");
 const Schema = mongoose.Schema;
 
-const Comment = require('../models/comments');
+const Comment = require("../models/comments");
 
-const postSchema = new Schema({
-  content: String,
-  image: {type: Object},
-  user: {type: Schema.Types.ObjectId, ref: 'User'},
-  likes: [{type: Schema.Types.ObjectId, ref: 'User'}],
+const postSchema = new Schema(
+  {
+    content: String,
+    image: { type: Object },
+    user: { type: Schema.Types.ObjectId, ref: "User" },
+    likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  },
+  { timestamps: true }
+);
 
-}, {timestamps: true})
-
-postSchema.pre('findOneAndDelete', function() {
-  console.log('running post delete middleware')
+postSchema.pre("findOneAndDelete", function () {
+  console.log("running post delete middleware");
   this.find((err, doc) => {
-    if(err) return res.status(400).json(err);
+    if (err) return res.status(400).json(err);
     console.log(doc);
-    Comment.deleteMany({post: doc._id}, (err, deletedComments) => {
-      if(err) return res.status(400).json(err);
+    Comment.deleteMany({ post: doc._id }, (err, deletedComments) => {
+      if (err) return res.status(400).json(err);
       //console.log(deletedComments);
-    })
-  })
-})
+    });
+  });
+});
 
-module.exports = mongoose.model('Post', postSchema);
+module.exports = mongoose.model("Post", postSchema);

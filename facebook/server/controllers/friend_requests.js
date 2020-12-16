@@ -1,77 +1,117 @@
-
-const User = require('../models/users');
-const FriendRequest = require('../models/friend_request');
-const Notification = require('../models/notifications');
+const User = require("../models/users");
+const FriendRequest = require("../models/friend_request");
+const Notification = require("../models/notifications");
 
 exports.get_friends_recommendations = (req, res, next) => {
   // Need to further filter recommendations to hide those users toward whom the logged in
   // user has already sent friend requests.
 
   // Find requests that this user sent.
-  FriendRequest.find({from: req.user._id}, (err, pendingSent) => {
-    if(err) return res.status(400).json(err);
+  FriendRequest.find({ from: req.user._id }, (err, pendingSent) => {
+    if (err) return res.status(400).json(err);
     // filtering array
     let pending = [];
     // create an array of ids of users who received requests from the user.
-    pending.push(pendingSent.map(p => p.to));
+    pending.push(pendingSent.map((p) => p.to));
 
     // Find requests that this user received.
-    FriendRequest.find({to: req.user._id}, (err, pendingReceived) => {
-      if(err) return res.status(400).json(err);
-      // create an array of ids of users who sent request to the user 
-      pending.push(pendingReceived.map(p => p.from));
-      User.find({friends: {$ne: req.user._id}, _id: {$ne: req.user._id, $nin: pending}}, (err, reqs) => {
-        if(err) return res.status(400).json(err);
-        res.json(reqs);
-      })
-    })
-  })
-}
+    FriendRequest.find({ to: req.user._id }, (err, pendingReceived) => {
+      if (err) return res.status(400).json(err);
+      // create an array of ids of users who sent request to the user
+      pending.push(pendingReceived.map((p) => p.from));
+      User.find(
+        {
+          friends: { $ne: req.user._id },
+          _id: { $ne: req.user._id, $nin: pending },
+        },
+        (err, reqs) => {
+          if (err) return res.status(400).json(err);
+          res.json(reqs);
+        }
+      );
+    });
+  });
+};
 
 exports.get_friends_requests = (req, res, next) => {
-  FriendRequest.find({to: req.user._id})
-  .populate('to')
-  .populate('from')
-  .exec((err, requests) => {
-    if(err) return res.status(400).json(err);
-    res.json(requests);
-  })
-}
+  FriendRequest.find({ $or: [{ to: req.user._id }, { from: req.user._id }] })
+    .populate("to")
+    .populate("from")
+    .exec((err, requests) => {
+      if (err) return res.status(400).json(err);
+      res.json(requests);
+    });
+};
 
 exports.send_friend_request = (req, res, next) => {
-  FriendRequest.create({from: req.user._id, to: req.params.user_id}, async(err, request) => {
-    if(err) return res.status(400).json(err);
+  FriendRequest.create(
+    { from: req.user._id, to: req.params.user_id },
+    async (err, request) => {
+      if (err) return res.status(400).json(err);
 
-    const from = await User.findById(req.user._id);
-    const to = await User.findById(req.params.user_id);
+      const from = await User.findById(req.user._id);
+      const to = await User.findById(req.params.user_id);
 
-    await Notification.create({from, to, type:'friend_request', url: `/users/${req.user._id}`});
-    request
-    .populate('from')
-    .populate('to')
-    .execPopulate()
-    .then(req => res.json(req))
-  })
-}
+      await Notification.create({
+        from,
+        to,
+        type: "friend_request",
+        url: `/users/${req.user._id}`,
+      });
+      request
+        .populate("from")
+        .populate("to")
+        .execPopulate()
+        .then((req) => res.json(req));
+    }
+  );
+};
 
 exports.accept_friend_request = (req, res, next) => {
-  FriendRequest.findOne({_id: req.params.request_id}, (err, request) => {
-    if(err) return res.status(400).json(err);
+  FriendRequest.findOne({ _id: req.params.request_id }, (err, request) => {
+    if (err) return res.status(400).json(err);
 
     // add this friend to each of the requests' users
-    User.findOneAndUpdate({_id: request.from}, {$push: {friends: request.to}}, (err, doc) => {
-      User.findOneAndUpdate({_id: request.to}, {$push: {friends: request.from}})
-    })
-    request.remove((err, doc) => {
-      if(err) return res.status(400).json(err);
-      res.json(doc);
-    })
-  })
-}
+    User.findOneAndUpdate(
+      { _id: request.from },
+      { $push: { friends: request.to } },
+      (err) => {
+        if (err) return res.status(400).json(err);
+        User.findOneAndUpdate(
+          { _id: request.to },
+          { $push: { friends: request.from } },
+          (err) => {
+            if (err) return res.status(400).json(err);
+            request.remove((err, doc) => {
+              if (err) return res.status(400).json(err);
+              res.json(doc);
+            });
+          }
+        );
+      }
+    );
+  });
+};
 
 exports.reject_friend_request = (req, res, next) => {
-  FriendRequest.findOneAndDelete({_id: req.params.request_id}, (err, request) => {
+  FriendRequest.findOneAndDelete(
+    { _id: req.params.request_id },
+    (err, request) => {
+      if (err) return res.status(400).json(err);
+      res.json(request);
+    }
+  );
+};
+
+exports.delete_friend = (req, res, next) => {
+  FriendRequest.findById(req.params.request_id, (err, request) => {
     if(err) return res.status(400).json(err);
-    res.json(request);
+    User.findOneAndUpdate({_id: request.to}, {$pull: {friends: request.from}}, {new: true}, (err, doc) => {
+      if(err) return res.status(400).json(err);
+      User.findOneAndUpdate({_id: request.from}, {$pull: {friends: request.to}}, {}, (err, doc) => {
+        if(err) return res.status(400).json(err); 
+        res.sendStatus(200);
+      })
+    })
   })
 }
