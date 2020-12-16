@@ -30,7 +30,11 @@ exports.get_friends_requests = (req, res, next) => {
 exports.send_friend_request = (req, res, next) => {
   FriendRequest.create({from: req.user._id, to: req.params.user_id}, async(err, request) => {
     if(err) return res.status(400).json(err);
-    await Notification.create({from: req.user._id, to: req.params.user_id, type:'friend_request', url: `/users/${req.user._id}`});
+
+    const from = await User.findById(req.user._id);
+    const to = await User.findById(req.params.user_id);
+
+    await Notification.create({from, to, type:'friend_request', url: `/users/${req.user._id}`});
     request
     .populate('from')
     .populate('to')
