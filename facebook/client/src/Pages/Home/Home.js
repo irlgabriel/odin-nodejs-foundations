@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Container, Row, Col } from "reactstrap";
 import { NavItem, RoundImage } from "./Home.components";
@@ -7,7 +6,6 @@ import { FaUserFriends } from "react-icons/fa";
 
 const Home = ({ setUserModified, posts, setPosts, user }) => {
   const history = useHistory();
-
   return (
     <Container fluid className="px-0">
       <Navbar key="home" posts={posts} setUserModified={setUserModified} setPosts={setPosts} user={user} />

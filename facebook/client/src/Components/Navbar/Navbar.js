@@ -29,7 +29,6 @@ import {
   AiOutlineHome,
   AiFillBell,
 } from "react-icons/ai";
-import { HiOutlineUsers } from "react-icons/hi";
 import { GrAdd } from "react-icons/gr";
 import { GoTriangleDown } from "react-icons/go";
 import { BsArrowLeft } from "react-icons/bs";
@@ -40,7 +39,7 @@ const Navbar = ({ setUserModified, user }) => {
   const location = useLocation();
   const history = useHistory();
 
-  const config = {
+  const config = user && {
     headers: {
       Authorization: `bearer ${JSON.parse(localStorage.getItem("user")).token}`,
     },
@@ -56,6 +55,7 @@ const Navbar = ({ setUserModified, user }) => {
   const logoutHandler = () => {
     localStorage.removeItem("user");
     setUserModified(true);
+    history.push('/');
   };
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import Axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import { Container, Form, Input, Label, Button, FormGroup } from "reactstrap";
 
-const Index = ({ setUserModified, user }) => {
+const Index = ({setUser, setUserModified, user }) => {
   const location = useHistory();
 
   const [email, setEmail] = useState("");
@@ -17,8 +17,7 @@ const Index = ({ setUserModified, user }) => {
           "user",
           JSON.stringify({ user: res.data.user, token: res.data.token })
         );
-        location.push("/home");
-        setUserModified(true);
+        setUser(res.data);
       })
       .catch((err) => console.log(err));
   };

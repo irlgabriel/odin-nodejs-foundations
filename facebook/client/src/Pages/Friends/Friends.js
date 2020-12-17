@@ -9,7 +9,7 @@ import {
 } from "../../Components";
 import Axios from "axios";
 
-const Friends = ({setUserModified, suggestions, setSuggestions, sendRequest, confirmFriend, declineFriend, deleteFriend, user, posts, setUser, setPosts }) => {
+const Friends = ({setUserModified, suggestions, setSuggestions, sendRequest, confirmFriend, declineFriend, user, posts }) => {
   const [requests, setRequests] = useState([]);
   const [previewUserPosts, setPreviewUserPosts] = useState([]);
   const [previewUser, setPreviewUser] = useState(undefined);

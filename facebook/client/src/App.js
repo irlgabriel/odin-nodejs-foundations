@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import { Container } from "reactstrap";
-import { Index, Home, Profile, Register, Friends, PostPage } from "./Pages";
+import { Index, Home, Profile, Register, Friends, PostPage, ProtectedRoute } from "./Pages";
 import { LoadingOverlay } from "./Components";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Axios from "axios";
@@ -9,13 +9,13 @@ import Axios from "axios";
 function App() {
   const [user, setUser] = useState(undefined);
   const [users, setUsers] = useState([]);
-  const [userModified, setUserModified] = useState(false);
+  const [userModified, setUserModified] = useState(true);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [suggestions, setSuggestions] = useState([]);
   const [requests, setRequests] = useState([]);
 
-  const config = user && {
+  const config = localStorage.getItem('user') && {
     headers: {
       Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
     },
@@ -55,20 +55,23 @@ function App() {
   }
 
   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem('user'))
-    if(localUser) {
-      const user_id = localUser.user;
-      Axios.get(`/users/${user_id}`)
-      .then(res => {
-        console.log(res.data);
-        setUser(res.data);
-      })
-    } else {
-      setUser(undefined);
-    }
+    if(userModified) {
+      const localUser = JSON.parse(localStorage.getItem('user'))
+      if(localUser) {
+        const user_id = localUser.user;
+        Axios.get(`/users/${user_id}`)
+        .then(res => {
+          console.log(res.data);
+          setUser(res.data);
+          
+          setUserModified(false);
+        })
+      } else {
+        setUser(undefined);
+        setUserModified(false);
+      }
+    } 
   }, [userModified]);
-
-
 
   useEffect(() => {
     setLoading(true);
@@ -92,89 +95,60 @@ function App() {
         {/* Loading overlay */}
         {loading && <LoadingOverlay />}
         {/* Page routes */}
-        {
-          !user 
-          ? <Route exact path="/" render={() => <Index {...props} />}></Route>
-          : <Redirect to='/home' render={() => <Home {...props}/>}/>
-        }
-        {
-          user 
-          ? <Route exact path="/home" render={() => <Home {...props} />}></Route>
-          : <Redirect to='/' render={() => <Index {...props} />}></Redirect>
-        }
-        { user
-          ? <Route
-            exact
-            path="/profile"
-            render={() => (
-              <Profile
-                {...props}
-                
-                currentUser={user}
-                posts={posts.filter((post) => post.user !== user._id)}
-              />
-            )}
-          ></Route>
-          : <Redirect to='/'  render={() => <Index {...props} />}></Redirect>
-        }
-        { !user
-          ? <Route
-            exact
-            path="/register"
-            render={() => <Register {...props} />}
-          ></Route>
-          : <Redirect to='/home' render={() => <Home {...props}/>}/>
-        }
-        {
-          user 
-          ? <Route
-            exact
-            path="/friends"
-            render={() => 
-            <Friends 
-              {...props} 
-              setSuggestions={setSuggestions}
-              suggestions={suggestions}
-              setRequests={setRequests}
-              requests={setRequests}
-              deleteFriend={deleteFriend}
-              declineFriend={declineFriend}
-              confirmFriend={confirmFriend}
-              sendRequest={sendRequest} />}
-          ></Route>
-          : <Redirect to='/'  render={() => <Index {...props} />}></Redirect>
-          }
+        
+        <ProtectedRoute exact path='/home' {...props} component={Home}/>
+        <ProtectedRoute
+          path="/profile"
+          currentUser={user}
+          {...props}
+          component={Profile}
+        ></ProtectedRoute>
+        <Route
+          path="/register"
+          render={() => <Register {...props} />}
+        ></Route>
+        <Route 
+          path="/"
+          render={() => <Index {...props} setUser={setUser}/>}
+        ></Route>
+        <ProtectedRoute
+          path="/friends"
+          {...props} 
+          setSuggestions={setSuggestions}
+          suggestions={suggestions}
+          setRequests={setRequests}
+          requests={setRequests}
+          deleteFriend={deleteFriend}
+          declineFriend={declineFriend}
+          confirmFriend={confirmFriend}
+          sendRequest={sendRequest}
+          component={Friends}
+        ></ProtectedRoute>
         {/* Individual Post Routes */}
-
         {posts.map((post) => (
-          user 
-          ? <Route
-            exact
+          <ProtectedRoute
             path={`/posts/${post._id}`}
-            render={() => <PostPage {...props} post={post} />}
-          ></Route>
-          : <Redirect to='/'  render={() => <Index {...props} />}></Redirect>
+            {...props}
+            component={PostPage}
+          ></ProtectedRoute>
         ))}
         {/* Individual User Pages */}
-        {users.map((currentUser) => (
-          user 
-          ? <Route
-            exact
+        {
+        users.map((currentUser) => (
+          <ProtectedRoute
             path={`/users/${currentUser._id}`}
-            render={() => 
-            <Profile 
-              {...props} 
-              setSuggestions={setSuggestions}
-              suggestions={suggestions}
-              setRequests={setRequests}
-              requests={setRequests}
-              deleteFriend={deleteFriend}
-              declineFriend={declineFriend}
-              confirmFriend={confirmFriend}
-              sendRequest={sendRequest}
-              currentUser={currentUser} />}
-          ></Route>
-          : <Redirect to='/'  render={() => <Index {...props} />}></Redirect>
+            {...props} 
+            setSuggestions={setSuggestions}
+            suggestions={suggestions}
+            setRequests={setRequests}
+            requests={setRequests}
+            deleteFriend={deleteFriend}
+            declineFriend={declineFriend}
+            confirmFriend={confirmFriend}
+            sendRequest={sendRequest}
+            currentUser={currentUser}
+            component={Profile}
+          ></ProtectedRoute>
         ))}
       </Container>
     </Router>

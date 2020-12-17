@@ -52,7 +52,7 @@
 }
 .row {
   justify-content: space-between;
-  min-height: 800px;
+  /*min-height: 800px;*/
 }
 .nav {
   background: white;

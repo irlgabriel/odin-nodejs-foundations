@@ -29,6 +29,7 @@ const Profile = ({
   posts,
   setPosts,
   user,
+  setUserModified,
   currentUser,
   declineFriend,
   confirmFriend,
@@ -80,7 +81,7 @@ const Profile = ({
       {profilePhotoForm && (
         <ImageForm
           path={`/${user._id}/profile_photo`}
-          setResource={setUser}
+          setResource={setUserModified}
           setUserModified={true}
           resource={user}
           setImageForm={setProfilePhotoForm}
@@ -89,14 +90,14 @@ const Profile = ({
       {coverPhotoForm && (
         <ImageForm
           path={`/${user._id}/cover_photo`}
-          setResource={setUser}
+          setResource={setUserModified}
           setUserModified={true}
           resource={user}
           setImageForm={setCoverPhotoForm}
         />
       )}
       <div style={{ background: "white" }}>
-        {showNav && <Navbar key="profile" user={user} setUser={setUser} />}
+        {showNav && <Navbar key="profile" user={user} setUserModified={setUserModified} />}
         <ProfileSection className="px-0">
           {currentUser.cover_photo ? (
             <a href={user.cover_photo}>
