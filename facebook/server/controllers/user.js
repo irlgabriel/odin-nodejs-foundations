@@ -53,7 +53,7 @@ exports.register = [
             { email, first_name, last_name, password: hash },
             (err, registeredUser) => {
               if (err) return res.status(400).json(err);
-              jwt.sign({ user: user }, process.env.JWT_SECRET, (err, token) => {
+              jwt.sign({ user: registeredUser }, process.env.JWT_SECRET, (err, token) => {
                 if (err) return res.status(400).json(err);
                 req.user = registeredUser;
                 req.token = token;
