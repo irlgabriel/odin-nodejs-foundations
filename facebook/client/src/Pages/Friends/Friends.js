@@ -9,7 +9,7 @@ import {
 } from "../../Components";
 import Axios from "axios";
 
-const Friends = ({request, setRequest, suggestions, setSuggestions, sendRequest, confirmFriend, declineFriend, deleteFriend, user, posts, setUser, setPosts }) => {
+const Friends = ({setUserModified, suggestions, setSuggestions, sendRequest, confirmFriend, declineFriend, deleteFriend, user, posts, setUser, setPosts }) => {
   const [requests, setRequests] = useState([]);
   const [previewUserPosts, setPreviewUserPosts] = useState([]);
   const [previewUser, setPreviewUser] = useState(undefined);
@@ -59,7 +59,7 @@ const Friends = ({request, setRequest, suggestions, setSuggestions, sendRequest,
     <Container fluid className="px-0">
       {/* Loading overlay */}
       {loading && <LoadingOverlay />}
-      <Navbar key="friends" setUser={setUser} user={user} />
+      <Navbar key="friends" setUserModified={setUserModified} user={user} />
       <Row className="p-0 m-0" style={{ height: "auto" }}>
         <Col
           id="friends-col"

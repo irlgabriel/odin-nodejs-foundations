@@ -5,16 +5,12 @@ import { NavItem, RoundImage } from "./Home.components";
 import { Navbar, PostForm, Post } from "../../Components";
 import { FaUserFriends } from "react-icons/fa";
 
-const Home = ({ posts, setPosts, setUser, user }) => {
+const Home = ({ setUserModified, posts, setPosts, user }) => {
   const history = useHistory();
-
-  useEffect(() => {
-    if (!user) history.push("/");
-  }, [user]);
 
   return (
     <Container fluid className="px-0">
-      <Navbar key="home" setUser={setUser} user={user} />
+      <Navbar key="home" posts={posts} setUserModified={setUserModified} setPosts={setPosts} user={user} />
       <Row className="mx-0">
         <Col id="left-col" className="p-2 d-sm-none d-lg-block" sm="3" lg="3">
           <NavItem to="/profile">

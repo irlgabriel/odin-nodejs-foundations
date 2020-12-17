@@ -6,6 +6,7 @@ import { TransparentBackground } from "./ImageForm.components";
 
 const ImageForm = ({
   method = "PUT",
+  setUserModified,
   content,
   path,
   setImageForm,
@@ -32,6 +33,7 @@ const ImageForm = ({
           setImageForm(false);
           typeof resources === "Array"
             ? setResource([...resources, res.data])
+            : setUserModified ? setUserModified(true)
             : setResource(res.data);
         })
         .catch((err) => console.log(err));
@@ -39,8 +41,9 @@ const ImageForm = ({
       Axios.post(path, fromData, config).then((res) => {
         setImageForm(false);
         typeof resources === "Array"
-          ? setResource([...resources, res.data])
-          : setResource(res.data);
+        ? setResource([...resources, res.data])
+        : setUserModified ? setUserModified(true)
+        : setResource(res.data);
       });
     }
   };

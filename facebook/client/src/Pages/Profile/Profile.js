@@ -29,7 +29,6 @@ const Profile = ({
   posts,
   setPosts,
   user,
-  setUser,
   currentUser,
   declineFriend,
   confirmFriend,
@@ -82,6 +81,7 @@ const Profile = ({
         <ImageForm
           path={`/${user._id}/profile_photo`}
           setResource={setUser}
+          setUserModified={true}
           resource={user}
           setImageForm={setProfilePhotoForm}
         />
@@ -90,6 +90,7 @@ const Profile = ({
         <ImageForm
           path={`/${user._id}/cover_photo`}
           setResource={setUser}
+          setUserModified={true}
           resource={user}
           setImageForm={setCoverPhotoForm}
         />

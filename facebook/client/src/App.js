@@ -3,13 +3,14 @@ import "./App.css";
 import { Container } from "reactstrap";
 import { Index, Home, Profile, Register, Friends, PostPage } from "./Pages";
 import { LoadingOverlay } from "./Components";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Axios from "axios";
 
 function App() {
   const [user, setUser] = useState(undefined);
-  const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
+  const [userModified, setUserModified] = useState(false);
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [suggestions, setSuggestions] = useState([]);
   const [requests, setRequests] = useState([]);
@@ -54,9 +55,20 @@ function App() {
   }
 
   useEffect(() => {
-    const currentUser = JSON.parse(localStorage.getItem("user"));
-    if (currentUser) setUser(currentUser.user);
-  }, [localStorage]);
+    const localUser = JSON.parse(localStorage.getItem('user'))
+    if(localUser) {
+      const user_id = localUser.user;
+      Axios.get(`/users/${user_id}`)
+      .then(res => {
+        console.log(res.data);
+        setUser(res.data);
+      })
+    } else {
+      setUser(undefined);
+    }
+  }, [userModified]);
+
+
 
   useEffect(() => {
     setLoading(true);
@@ -65,14 +77,14 @@ function App() {
       Axios.get("/posts").then((res) => {
         setPosts(res.data);
       }),
-      // Get users (for route paths)
+      // Get users
       Axios.get("/users").then((res) => {
         setUsers(res.data);
       }),
     ]).then((results) => setLoading(false));
   }, []);
 
-  const props = { user, setUser, posts, setPosts };
+  const props = { user, posts, setPosts, setUserModified };
 
   return (
     <Router>
@@ -80,51 +92,73 @@ function App() {
         {/* Loading overlay */}
         {loading && <LoadingOverlay />}
         {/* Page routes */}
-        <Route exact path="/" render={() => <Index {...props} />}></Route>
-        <Route exact path="/home" render={() => <Home {...props} />}></Route>
-        <Route
-          exact
-          path="/profile"
-          render={() => (
-            <Profile
-              {...props}
-              
-              currentUser={user}
-              posts={posts.filter((post) => post.user !== user._id)}
-            />
-          )}
-        ></Route>
-        <Route
-          exact
-          path="/register"
-          render={() => <Register {...props} />}
-        ></Route>
-        <Route
-          exact
-          path="/friends"
-          render={() => 
-          <Friends 
-            {...props} 
-            setSuggestions={setSuggestions}
-            suggestions={suggestions}
-            setRequests={setRequests}
-            requests={setRequests}
-            deleteFriend={deleteFriend}
-            declineFriend={declineFriend}
-            confirmFriend={confirmFriend}
-            sendRequest={sendRequest} />}
-        ></Route>
+        {
+          !user 
+          ? <Route exact path="/" render={() => <Index {...props} />}></Route>
+          : <Redirect to='/home' render={() => <Home {...props}/>}/>
+        }
+        {
+          user 
+          ? <Route exact path="/home" render={() => <Home {...props} />}></Route>
+          : <Redirect to='/' render={() => <Index {...props} />}></Redirect>
+        }
+        { user
+          ? <Route
+            exact
+            path="/profile"
+            render={() => (
+              <Profile
+                {...props}
+                
+                currentUser={user}
+                posts={posts.filter((post) => post.user !== user._id)}
+              />
+            )}
+          ></Route>
+          : <Redirect to='/'  render={() => <Index {...props} />}></Redirect>
+        }
+        { !user
+          ? <Route
+            exact
+            path="/register"
+            render={() => <Register {...props} />}
+          ></Route>
+          : <Redirect to='/home' render={() => <Home {...props}/>}/>
+        }
+        {
+          user 
+          ? <Route
+            exact
+            path="/friends"
+            render={() => 
+            <Friends 
+              {...props} 
+              setSuggestions={setSuggestions}
+              suggestions={suggestions}
+              setRequests={setRequests}
+              requests={setRequests}
+              deleteFriend={deleteFriend}
+              declineFriend={declineFriend}
+              confirmFriend={confirmFriend}
+              sendRequest={sendRequest} />}
+          ></Route>
+          : <Redirect to='/'  render={() => <Index {...props} />}></Redirect>
+          }
         {/* Individual Post Routes */}
+
         {posts.map((post) => (
-          <Route
+          user 
+          ? <Route
             exact
             path={`/posts/${post._id}`}
             render={() => <PostPage {...props} post={post} />}
           ></Route>
+          : <Redirect to='/'  render={() => <Index {...props} />}></Redirect>
         ))}
         {/* Individual User Pages */}
         {users.map((currentUser) => (
-          <Route
+          user 
+          ? <Route
             exact
             path={`/users/${currentUser._id}`}
             render={() => 
@@ -137,8 +171,10 @@ function App() {
               deleteFriend={deleteFriend}
               declineFriend={declineFriend}
               confirmFriend={confirmFriend}
-              sendRequest={sendRequest}currentUser={currentUser} />}
+              sendRequest={sendRequest}
+              currentUser={currentUser} />}
           ></Route>
+          : <Redirect to='/'  render={() => <Index {...props} />}></Redirect>
         ))}
       </Container>
     </Router>
