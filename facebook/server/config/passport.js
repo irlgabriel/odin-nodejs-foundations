@@ -78,10 +78,12 @@ passport.use(
 );
 
 passport.serializeUser(function (user, cb) {
+  //console.log('user before serializing: ', user);
   cb(null, user);
 });
 
 passport.deserializeUser(function (obj, cb) {
+  //console.log('user before deserializing: ', obj);
   cb(null, obj);
 });
 

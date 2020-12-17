@@ -54,7 +54,7 @@ module.exports.create_comment = [
     const newComment = {
       content: req.body.content,
       comment: req.body.comment,
-      user: req.user._id,
+      user: req.user,
       post: req.params.post_id,
     };
 
@@ -133,7 +133,7 @@ module.exports.edit_comment = [
 ];
 
 module.exports.like_comment = (req, res, next) => {
-  const user_id = req.user._id;
+  const user_id = req.user;
   console.log(req.params);
   Comment.findOne({ _id: req.params.comment_id }, (err, comment) => {
     if (err) return res.status(400).json(err);

@@ -1,7 +1,7 @@
 const Notification = require("../models/notifications");
 
 exports.get_notification = (req, res, next) => {
-  Notification.find({ to: req.user._id })
+  Notification.find({ to: req.user })
     .sort("-createdAt")
     .populate("to")
     .populate("from")
