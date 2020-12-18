@@ -9,8 +9,7 @@ import {
 } from "../../Components";
 import Axios from "axios";
 
-const Friends = ({setUserModified, user, posts }) => {
-  const [requests, setRequests] = useState([]);
+const Friends = ({requests, setRequests, reloadUser, user, posts }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [previewUserPosts, setPreviewUserPosts] = useState([]);
   const [previewUser, setPreviewUser] = useState(undefined);
@@ -37,7 +36,9 @@ const Friends = ({setUserModified, user, posts }) => {
     console.log(res.data);
     setSuggestions(
       suggestions.filter((suggestion) => suggestion._id !== res.data.to._id)
+      
     );
+    setRequests([...requests, res.data]);
   });
 };
 
@@ -45,7 +46,7 @@ const Friends = ({setUserModified, user, posts }) => {
     //const _id = e.target.getAttribute('data-id');
     Axios.post(`/friend_requests/${_id}/accept`).then((res) => {
       setRequests(requests.filter((request) => request._id !== res.data._id));
-      setUserModified(true);
+      reloadUser();
     });
   };
 
@@ -84,7 +85,7 @@ const Friends = ({setUserModified, user, posts }) => {
     <Container fluid className="px-0">
       {/* Loading overlay */}
       {loading && <LoadingOverlay />}
-      <Navbar key="friends" setUserModified={setUserModified} user={user} />
+      <Navbar key="friends" reloadUser={reloadUser} user={user} />
       <Row className="p-0 m-0" style={{ height: "auto" }}>
         <Col
           id="friends-col"
@@ -126,6 +127,9 @@ const Friends = ({setUserModified, user, posts }) => {
               posts={previewUserPosts}
               setPosts={setPreviewUserPosts}
               currentUser={previewUser}
+              requests={requests}
+              setRequests={setRequests}
+              reloadUser={reloadUser}
             />
           )}
         </Col>

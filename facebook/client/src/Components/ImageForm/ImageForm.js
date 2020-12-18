@@ -6,12 +6,12 @@ import { TransparentBackground } from "./ImageForm.components";
 
 const ImageForm = ({
   method = "PUT",
-  setUserModified,
   content,
   path,
   setImageForm,
   setResource,
   resources,
+  reloadUser,
 }) => {
   const [file, setFile] = useState(null);
 
@@ -33,16 +33,14 @@ const ImageForm = ({
           setImageForm(false);
           typeof resources === "Array"
             ? setResource([...resources, res.data])
-            : setUserModified ? setUserModified(true)
             : setResource(res.data);
         })
         .catch((err) => console.log(err));
     } else {
-      Axios.post(path, fromData, config).then((res) => {
+      Axios.post(path, formData, config).then((res) => {
         setImageForm(false);
         typeof resources === "Array"
         ? setResource([...resources, res.data])
-        : setUserModified ? setUserModified(true)
         : setResource(res.data);
       });
     }

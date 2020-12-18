@@ -17,23 +17,22 @@ import {
   CollapseDiv
 } from "./Profile.components";
 import { Post, PostForm, ImageForm } from "../../Components";
-import { useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AiFillCamera } from "react-icons/ai";
 import Axios from  'axios';
-import { FaShower, FaCheck } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 
 const Profile = ({
   showNav = true,
   posts,
   setPosts,
   user,
-  setUserModified,
+  reloadUser,
+  requests,
+  setRequests,
   currentUser,
 }) => {
-  const history = useHistory();
 
-  const [requests, setRequests] = useState([]);
   const [coverPhotoForm, setCoverPhotoForm] = useState(false);
   const [profilePhotoForm, setProfilePhotoForm] = useState(false);
   const [isFriends, setIsFriends] = useState(false);
@@ -41,7 +40,6 @@ const Profile = ({
   const [receivedRequest, setReceivedRequest] = useState(false);
   const [isSameUser, setSameUser] = useState(false);
   const [collapse, setCollapse] = useState(false);
-  const [getRequests, setGetRequests] = useState(true);
 
   const config = {
     headers: {
@@ -49,20 +47,24 @@ const Profile = ({
     },
   };
 
+  const checkIsFriend = () => {
+    const userFriendsIDs = user.friends.map(friend => friend._id)
+    return (userFriendsIDs.includes(currentUser._id));
+  }
+
   /* Friend request logic functions */
   const sendRequest = (to) => {
     //const to = e.target.getAttribute('data-id');
     Axios.post(`/friend_requests/${to}/send`, {}, config).then((res) => {
-      
-      setGetRequests(true);
+      setRequests([...requests, res.data]);
     });
   };
 
   const confirmFriend = (_id) => {
     //const _id = e.target.getAttribute('data-id');
     Axios.post(`/friend_requests/${_id}/accept`).then((res) => {
-      setUserModified(true);
-      setGetRequests(true);
+      
+      reloadUser();
     });
   };
 
@@ -75,74 +77,60 @@ const Profile = ({
 
   const deleteFriend = (user_id) => {
     Axios.delete(`/friend_requests/${user_id}/delete`, config).then((res) => {
-      setUserModified(true);
-      setGetRequests(true);
+      reloadUser();
+      setSentRequest(undefined);
+      setReceivedRequest(undefined)
     })
   }
-
-
-    // get requests
-    useEffect(() => {
-      // get current user's friend requests
+  // get requests
+  useEffect(() => {
+    // get current user's friend requests
+    if(user._id !== currentUser._id) {
       Promise.all([
         Axios.get(`/friend_requests/`, config).then((res) => {
           setRequests(res.data.filter((request) => request.to._id === user._id));
         }),
       ]).then();
-    }, []);
+    }
+  }, []);
   
   // get friends requests of the logged in user(user) - both sent and received to determine
   // state of friendship. (sent friend request/received/friends/neither)
   useEffect(() => {
-    if (currentUser !== user && getRequests) {
-      
-      console.log(requests);
+    if (currentUser !== user) {
       const SentRequests = requests
         .filter((request) => request.from._id === user._id)
-      console.log(SentRequests);
       const ReceivedRequests = requests
         .filter((request) => request.to._id === user._id)
-      console.log(ReceivedRequests);
+
       setSentRequest(SentRequests.find(request => request.to._id === currentUser._id));
       setReceivedRequest(ReceivedRequests.find(request => request.from._id === currentUser._id));
-      setGetRequests(false);
-  
-      const userFriendsIDs = user.friends.map(friend => friend._id)
-
-      if (userFriendsIDs.includes(currentUser._id)) { 
-        setIsFriends(true);
-      } else {
-        setIsFriends(false);
-      }
+      setIsFriends(checkIsFriend());
     } else {
       if (currentUser._id === user._id) setSameUser(true);
     }
-  }, [currentUser, getRequests]);
-
-
+  }, [currentUser, requests]);
 
   return (
     <Container fluid className="p-0">
       {profilePhotoForm && (
         <ImageForm
           path={`/${user._id}/profile_photo`}
-          setResource={setUserModified}
-          setUserModified={true}
-          resource={user}
+          reloadUser={reloadUser}
+          resources={user}
           setImageForm={setProfilePhotoForm}
         />
       )}
       {coverPhotoForm && (
         <ImageForm
           path={`/${user._id}/cover_photo`}
-          setResource={setUserModified}
-          setUserModified={true}
-          resource={user}
+          reloadUser={reloadUser}
+          resources={user}
           setImageForm={setCoverPhotoForm}
         />
       )}
       <div style={{ background: "white" }}>
-        {showNav && <Navbar key="profile" user={user} setUserModified={setUserModified} />}
+        {showNav && <Navbar key="profile" user={user} reloadUser={reloadUser}/>}
         <ProfileSection className="px-0">
           {currentUser.cover_photo ? (
             <a href={user.cover_photo}>
