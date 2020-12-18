@@ -53,7 +53,6 @@ const Profile = ({
   const sendRequest = (to) => {
     //const to = e.target.getAttribute('data-id');
     Axios.post(`/friend_requests/${to}/send`, {}, config).then((res) => {
-      
       setGetRequests(true);
     });
   };
@@ -86,6 +85,7 @@ const Profile = ({
       // get current user's friend requests
       Promise.all([
         Axios.get(`/friend_requests/`, config).then((res) => {
+          console.log(res.data[0].to._id, user._id);
           setRequests(res.data.filter((request) => request.to._id === user._id));
         }),
       ]).then();
@@ -96,15 +96,12 @@ const Profile = ({
   useEffect(() => {
     if (currentUser !== user && getRequests) {
       
-      console.log(requests);
       const SentRequests = requests
         .filter((request) => request.from._id === user._id)
-      console.log(SentRequests);
       const ReceivedRequests = requests
         .filter((request) => request.to._id === user._id)
-      console.log(ReceivedRequests);
-      setSentRequest(SentRequests.find(request => request.to._id === currentUser._id));
-      setReceivedRequest(ReceivedRequests.find(request => request.from._id === currentUser._id));
+      setSentRequest(SentRequests.find(request => request.from._id === currentUser._id));
+      setReceivedRequest(ReceivedRequests.find(request => request.to._id === currentUser._id));
       setGetRequests(false);
   
       const userFriendsIDs = user.friends.map(friend => friend._id)

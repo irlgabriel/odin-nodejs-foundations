@@ -12,13 +12,14 @@ exports.get_friends_recommendations = (req, res, next) => {
     // filtering array
     let pending = [];
     // create an array of ids of users who received requests from the user.
-    pending.push(pendingSent.map((p) => p.to));
+    pending.push(...pendingSent.map((p) => p.to));
 
     // Find requests that this user received.
     FriendRequest.find({ to: req.user._id }, (err, pendingReceived) => {
       if (err) return res.status(400).json(err);
       // create an array of ids of users who sent request to the user
-      pending.push(pendingReceived.map((p) => p.from));
+      pending.push(...pendingReceived.map((p) => p.from));
+      console.log(pending);
       User.find(
         {
           friends: { $ne: req.user._id },
