@@ -38,7 +38,7 @@ exports.create_post = [
   (req, res, next) => {
     const { content } = req.body;
 
-    Post.create({ content, user: req.user }, (err, post) => {
+    Post.create({ content, user: req.user._id }, (err, post) => {
       if (err) return res.status(400).json(err);
 
       if (req.file) {
@@ -82,7 +82,7 @@ exports.create_post = [
       if(error) {
         console.log(error) 
       } else {
-        Post.create({content, user: req.user, image: {url: data.Location, id: data.Key}}, (err, post) => {
+        Post.create({content, user: ._id, image: {url: data.Location, id: data.Key}}, (err, post) => {
           if(err) return res.status(400).json(err);
           post
           .populate('user')
@@ -117,7 +117,7 @@ exports.edit_post = [
 ];
 
 exports.like_post = (req, res, next) => {
-  const user_id = req.user;
+  const user_id = req.user._id;
   Post.findOne({ _id: req.params.post_id }, (err, post) => {
     if (err) return res.status(400).json(err);
     if (post.likes.includes(user_id)) {

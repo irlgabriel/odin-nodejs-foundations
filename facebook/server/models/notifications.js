@@ -14,10 +14,11 @@ const notificationSchema = new Schema(
 );
 
 notificationSchema.pre("save", function () {
-  console.log(this.isNew);
   if (this.isNew) {
+    
     from_name = this.from.display_name || this.from.full_name;
-    to_name = this.to.display_name || this.to.full_name;
+    //to_name = this.to.display_name || this.to.full_name;
+    console.log(typeof from_name, from_name);
     // create message based on type
     switch (this.type) {
       case "like_post":
