@@ -25,7 +25,6 @@ function App() {
       const user_id = localUser.user;
       Axios.get(`/users/${user_id}`)
       .then(res => {
-        console.log(res.data);
         setUser(res.data);
       })
     } else {
@@ -50,8 +49,11 @@ function App() {
         setRequests(res.data);
       })
       
-    ]).then((results) => setLoading(false));
+    ]).then((results) => {
+      setLoading(false);
+    });
   }, []);
+
 
   const props = { user, posts, setPosts, reloadUser };
 
@@ -68,6 +70,7 @@ function App() {
           currentUser={user}
           requests={requests}
           setRequests={setRequests}
+
           {...props}
           component={Profile}
         ></ProtectedRoute>

@@ -31,13 +31,16 @@ const Profile = ({
   requests,
   setRequests,
   currentUser,
+  
 }) => {
 
   const [coverPhotoForm, setCoverPhotoForm] = useState(false);
   const [profilePhotoForm, setProfilePhotoForm] = useState(false);
   const [isFriends, setIsFriends] = useState(false);
-  const [sentRequest, setSentRequest] = useState(false);
-  const [receivedRequest, setReceivedRequest] = useState(false);
+  const [sentRequests, setSentRequests] = useState([])
+  const [receivedRequests, setReceivedRequests] = useState([])
+  const [sentRequest, setSentRequest] = useState(undefined)
+  const [receivedRequest, setReceivedRequest] = useState(undefined)
   const [isSameUser, setSameUser] = useState(false);
   const [collapse, setCollapse] = useState(false);
 
@@ -63,7 +66,6 @@ const Profile = ({
   const confirmFriend = (_id) => {
     //const _id = e.target.getAttribute('data-id');
     Axios.post(`/friend_requests/${_id}/accept`).then((res) => {
-      
       reloadUser();
     });
   };
@@ -82,35 +84,26 @@ const Profile = ({
       setReceivedRequest(undefined)
     })
   }
-  // get requests
+
+  // filter sent and received requests whenever the requests array changes
   useEffect(() => {
-    // get current user's friend requests
-    if(user._id !== currentUser._id) {
-      Promise.all([
-        Axios.get(`/friend_requests/`, config).then((res) => {
-          console.log(res.data[0].to._id, user._id);
-          setRequests(res.data.filter((request) => request.to._id === user._id));
-        }),
-      ]).then();
-    }
-  }, []);
-  
+    setSentRequests(requests
+      .filter((request) => request.from._id === user._id))
+    setReceivedRequests(requests
+      .filter((request) => request.to._id === user._id))
+  }, [requests])
+
   // get friends requests of the logged in user(user) - both sent and received to determine
   // state of friendship. (sent friend request/received/friends/neither)
   useEffect(() => {
-    if (currentUser !== user) {
-      const SentRequests = requests
-        .filter((request) => request.from._id === user._id)
-      const ReceivedRequests = requests
-        .filter((request) => request.to._id === user._id)
-
-      setSentRequest(SentRequests.find(request => request.to._id === currentUser._id));
-      setReceivedRequest(ReceivedRequests.find(request => request.from._id === currentUser._id));
+    if(currentUser._id !== user._id) {
+      setSentRequest(sentRequests.find(request => request.to._id === currentUser._id));
+      setReceivedRequest(receivedRequests.find(request => request.from._id === currentUser._id));
       setIsFriends(checkIsFriend());
-    } else {
-      if (currentUser._id === user._id) setSameUser(true);
-    }
-  }, [currentUser, requests]);
+  } else {
+    if (currentUser._id === user._id) setSameUser(true);
+  }
+  }, [currentUser, requests, sentRequest, receivedRequest]);
 
   return (
     <Container fluid className="p-0">

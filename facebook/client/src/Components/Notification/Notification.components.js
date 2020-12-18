@@ -3,6 +3,7 @@ import { AiFillDelete } from "react-icons/ai";
 
 export const NotificationContainer = styled.div`
   padding: 0.5rem;
+  padding-right: 1rem;
   border-radius: 5px;
   background: ${({ clicked }) => (!clicked ? "rgba(200,0,20,.15)" : "white")};
   display: flex;

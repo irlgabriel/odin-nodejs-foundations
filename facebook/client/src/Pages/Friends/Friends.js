@@ -14,6 +14,8 @@ const Friends = ({requests, setRequests, reloadUser, user, posts }) => {
   const [previewUserPosts, setPreviewUserPosts] = useState([]);
   const [previewUser, setPreviewUser] = useState(undefined);
   const [loading, setLoading] = useState(true);
+  const [sentRequests, setSentRequests] = useState([])
+  const [receivedRequests, setReceivedRequests] = useState([])
 
   const config = {
     headers: {
@@ -36,7 +38,6 @@ const Friends = ({requests, setRequests, reloadUser, user, posts }) => {
     console.log(res.data);
     setSuggestions(
       suggestions.filter((suggestion) => suggestion._id !== res.data.to._id)
-      
     );
     setRequests([...requests, res.data]);
   });
@@ -59,12 +60,7 @@ const Friends = ({requests, setRequests, reloadUser, user, posts }) => {
 
   useEffect(() => {
     setLoading(false);
-    // get current user's friend requests
     Promise.all([
-      Axios.get(`/friend_requests/`, config).then((res) => {
-        console.log(res.data, user);
-        setRequests(res.data.filter((request) => request.to._id === user._id));
-      }),
       // Get friends recommendations
       Axios.get("/friend_requests/recommendations", config).then((res) => {
         setSuggestions(res.data);
@@ -81,6 +77,14 @@ const Friends = ({requests, setRequests, reloadUser, user, posts }) => {
     }
   }, [previewUser]);
 
+  // filter sent and received requests whenever the requests array changes
+  useEffect(() => {
+    setSentRequests(requests
+      .filter((request) => request.from._id === user._id))
+    setReceivedRequests(requests
+      .filter((request) => request.to._id === user._id))
+  }, [requests])
+
   return (
     <Container fluid className="px-0">
       {/* Loading overlay */}
@@ -90,14 +94,14 @@ const Friends = ({requests, setRequests, reloadUser, user, posts }) => {
         <Col
           id="friends-col"
           className="d-sm-none d-lg-block box-shadow-right p-0 px-2"
-          sm="4"
+          sm="3"
           style={{ background: "white" }}
         >
           <h2>Friends</h2>
-          <h5>{requests.length} Friend Requests</h5>
+          <h5>{receivedRequests.length} Friend Requests</h5>
           <hr className="my-1"></hr>
           {/* Friend Requests */}
-          {requests.map((request) => (
+          {receivedRequests.map((request) => (
             <FriendRequest
               onClick={clickHandler}
               _id={request._id}
