@@ -88,6 +88,10 @@ textarea {
   background: transparent; /* Optional: just make scrollbar invisible */
 }
 
+input[type='text'], textarea {
+  height: 36px;
+}
+
 /* react-transition-group animation classnames */
 
 .slide-from-top-enter {

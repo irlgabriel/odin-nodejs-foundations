@@ -17,7 +17,7 @@ const Index = ({setUser, setUserModified, user }) => {
           "user",
           JSON.stringify({ user: res.data.user, token: res.data.token })
         );
-        setUser(res.data);
+        setUserModified(true);
       })
       .catch((err) => console.log(err));
   };

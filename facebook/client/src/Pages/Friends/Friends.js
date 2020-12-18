@@ -9,11 +9,11 @@ import {
 } from "../../Components";
 import Axios from "axios";
 
-const Friends = ({setUserModified, suggestions, setSuggestions, sendRequest, confirmFriend, declineFriend, user, posts }) => {
+const Friends = ({setUserModified, user, posts }) => {
   const [requests, setRequests] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
   const [previewUserPosts, setPreviewUserPosts] = useState([]);
   const [previewUser, setPreviewUser] = useState(undefined);
-  
   const [loading, setLoading] = useState(true);
 
   const config = {
@@ -30,13 +30,38 @@ const Friends = ({setUserModified, suggestions, setSuggestions, sendRequest, con
     });
   };
 
- 
+ /* Friend request logic functions */
+ const sendRequest = (to) => {
+  //const to = e.target.getAttribute('data-id');
+  Axios.post(`/friend_requests/${to}/send`, {}, config).then((res) => {
+    console.log(res.data);
+    setSuggestions(
+      suggestions.filter((suggestion) => suggestion._id !== res.data.to._id)
+    );
+  });
+};
+
+  const confirmFriend = (_id) => {
+    //const _id = e.target.getAttribute('data-id');
+    Axios.post(`/friend_requests/${_id}/accept`).then((res) => {
+      setRequests(requests.filter((request) => request._id !== res.data._id));
+      setUserModified(true);
+    });
+  };
+
+  const declineFriend = (_id) => {
+    //const _id = e.target.getAttribute('data-id');
+    Axios.post(`/friend_requests/${_id}/decline`).then((res) => {
+      setRequests(requests.filter((request) => request._id !== res.data._id));
+    });
+  };
 
   useEffect(() => {
     setLoading(false);
     // get current user's friend requests
     Promise.all([
       Axios.get(`/friend_requests/`, config).then((res) => {
+        console.log(res.data, user);
         setRequests(res.data.filter((request) => request.to._id === user._id));
       }),
       // Get friends recommendations
@@ -96,9 +121,6 @@ const Friends = ({setUserModified, suggestions, setSuggestions, sendRequest, con
         <Col id="friends-profile" className="p-0">
           {previewUser && (
             <Profile
-              declineFriend={declineFriend}
-              confirmFriend={confirmFriend}
-              sendRequest={sendRequest}
               showNav={false}
               user={user}
               posts={previewUserPosts}

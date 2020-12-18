@@ -20,23 +20,20 @@ import { Post, PostForm, ImageForm } from "../../Components";
 import { useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AiFillCamera } from "react-icons/ai";
-import axios from "axios";
+import Axios from  'axios';
 import { FaShower, FaCheck } from "react-icons/fa";
 
 const Profile = ({
-  deleteFriend,
   showNav = true,
   posts,
   setPosts,
   user,
   setUserModified,
   currentUser,
-  declineFriend,
-  confirmFriend,
-  sendRequest,
 }) => {
   const history = useHistory();
 
+  const [requests, setRequests] = useState([]);
   const [coverPhotoForm, setCoverPhotoForm] = useState(false);
   const [profilePhotoForm, setProfilePhotoForm] = useState(false);
   const [isFriends, setIsFriends] = useState(false);
@@ -44,6 +41,7 @@ const Profile = ({
   const [receivedRequest, setReceivedRequest] = useState(false);
   const [isSameUser, setSameUser] = useState(false);
   const [collapse, setCollapse] = useState(false);
+  const [getRequests, setGetRequests] = useState(true);
 
   const config = {
     headers: {
@@ -51,30 +49,77 @@ const Profile = ({
     },
   };
 
+  /* Friend request logic functions */
+  const sendRequest = (to) => {
+    //const to = e.target.getAttribute('data-id');
+    Axios.post(`/friend_requests/${to}/send`, {}, config).then((res) => {
+      
+      setGetRequests(true);
+    });
+  };
+
+  const confirmFriend = (_id) => {
+    //const _id = e.target.getAttribute('data-id');
+    Axios.post(`/friend_requests/${_id}/accept`).then((res) => {
+      setUserModified(true);
+      setGetRequests(true);
+    });
+  };
+
+  const declineFriend = (_id) => {
+    //const _id = e.target.getAttribute('data-id');
+    Axios.post(`/friend_requests/${_id}/decline`).then((res) => {
+      setRequests(requests.filter((request) => request._id !== res.data._id));
+    });
+  };
+
+  const deleteFriend = (user_id) => {
+    Axios.delete(`/friend_requests/${user_id}/delete`, config).then((res) => {
+      setUserModified(true);
+      setGetRequests(true);
+    })
+  }
+
+
+    // get requests
+    useEffect(() => {
+      // get current user's friend requests
+      Promise.all([
+        Axios.get(`/friend_requests/`, config).then((res) => {
+          setRequests(res.data.filter((request) => request.to._id === user._id));
+        }),
+      ]).then();
+    }, []);
+  
   // get friends requests of the logged in user(user) - both sent and received to determine
   // state of friendship. (sent friend request/received/friends/neither)
   useEffect(() => {
-    if (currentUser !== user) {
-      axios.get("/friend_requests", config).then((res) => {
-        const allRequests = res.data;
-        const SentRequests = allRequests
-          .filter((request) => request.from._id === user._id)
-        const ReceivedRequests = allRequests
-          .filter((request) => request.to._id === user._id)
+    if (currentUser !== user && getRequests) {
+      
+      console.log(requests);
+      const SentRequests = requests
+        .filter((request) => request.from._id === user._id)
+      console.log(SentRequests);
+      const ReceivedRequests = requests
+        .filter((request) => request.to._id === user._id)
+      console.log(ReceivedRequests);
+      setSentRequest(SentRequests.find(request => request.to._id === currentUser._id));
+      setReceivedRequest(ReceivedRequests.find(request => request.from._id === currentUser._id));
+      setGetRequests(false);
+  
+      const userFriendsIDs = user.friends.map(friend => friend._id)
 
-        if (currentUser.friends.includes(user._id)) setIsFriends(true);
-        setSentRequest(SentRequests.find(request => request.to._id === currentUser._id));
-        setReceivedRequest(ReceivedRequests.find(request => request.from._id === currentUser._id));
-      });
+      if (userFriendsIDs.includes(currentUser._id)) { 
+        setIsFriends(true);
+      } else {
+        setIsFriends(false);
+      }
     } else {
       if (currentUser._id === user._id) setSameUser(true);
     }
-  }, [currentUser]);
+  }, [currentUser, getRequests]);
 
-  // protected route
-  useEffect(() => {
-    if (!user) history.push("/");
-  }, [user]);
+
 
   return (
     <Container fluid className="p-0">

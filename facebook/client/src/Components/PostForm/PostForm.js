@@ -70,20 +70,16 @@ const PostForm = ({ user, setPosts, posts }) => {
           </Link>
           <Input
             onFocus={() => setExpandForm(true)}
+            style={{ borderRadius: "24px" }}
             value={content}
+            className="w-100 py-1 pr-5"
+            type="textarea"
+            rows={1}
+            name="content"
             onChange={(e) => {
               setContent(e.target.value);
               onChangeHandler(e);
             }}
-            style={{
-              width: "90%",
-              borderRadius: "24px",
-              background: "#f0f2f5",
-              height: "36px",
-            }}
-            className="border-0"
-            type="textarea"
-            rows="1"
             placeholder={`What's on your mind, ${user.first_name}?`}
           />
         </div>

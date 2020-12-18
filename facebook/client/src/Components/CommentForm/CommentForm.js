@@ -7,7 +7,6 @@ import { ImageForm } from "..";
 import autosize from "autosize";
 
 const CommentForm = ({ post, user, comments, setComments }) => {
-  const textArea = useRef(null);
   const [file, setFile] = useState(null);
   const [imageForm, setImageForm] = useState(false);
   const [content, setContent] = useState("");
@@ -42,9 +41,7 @@ const CommentForm = ({ post, user, comments, setComments }) => {
 
     e.target.style.height = `${height}px`;
   };
-  useEffect(() => {
-    autosize(textArea);
-  }, [textArea]);
+
   return (
     <Form onSubmit={(e) => submitHandler(e)}>
       <div className="d-flex align-items-center mb-2">

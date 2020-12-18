@@ -12,50 +12,17 @@ function App() {
   const [userModified, setUserModified] = useState(true);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [suggestions, setSuggestions] = useState([]);
-  const [requests, setRequests] = useState([]);
-
+ 
   const config = localStorage.getItem('user') && {
     headers: {
       Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
     },
   };
 
-  /* Friend request logic functions */
-  const sendRequest = (to) => {
-    //const to = e.target.getAttribute('data-id');
-
-    Axios.post(`/friend_requests/${to}/send`, {}, config).then((res) => {
-      setSuggestions(
-        suggestions.filter((suggestion) => suggestion._id !== res.data.to._id)
-      );
-    });
-  };
-
-  const confirmFriend = (_id) => {
-    //const _id = e.target.getAttribute('data-id');
-    Axios.post(`/friend_requests/${_id}/accept`).then((res) => {
-      setRequests(requests.filter((request) => request._id !== res.data._id));
-    });
-  };
-
-  const declineFriend = (_id) => {
-    //const _id = e.target.getAttribute('data-id');
-    Axios.post(`/friend_requests/${_id}/decline`).then((res) => {
-      setRequests(requests.filter((request) => request._id !== res.data._id));
-    });
-  };
-
-  const deleteFriend = (user_id) => {
-    Axios.delete(`/friend_requests/${user_id}/delete`, config).then((res) => {
-      const newUser = user;
-      newUser.friends = newUser.friends.filter(friend => friend._id !== user_id);
-      localStorage.setItem('user', JSON.stringify(newUser));
-    })
-  }
-
+  
   useEffect(() => {
     if(userModified) {
+      console.log('APP rendered');
       const localUser = JSON.parse(localStorage.getItem('user'))
       if(localUser) {
         const user_id = localUser.user;
@@ -63,7 +30,6 @@ function App() {
         .then(res => {
           console.log(res.data);
           setUser(res.data);
-          
           setUserModified(false);
         })
       } else {
@@ -109,25 +75,20 @@ function App() {
         ></Route>
         <Route 
           path="/"
+          exact
           render={() => <Index {...props} setUser={setUser}/>}
         ></Route>
         <ProtectedRoute
           path="/friends"
+          exact
           {...props} 
-          setSuggestions={setSuggestions}
-          suggestions={suggestions}
-          setRequests={setRequests}
-          requests={setRequests}
-          deleteFriend={deleteFriend}
-          declineFriend={declineFriend}
-          confirmFriend={confirmFriend}
-          sendRequest={sendRequest}
           component={Friends}
         ></ProtectedRoute>
         {/* Individual Post Routes */}
         {posts.map((post) => (
           <ProtectedRoute
             path={`/posts/${post._id}`}
+            post={post}
             {...props}
             component={PostPage}
           ></ProtectedRoute>
@@ -138,14 +99,7 @@ function App() {
           <ProtectedRoute
             path={`/users/${currentUser._id}`}
             {...props} 
-            setSuggestions={setSuggestions}
-            suggestions={suggestions}
-            setRequests={setRequests}
-            requests={setRequests}
-            deleteFriend={deleteFriend}
-            declineFriend={declineFriend}
-            confirmFriend={confirmFriend}
-            sendRequest={sendRequest}
+            posts={posts.filter(post => post.user._id === currentUser._id)}
             currentUser={currentUser}
             component={Profile}
           ></ProtectedRoute>
