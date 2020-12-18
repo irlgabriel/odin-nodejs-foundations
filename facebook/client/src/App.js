@@ -3,43 +3,38 @@ import "./App.css";
 import { Container } from "reactstrap";
 import { Index, Home, Profile, Register, Friends, PostPage, ProtectedRoute } from "./Pages";
 import { LoadingOverlay } from "./Components";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Axios from "axios";
 
 function App() {
   const [user, setUser] = useState(undefined);
   const [users, setUsers] = useState([]);
-  const [userModified, setUserModified] = useState(true);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
- 
+  const [requests, setRequests] = useState([]);
+
   const config = localStorage.getItem('user') && {
     headers: {
-      Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
-    },
-  };
+      Authorization: `bearer ${JSON.parse(localStorage.getItem('user')).token}`
+    }
+  }
 
-  
-  useEffect(() => {
-    if(userModified) {
-      console.log('APP rendered');
-      const localUser = JSON.parse(localStorage.getItem('user'))
-      if(localUser) {
-        const user_id = localUser.user;
-        Axios.get(`/users/${user_id}`)
-        .then(res => {
-          console.log(res.data);
-          setUser(res.data);
-          setUserModified(false);
-        })
-      } else {
-        setUser(undefined);
-        setUserModified(false);
-      }
-    } 
-  }, [userModified]);
+  const reloadUser = () => {
+    const localUser = JSON.parse(localStorage.getItem('user'))
+    if(localUser) {
+      const user_id = localUser.user;
+      Axios.get(`/users/${user_id}`)
+      .then(res => {
+        console.log(res.data);
+        setUser(res.data);
+      })
+    } else {
+      setUser(undefined);
+    }
+  }
 
   useEffect(() => {
+    reloadUser();
     setLoading(true);
     Promise.all([
       // Get posts
@@ -50,10 +45,15 @@ function App() {
       Axios.get("/users").then((res) => {
         setUsers(res.data);
       }),
+      //  Get Friend Requests of this user
+      Axios.get(`/friend_requests/`, config).then(res => {
+        setRequests(res.data);
+      })
+      
     ]).then((results) => setLoading(false));
   }, []);
 
-  const props = { user, posts, setPosts, setUserModified };
+  const props = { user, posts, setPosts, reloadUser };
 
   return (
     <Router>
@@ -66,6 +66,8 @@ function App() {
         <ProtectedRoute
           path="/profile"
           currentUser={user}
+          requests={requests}
+          setRequests={setRequests}
           {...props}
           component={Profile}
         ></ProtectedRoute>
@@ -81,6 +83,8 @@ function App() {
         <ProtectedRoute
           path="/friends"
           exact
+          requests={requests}
+          setRequests={setRequests}
           {...props} 
           component={Friends}
         ></ProtectedRoute>
@@ -99,6 +103,8 @@ function App() {
           <ProtectedRoute
             path={`/users/${currentUser._id}`}
             {...props} 
+            requests={requests}
+            setRequests={setRequests}
             posts={posts.filter(post => post.user._id === currentUser._id)}
             currentUser={currentUser}
             component={Profile}

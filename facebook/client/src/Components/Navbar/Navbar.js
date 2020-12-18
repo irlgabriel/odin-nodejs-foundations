@@ -35,7 +35,7 @@ import { BsArrowLeft } from "react-icons/bs";
 import { CSSTransition } from "react-transition-group";
 import { Notification } from "..";
 
-const Navbar = ({ setUserModified, user }) => {
+const Navbar = ({ reloadUser, user }) => {
   const location = useLocation();
   const history = useHistory();
 
@@ -54,8 +54,8 @@ const Navbar = ({ setUserModified, user }) => {
 
   const logoutHandler = () => {
     localStorage.removeItem("user");
-    setUserModified(true);
-    history.push('/');
+    reloadUser();
+    //history.push('/');
   };
 
   useEffect(() => {
