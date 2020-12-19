@@ -34,8 +34,12 @@ function App() {
 
   useEffect(() => {
     reloadUser();
+  }, [])
+
+  useEffect(() => {
     setLoading(true);
-    Promise.all([
+    if(user) {
+      Promise.all([
       // Get posts
       Axios.get("/posts").then((res) => {
         setPosts(res.data);
@@ -48,11 +52,13 @@ function App() {
       Axios.get(`/friend_requests/`, config).then(res => {
         setRequests(res.data);
       })
-      
-    ]).then((results) => {
+      ]).then((results) => {
+        setLoading(false);
+      });
+    } else {
       setLoading(false);
-    });
-  }, []);
+    }
+  }, [user]);
 
 
   const props = { user, posts, setPosts, reloadUser };

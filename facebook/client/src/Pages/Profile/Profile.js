@@ -68,9 +68,7 @@ const Profile = ({
   const confirmFriend = (_id) => {
     //const _id = e.target.getAttribute('data-id');
     Axios.post(`/friend_requests/${_id}/accept`).then((res) => {
-      async.series([
-        () => setRequests(requests.filter(request => request._id !== res.data._id))
-      ], () => reloadUser() )
+      reloadUser();
     });
   };
 
