@@ -60,6 +60,12 @@ export const RoundImage = styled.img`
   height: 64px;
 `;
 
+export const SmallRoundImg = styled.img`
+  border-radius: 16px;
+  width: 32px;
+  height: 32px;
+`
+
 export const GrayHover = styled.div`
   display: flex;
   align-items: center;
@@ -119,3 +125,31 @@ export const NewNotifications = styled.div`
     content: "${({ count }) => count}";
   }
 `;
+
+export const SearchContainer = styled.div`
+  position: absolute;
+  top: 60px;
+  left: 65px;
+  max-height: 100vh;
+  overflow: scroll;
+  border-radius: 5px;
+  background: white;
+  padding: .5rem;
+  padding-bottom: 0;
+  min-width: 200px;
+  max-width: 400px;
+`
+
+export const SearchResult = styled.div`
+  border-radius: 5px;
+  background: white;
+  transition: all .3s;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  padding: .25rem .5rem;
+  &:hover {
+    background: lightgray;
+    cursor: pointer;
+  }
+`

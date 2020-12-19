@@ -61,7 +61,7 @@ function App() {
   }, [user]);
 
 
-  const props = { user, posts, setPosts, reloadUser };
+  const props = { user, users, posts, setPosts, reloadUser };
 
   return (
     <Router>

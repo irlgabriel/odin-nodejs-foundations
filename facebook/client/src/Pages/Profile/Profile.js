@@ -32,7 +32,7 @@ const Profile = ({
   requests,
   setRequests,
   currentUser,
-  
+  users,
 }) => {
 
   const [coverPhotoForm, setCoverPhotoForm] = useState(false);
@@ -143,7 +143,7 @@ const Profile = ({
         />
       )}
       <div style={{ background: "white" }}>
-        {showNav && <Navbar key="profile" user={user} reloadUser={reloadUser}/>}
+        {showNav && <Navbar key="profile" users={users} user={user} reloadUser={reloadUser}/>}
         <ProfileSection className="px-0">
           {currentUser.cover_photo ? (
             <a href={user.cover_photo}>

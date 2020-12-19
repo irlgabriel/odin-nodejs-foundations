@@ -14,6 +14,9 @@ import {
   RegularLink,
   NewNotifications,
   MenuIcon,
+  SearchContainer,
+  SearchResult,
+  SmallRoundImg
 } from "./Navbar.components";
 /* React Icons */
 import {
@@ -35,7 +38,7 @@ import { BsArrowLeft } from "react-icons/bs";
 import { CSSTransition } from "react-transition-group";
 import { Notification } from "..";
 
-const Navbar = ({ reloadUser, user }) => {
+const Navbar = ({ users, reloadUser, user }) => {
   const location = useLocation();
   const history = useHistory();
 
@@ -45,8 +48,16 @@ const Navbar = ({ reloadUser, user }) => {
     },
   };
 
+  const fullname = (user) => {
+    return user.display_name || user.first_name + ' ' + user.last_name
+  }
+
   const [menu, setMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [searchDropdown, setSearchDropdown] = useState(false);
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [usernames, setUsernames] = useState([])
   const [userDropdown, setUserDropdown] = useState(false);
   const [notificationDropdown, setNotificationDropdown] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -73,9 +84,20 @@ const Navbar = ({ reloadUser, user }) => {
     );
   }, [notifications]);
 
+  useEffect(() => {
+    // search logic
+    if(query.length) {
+      setSearchDropdown(true);
+      setResults(users.filter(user => fullname(user).toLowerCase().includes(query.toLowerCase())))
+    } else {
+      setSearchDropdown(false);
+
+    }
+  }, [query])
+
   return (
     <Nav className="sticky-top px-1">
-      <Col className="align-items-center d-flex">
+      <Col className="align-items-center d-flex position-relative">
         {!showSearch && (
           <Link to="/home">
             <FaFacebook className="mr-2" fill="royalblue" size={40} />
@@ -98,10 +120,29 @@ const Navbar = ({ reloadUser, user }) => {
               style={{ borderRadius: "21px" }}
               type="text"
               className="py-2"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder="Search Facebook"
             />
           </div>
         )}
+          <CSSTransition
+            in={searchDropdown && showSearch}
+            timeout={300}
+            classNames='fade'
+            unmountOnExit
+          >
+            <SearchContainer>
+              {results.map(result => 
+                <Link to={`/users/${result._id}`}>
+                  <SearchResult>
+                    <SmallRoundImg className='mr-2' src={result.profile_photo}></SmallRoundImg>
+                    <p className='mb-0'>{fullname(result)}</p>
+                  </SearchResult>
+                </Link>
+                )}
+            </SearchContainer>
+          </CSSTransition>
       </Col>
 
       {/** >768px */}

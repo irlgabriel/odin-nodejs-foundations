@@ -9,7 +9,7 @@ import {
 } from "../../Components";
 import Axios from "axios";
 
-const Friends = ({requests, setRequests, reloadUser, user, posts }) => {
+const Friends = ({requests, users, setRequests, reloadUser, user, posts }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [previewUserPosts, setPreviewUserPosts] = useState([]);
   const [previewUser, setPreviewUser] = useState(undefined);
@@ -89,7 +89,7 @@ const Friends = ({requests, setRequests, reloadUser, user, posts }) => {
     <Container fluid className="px-0">
       {/* Loading overlay */}
       {loading && <LoadingOverlay />}
-      <Navbar key="friends" reloadUser={reloadUser} user={user} />
+      <Navbar users={users} key="friends" reloadUser={reloadUser} user={user} />
       <Row className="p-0 m-0" style={{ height: "auto" }}>
         <Col
           id="friends-col"
