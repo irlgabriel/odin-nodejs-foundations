@@ -13,6 +13,8 @@ export const NotificationContainer = styled.div`
     background: lightgray;
     cursor: pointer;
   }
+  max-height: 80vh;
+  overflow-y: scroll;
 `;
 
 export const UserImage = styled.div`

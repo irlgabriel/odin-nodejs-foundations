@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { AiFillCamera } from "react-icons/ai";
 import Axios from  'axios';
 import { FaCheck } from "react-icons/fa";
+import async from 'async'
 
 const Profile = ({
   showNav = true,
@@ -60,13 +61,16 @@ const Profile = ({
     //const to = e.target.getAttribute('data-id');
     Axios.post(`/friend_requests/${to}/send`, {}, config).then((res) => {
       setRequests([...requests, res.data]);
+      setSentRequest(res.data._id);
     });
   };
 
   const confirmFriend = (_id) => {
     //const _id = e.target.getAttribute('data-id');
     Axios.post(`/friend_requests/${_id}/accept`).then((res) => {
-      reloadUser();
+      async.series([
+        () => setRequests(requests.filter(request => request._id !== res.data._id))
+      ], () => reloadUser() )
     });
   };
 
@@ -80,6 +84,7 @@ const Profile = ({
   const deleteFriend = (user_id) => {
     Axios.delete(`/friend_requests/${user_id}/delete`, config).then((res) => {
       reloadUser();
+      setIsFriends(false);
       setSentRequest(undefined);
       setReceivedRequest(undefined)
     })
@@ -87,23 +92,39 @@ const Profile = ({
 
   // filter sent and received requests whenever the requests array changes
   useEffect(() => {
-    setSentRequests(requests
-      .filter((request) => request.from._id === user._id))
-    setReceivedRequests(requests
-      .filter((request) => request.to._id === user._id))
+    async.series([
+      function(callback) {
+        const sent = (requests
+          .filter((request) => request.from._id === user._id))
+        callback(null, sent)
+      },
+      function(callback) {
+        const received = (requests
+          .filter((request) => request.to._id === user._id))
+        callback(null, received);
+      }
+    ], (err, results) => {
+      setSentRequest(results[0].find(req => req.to._id === currentUser._id));
+      setReceivedRequest(results[1].find(req => req.from._id === currentUser._id));
+      setSentRequests(results[1]);
+      setReceivedRequests(results[0]);
+    })
+    
   }, [requests])
 
   // get friends requests of the logged in user(user) - both sent and received to determine
   // state of friendship. (sent friend request/received/friends/neither)
   useEffect(() => {
     if(currentUser._id !== user._id) {
-      setSentRequest(sentRequests.find(request => request.to._id === currentUser._id));
-      setReceivedRequest(receivedRequests.find(request => request.from._id === currentUser._id));
+
+      // this runs before the useEffect above;
+      if(sentRequests.length) console.log(sentRequests[0].to._id, currentUser._id)
+      
       setIsFriends(checkIsFriend());
   } else {
-    if (currentUser._id === user._id) setSameUser(true);
+    setSameUser(true);
   }
-  }, [currentUser, requests, sentRequest, receivedRequest]);
+  }, [currentUser, requests]);
 
   return (
     <Container fluid className="p-0">
