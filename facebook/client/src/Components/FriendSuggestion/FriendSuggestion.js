@@ -9,7 +9,7 @@ const FriendSuggestion = ({ onClick, sendRequest, to }) => {
   return (
     <FriendsContainer data-id={to._id} onClick={(e) => onClick(e)}>
       <RoundImage src={to.profile_photo} />
-      <FriendInfo className="w-100">
+      <FriendInfo>
         <h4>{to.display_name || to.first_name + " " + to.last_name}</h4>
         {
           <div>

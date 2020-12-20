@@ -15,7 +15,7 @@ const FriendRequest = ({
   return (
     <FriendsContainer onClick={(e) => onClick(e)} data-id={from._id}>
       <RoundImage src={from.profile_photo} />
-      <FriendInfo className="w-100">
+      <FriendInfo>
         <h4>{from.display_name || from.first_name + " " + from.last_name}</h4>
         <div className="d-flex w-100 align-items-center">
           <Button
