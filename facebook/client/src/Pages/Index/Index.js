@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import { Container, Form, Input, Label, Button, FormGroup } from "reactstrap";
+import { LoginFacebook } from '..'
 
 const Index = ({reloadUser, user }) => {
   const location = useHistory();
@@ -69,12 +70,10 @@ const Index = ({reloadUser, user }) => {
             </Button>
           </Link>
         </Container>
-        <div className='mt-2 text-center'>
+        <a href='http://localhost:5000/auth/facebook'>
+          <Button color='primary'>Login with Facebook</Button>
+        </a>
 
-          <a href='http://localhost:5000/auth/facebook/'>
-            <Button className='w-75' color='primary'>Login with Facebook</Button>
-          </a>
-        </div>
       </div>
     </Container>
   );

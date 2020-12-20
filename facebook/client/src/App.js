@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import { Container } from "reactstrap";
-import { Index, Home, Profile, Register, Friends, PostPage, ProtectedRoute, FacebookLogin } from "./Pages";
+import { Index, Home, Profile, Register, Friends, PostPage, ProtectedRoute } from "./Pages";
 import { LoadingOverlay } from "./Components";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Axios from "axios";
