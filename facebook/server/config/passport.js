@@ -32,7 +32,7 @@ passport.use(
       profileFields: ['displayName', 'photos', 'email']
     },
     (accessToken, refreshToken, profile, cb) => {
-      User.findOne({ _id: profile.id })
+      User.findOne({ email: profile.emails[0].value})
         .populate("friends")
         .exec((err, user) => {
           if (user) {
@@ -40,7 +40,7 @@ passport.use(
           } else {
             User.create(
               {
-                username: profile.emails[0].value,
+                email: profile.emails[0].value,
                 profile_photo: profile.photos[0].value,
                 facebookID: profile.id,
                 display_name: profile.displayName,

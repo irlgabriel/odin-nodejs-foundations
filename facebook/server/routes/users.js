@@ -25,9 +25,6 @@ router.get(
   passport.authenticate("facebook", {
     session: false,
   }),
-  (req, res) => {
-    res.json(req.user);
-  }
  );
 
 /* GET all users */
