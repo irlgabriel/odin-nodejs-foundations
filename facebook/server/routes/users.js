@@ -17,7 +17,6 @@ router.get(
   "/auth/facebook",
   passport.authenticate("facebook", {
     session: false,
-    scope: ["public_profile", "email"],
   })
 );
 
@@ -25,10 +24,11 @@ router.get(
   "/auth/facebook/callback",
   passport.authenticate("facebook", {
     session: false,
-    successRedirect: "/",
-    failureRedirect: "/",
-  })
-);
+  }),
+  (req, res) => {
+    res.json(req.user);
+  }
+ );
 
 /* GET all users */
 router.get("/users", userController.get_users);

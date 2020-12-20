@@ -38,6 +38,7 @@ app.use("/posts", postsRouter);
 app.use("/posts/:post_id/comments", commentsRouter);
 app.use("/notifications", notificationsRouter);
 app.use("/friend_requests", friendRequestsRouter);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

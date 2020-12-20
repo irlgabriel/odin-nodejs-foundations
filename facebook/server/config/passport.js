@@ -27,11 +27,12 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
-      callbackURL: "http://localhost:3000/auth/facebook/callback",
-      profileFields: ["id", "displayName", "photos", "email"],
+      callbackURL: "http://localhost:5000/auth/facebook/callback",
+      //passReqToCallback: true,
+      profileFields: ['displayName', 'photos', 'email']
     },
     (accessToken, refreshToken, profile, cb) => {
-      User.findOne({ facebookID: profile.id })
+      User.findOne({ _id: profile.id })
         .populate("friends")
         .exec((err, user) => {
           if (user) {
@@ -39,7 +40,7 @@ passport.use(
           } else {
             User.create(
               {
-                email: profile.emails[0].value,
+                username: profile.emails[0].value,
                 profile_photo: profile.photos[0].value,
                 facebookID: profile.id,
                 display_name: profile.displayName,
