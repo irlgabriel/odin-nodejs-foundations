@@ -1,5 +1,4 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const router = express.Router();
 const passport = require("passport");
 const tokenMiddleware = require("../middlewares/token");
@@ -28,7 +27,7 @@ router.get(
  /* Logout */
 router.get("/logout", (req, res, next) => {
   req.logout();
-  res.redirect("/");
+  res.redirect(process.env.FRONTEND_URL);
 });
 
 module.exports = router;
