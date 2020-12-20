@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 
+const authRouter = require('./routes/auth');
 const usersRouter = require("./routes/users");
 const postsRouter = require("./routes/posts");
 const commentsRouter = require("./routes/comment");
@@ -33,6 +34,7 @@ app.use(passport.initialize());
 app.use(express.static(path.join(__dirname, "public")));
 
 // routes path
+app.use("/", authRouter);
 app.use("/", usersRouter);
 app.use("/posts", postsRouter);
 app.use("/posts/:post_id/comments", commentsRouter);

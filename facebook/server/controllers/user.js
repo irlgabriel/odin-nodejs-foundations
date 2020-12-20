@@ -25,6 +25,22 @@ exports.login = [
   },
 ];
 
+exports.facebook_callback = (req, res, next) => {
+  passport.authenticate('facebook', (err, user, info) => {
+    if(err) return next(err);
+    if(!user) return res.redirect(process.env.FRONTEND_URL)
+    req.logIn(user, (err) => {
+      if(err) return next(err);
+      jwt.sign(user.toJSON(), process.env.JWT_SECRET, (err, token) => {
+        if(err) next(err);
+        return res.json({user, token});
+        //req.cookie('user', {user, token})
+        //return res.redirect(process.env.FRONTEND_URL + '/home');
+      })
+    })
+  })(req, res, next);
+}
+
 exports.register = [
   body("email")
     .isEmail()
