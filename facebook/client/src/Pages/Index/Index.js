@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import { Container, Form, Input, Label, Button, FormGroup } from "reactstrap";
 import { LoginFacebook } from '..'
 
-const Index = ({reloadUser, user }) => {
+const Index = ({reloadUser, user, }) => {
   const location = useHistory();
 
   const [email, setEmail] = useState("");
@@ -12,12 +12,8 @@ const Index = ({reloadUser, user }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    Axios.post("/login", { email, password })
+    Axios.post("/auth/login", { email, password })
       .then((res) => {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ user: res.data.user, token: res.data.token })
-        );
         reloadUser();
       })
       .catch((err) => console.log(err));
@@ -70,9 +66,12 @@ const Index = ({reloadUser, user }) => {
             </Button>
           </Link>
         </Container>
-        <a href='http://localhost:5000/auth/facebook'>
-          <Button color='primary'>Login with Facebook</Button>
-        </a>
+        <hr className='my-2' />
+        <div class='text-center mt-2'>
+          <a href='http://localhost:5000/auth/facebook'>
+            <Button color='primary'>Login with Facebook</Button>
+          </a>
+        </div>
 
       </div>
     </Container>

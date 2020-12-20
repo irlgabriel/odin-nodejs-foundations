@@ -6,10 +6,15 @@ const User = require("../models/users");
 
 exports.login = [
   passport.authenticate("local", { session: false }),
-  (req, res, next) => {
-    next();
-  },
 ];
+
+exports.checkAuth = (req, res, next) => {
+  if(req.user) {
+    res.json({user_id: req.user_id});
+  } else {
+    res.sendStatus(403);
+  }
+}
 
 exports.facebook_callback = (req, res, next) => {
   passport.authenticate('facebook', (err, user, info) => {
@@ -20,8 +25,6 @@ exports.facebook_callback = (req, res, next) => {
       jwt.sign(user.toJSON(), process.env.JWT_SECRET, (err, token) => {
         if(err) next(err);
         return res.json({user, token});
-        //req.cookie('user', {user, token})
-        //return res.redirect(process.env.FRONTEND_URL + '/home');
       })
     })
   })(req, res, next);
@@ -55,11 +58,11 @@ exports.register = [
             { email, first_name, last_name, password: hash },
             (err, registeredUser) => {
               if (err) return res.status(400).json(err);
-              jwt.sign({ user: registeredUser }, process.env.JWT_SECRET, (err, token) => {
+              req.logIn(registeredUser, err => {
                 if (err) return res.status(400).json(err);
-                req.user = registeredUser;
-                req.token = token;
-                next();
+                jwt.sign({ user: registeredUser }, process.env.JWT_SECRET, (err, token) => {
+                  if (err) return res.status(400).json(err);
+                })
               });
             }
           );

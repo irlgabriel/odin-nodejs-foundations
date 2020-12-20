@@ -1,11 +1,18 @@
-import { useHistory } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Container, Row, Col } from "reactstrap";
 import { NavItem, RoundImage } from "./Home.components";
 import { Navbar, PostForm, Post } from "../../Components";
 import { FaUserFriends } from "react-icons/fa";
 
-const Home = ({ reloadUser, posts, setPosts, users, user }) => {
-  const history = useHistory();
+const Home = ({ reloadUser, user }) => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    axios.get('/posts')
+    .then(res => setPosts(res.data))
+  }, [])
+
   return (
     <Container fluid className="px-0">
       <Navbar users={users} key="home" posts={posts} reloadUser={reloadUser} setPosts={setPosts} user={user} />

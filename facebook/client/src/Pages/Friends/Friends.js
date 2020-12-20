@@ -9,8 +9,9 @@ import {
 } from "../../Components";
 import Axios from "axios";
 
-const Friends = ({requests, users, setRequests, reloadUser, user, posts }) => {
+const Friends = ({users, reloadUser, user, posts }) => {
   const [suggestions, setSuggestions] = useState([]);
+  const [requests, setRequests] = useState([]);
   const [previewUserPosts, setPreviewUserPosts] = useState([]);
   const [previewUser, setPreviewUser] = useState(undefined);
   const [loading, setLoading] = useState(true);
@@ -65,7 +66,12 @@ const Friends = ({requests, users, setRequests, reloadUser, user, posts }) => {
       Axios.get("/friend_requests/recommendations", config).then((res) => {
         setSuggestions(res.data);
       }),
+      Axios.get('/friend_requests/', config).then(res => {
+        setRequests(res.data);
+      })
+
     ]).then((results) => setLoading(false));
+    // Get friend requests
   }, []);
 
   // when previewUser changes we change the posts to match theirs

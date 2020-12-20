@@ -34,8 +34,8 @@ app.use(passport.initialize());
 app.use(express.static(path.join(__dirname, "public")));
 
 // routes path
-app.use("/", authRouter);
-app.use("/", usersRouter);
+app.use("/auth/", authRouter);
+app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 app.use("/posts/:post_id/comments", commentsRouter);
 app.use("/notifications", notificationsRouter);

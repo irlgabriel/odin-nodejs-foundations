@@ -27,30 +27,30 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
-      callbackURL: "http://localhost:5000/auth/facebook/callback",
+      callbackURL: process.env.FRONTEND_URL,
       //passReqToCallback: true,
       profileFields: ['displayName', 'photos', 'email']
     },
     (accessToken, refreshToken, profile, cb) => {
       User.findOne({ email: profile.emails[0].value})
-        .populate("friends")
-        .exec((err, user) => {
-          if (user) {
-            return cb(err, user);
-          } else {
-            User.create(
-              {
-                email: profile.emails[0].value,
-                profile_photo: profile.photos[0].value,
-                facebookID: profile.id,
-                display_name: profile.displayName,
-              },
-              (err, user) => {
-                return cb(err, user);
-              }
-            );
-          }
-        });
+      .populate("friends")
+      .exec((err, user) => {
+        if (user) {
+          return cb(err, user);
+        } else {
+          User.create(
+            {
+              email: profile.emails[0].value,
+              profile_photo: profile.photos[0].value,
+              facebookID: profile.id,
+              display_name: profile.displayName,
+            },
+            (err, user) => {
+              return cb(err, user);
+            }
+          );
+        }
+      });
     }
   )
 );
