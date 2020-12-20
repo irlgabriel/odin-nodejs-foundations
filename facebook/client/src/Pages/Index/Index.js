@@ -69,6 +69,12 @@ const Index = ({reloadUser, user }) => {
             </Button>
           </Link>
         </Container>
+        <div className='mt-2 text-center'>
+
+          <a href='http://localhost:5000/auth/facebook/'>
+            <Button className='w-75' color='primary'>Login with Facebook</Button>
+          </a>
+        </div>
       </div>
     </Container>
   );
