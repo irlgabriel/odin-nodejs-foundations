@@ -13,7 +13,7 @@ const Index = ({reloadUser, user, }) => {
     e.preventDefault();
     Axios.post("/login", { email, password })
       .then((res) => {
-        //reloadUser();
+        reloadUser();
       })
       .catch((err) => console.log(err));
   };

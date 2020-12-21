@@ -20,7 +20,7 @@ const Home = ({ reloadUser, user }) => {
         <Col id="left-col" className="p-2 d-sm-none d-lg-block" sm="3" lg="3">
           <NavItem to="/profile">
             <RoundImage src={user.profile_photo} />
-            &nbsp;{user.displayName || user.first_name + " " + user.last_name}
+            &nbsp;{user.display_name || user.first_name + " " + user.last_name}
           </NavItem>
           <NavItem to="/friends">
             <FaUserFriends size={36} fill="royalblue" />

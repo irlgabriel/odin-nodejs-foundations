@@ -2,34 +2,32 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import { Container } from "reactstrap";
 import { Index, Home, Profile, Register, Friends, PostPage, ProtectedRoute, FacebookLogin } from "./Pages";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Axios from "axios";
 
 function App() {
   const [user, setUser] = useState(undefined);
-  const [userID, setUserID] = useState(undefined);
 
   const reloadUser = () => {
-    Axios.get(`/users/${userID}`)
+    Axios.get(`/users/${user._id}`)
     .then(res => {
       setUser(res.data);
     })
+    .catch(err => console.log(err))
   } 
 
   // Check if user is logged in
   useEffect(() => {
-    Axios.get('/checkAuth')
-    .then(res =>
-      setUserID(res.data.user_id)
-    )
+    Axios.get('/checkAuth', {withCredentials: true})
+    .then(res => {
+      const user_id = res.data.user_id;
+      Axios.get(`/users/${user_id}`)
+      .then(res => {
+      setUser(res.data);
+      })
+    })
+    .catch(err => console.log(err));
   }, [])
-
-  // When userID changes, load the user based on it.
-  useEffect(() => {
-    if(userID) {
-      reloadUser();
-    }
-  }, [userID])
 
   const props = { user, reloadUser };
 

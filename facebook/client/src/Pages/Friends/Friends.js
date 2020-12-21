@@ -19,7 +19,7 @@ const Friends = ({reloadUser, user }) => {
   const [sentRequests, setSentRequests] = useState([])
   const [receivedRequests, setReceivedRequests] = useState([])
 
-  const config = {
+  const config = localStorage.getItem('user') &&  {
     headers: {
       Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
     },
@@ -67,7 +67,7 @@ const Friends = ({reloadUser, user }) => {
       Axios.get("/friend_requests/recommendations", config).then((res) => {
         setSuggestions(res.data);
       }),
-      Axios.get('/friend_requests/', config).then(res => {
+      Axios.get('/friend_requests', config).then(res => {
         setRequests(res.data);
       }),
       Axios.get('/posts').then(res => {
@@ -75,7 +75,6 @@ const Friends = ({reloadUser, user }) => {
       })
 
     ]).then((results) => setLoading(false));
-    // Get friend requests
   }, []);
 
   // when previewUser changes we change the posts to match theirs

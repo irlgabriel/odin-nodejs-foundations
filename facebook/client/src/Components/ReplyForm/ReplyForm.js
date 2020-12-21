@@ -14,7 +14,7 @@ const ReplyForm = ({
   const [content, setContent] = useState("");
   const [showSubmit, setShowSubmit] = useState(false);
 
-  const config = {
+  const config = localStorage.getItem('user') && {
     headers: {
       Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
     },

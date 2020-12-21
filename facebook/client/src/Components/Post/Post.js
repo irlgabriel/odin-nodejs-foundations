@@ -37,7 +37,7 @@ const Post = ({ user, posts, post, setPosts }) => {
   const [settingsDropdown, setSettingsDropdown] = useState(false);
   const [commentsDropdown, setCommentsDropdown] = useState(false);
 
-  const config = {
+  const config = localStorage.getItem('user') &&  {
     headers: {
       Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
     },

@@ -29,7 +29,7 @@ const Reply = ({
   const [content, setContent] = useState(reply.content);
   const [showEdit, setEdit] = useState(false);
 
-  const config = {
+  const config = localStorage.getItem('user') && {
     headers: {
       Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
     },

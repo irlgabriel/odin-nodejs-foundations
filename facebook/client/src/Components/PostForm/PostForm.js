@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Container, Form, Label, Input, FormGroup, Button } from "reactstrap";
 import { RoundImage, GrayHover } from "./PostForm.components";
@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { LoadingOverlay } from "..";
 
 const PostForm = ({ user, setPosts, posts }) => {
+  const [displayName, setDisplayName] = useState(user.display_name)
   const [loading, setLoading] = useState(false);
   const [showImageForm, setImageForm] = useState(false);
   const [expandForm, setExpandForm] = useState(false);
@@ -48,6 +49,10 @@ const PostForm = ({ user, setPosts, posts }) => {
     e.target.style.height = `${height}px`;
   };
 
+  useEffect(() => {
+    setDisplayName(user.first_name || user.display_name.split(' ')[0]);
+  }, [])
+
   return (
     <Container
       fluid
@@ -80,7 +85,7 @@ const PostForm = ({ user, setPosts, posts }) => {
               setContent(e.target.value);
               onChangeHandler(e);
             }}
-            placeholder={`What's on your mind, ${user.first_name}?`}
+            placeholder={`What's on your mind, ${displayName}?`}
           />
         </div>
         <CSSTransition

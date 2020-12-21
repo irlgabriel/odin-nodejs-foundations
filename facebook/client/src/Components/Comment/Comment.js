@@ -27,7 +27,7 @@ const Comment = ({ level = 0, comments, comment, setComments, user, post }) => {
   const [showEdit, setEdit] = useState(false);
 
   const config = {
-    headers: {
+    headers: localStorage.getItem('user') &&  {
       Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
     },
   };

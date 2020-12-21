@@ -22,19 +22,19 @@ import { AiFillCamera } from "react-icons/ai";
 import Axios from  'axios';
 import { FaCheck } from "react-icons/fa";
 import async from 'async'
+import { useParams } from 'react-router-dom';
 
 const Profile = ({
   showNav = true,
-  posts,
-  setPosts,
   user,
   reloadUser,
-  requests,
-  setRequests,
-  currentUser,
   users,
 }) => {
+  const { user_id } = useParams();
 
+  const [currentUser, setCurrentUser] = useState(user)
+  const [requests, setRequests] = useState([])
+  const [posts, setPosts] = useState([]);
   const [coverPhotoForm, setCoverPhotoForm] = useState(false);
   const [profilePhotoForm, setProfilePhotoForm] = useState(false);
   const [isFriends, setIsFriends] = useState(false);
@@ -45,7 +45,7 @@ const Profile = ({
   const [isSameUser, setSameUser] = useState(false);
   const [collapse, setCollapse] = useState(false);
 
-  const config = {
+  const config = localStorage.getItem('user') && {
     headers: {
       Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
     },
@@ -109,6 +109,25 @@ const Profile = ({
     })
     
   }, [requests])
+
+  
+  useEffect(() => {
+    // Set current user based on url
+    Axios.get(`/users/${user_id}`)
+    .then(res => {
+      setCurrentUser(res.data);
+    })
+    // Fetch posts
+    Axios.get('/posts')
+    .then(res => {
+      setPosts(res.data.filter(post => post.user._id === currentUser._id));
+    })
+    // Fetch requests
+    Axios.get('/friend_requests', config)
+    .then(res => {
+      setRequests(res.data);
+    })
+  }, [])
 
   // get friends requests of the logged in user(user) - both sent and received to determine
   // state of friendship. (sent friend request/received/friends/neither)
