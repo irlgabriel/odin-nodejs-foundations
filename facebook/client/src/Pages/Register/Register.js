@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { Container, Form, Input, Label, FormGroup, Button } from "reactstrap";
 
-const Register = ({ user }) => {
+const Register = ({ user, reloadUser }) => {
   const location = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,11 +21,7 @@ const Register = ({ user }) => {
         last_name: lastName,
       })
       .then((res) => {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ user: res.data.user, token: res.data.token })
-        );
-        location.push("/home");
+        reloadUser();
       })
       .catch((err) => {
         console.log(err);

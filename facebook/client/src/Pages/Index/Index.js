@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import { Container, Form, Input, Label, Button, FormGroup } from "reactstrap";
-import { LoginFacebook } from '..'
 
 const Index = ({reloadUser, user, }) => {
   const location = useHistory();
@@ -12,9 +11,9 @@ const Index = ({reloadUser, user, }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    Axios.post("/auth/login", { email, password })
+    Axios.post("/login", { email, password })
       .then((res) => {
-        reloadUser();
+        //reloadUser();
       })
       .catch((err) => console.log(err));
   };

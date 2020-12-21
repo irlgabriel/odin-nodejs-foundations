@@ -7,6 +7,7 @@ const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const session = require('express-session');
 const mongoose = require("mongoose");
 
 const authRouter = require('./routes/auth');
@@ -25,16 +26,22 @@ mongoose.connection.on("open", () => console.log("Connected to mongoDB"));
 
 const app = express();
 
+app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: process.env.SESSION_SECRET || 'abc'
+}))
 app.use(passport.initialize());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(passport.session());
 
 // routes path
-app.use("/auth/", authRouter);
+app.use("/", authRouter);
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 app.use("/posts/:post_id/comments", commentsRouter);

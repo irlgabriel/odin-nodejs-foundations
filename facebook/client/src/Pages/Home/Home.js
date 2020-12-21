@@ -15,7 +15,7 @@ const Home = ({ reloadUser, user }) => {
 
   return (
     <Container fluid className="px-0">
-      <Navbar users={users} key="home" posts={posts} reloadUser={reloadUser} setPosts={setPosts} user={user} />
+      <Navbar key="home" posts={posts} reloadUser={reloadUser} setPosts={setPosts} user={user} />
       <Row className="mx-0">
         <Col id="left-col" className="p-2 d-sm-none d-lg-block" sm="3" lg="3">
           <NavItem to="/profile">

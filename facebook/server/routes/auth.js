@@ -5,7 +5,7 @@ const passport = require("passport");
 const authController = require('../controllers/auth');
 
 /* Login */
-router.post("/login", authController.login);
+router.post("/login",  authController.login, (req, res) => res.send(req.user));
 
 /* Register */
 router.post("/register", authController.register);
@@ -14,7 +14,7 @@ router.post("/register", authController.register);
 router.get(
   "/auth/facebook",
   passport.authenticate("facebook", {
-    session: false,
+    successRedirect: process.env.FRONTEND_URL
   })
 );
 

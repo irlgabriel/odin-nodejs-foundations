@@ -27,13 +27,13 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
-      callbackURL: process.env.FRONTEND_URL,
+      callbackURL: '/auth/facebook/callback',
       //passReqToCallback: true,
       profileFields: ['displayName', 'photos', 'email']
     },
     (accessToken, refreshToken, profile, cb) => {
       User.findOne({ email: profile.emails[0].value})
-      .populate("friends")
+      //.populate("friends")
       .exec((err, user) => {
         if (user) {
           return cb(err, user);
@@ -63,7 +63,7 @@ passport.use(
     },
     (email, password, done) => {
       User.findOne({ email: email })
-        .populate("friends")
+        //.populate("friends")
         .exec((err, user) => {
           if (err) return done(err);
           if (!user) return done(null, false);
@@ -71,6 +71,7 @@ passport.use(
           bcrypt.compare(password, user.password, (err, match) => {
             if (err) return done(err, false);
             if (!match) return done(null, false);
+            console.log(user);
             return done(null, user);
           });
         });
@@ -79,13 +80,14 @@ passport.use(
 );
 
 passport.serializeUser(function (user, cb) {
-  //console.log('user before serializing: ', user);
-  cb(null, user);
+  cb(null, user._id);
 });
 
-passport.deserializeUser(function (obj, cb) {
+passport.deserializeUser(function (id, cb) {
   //console.log('user before deserializing: ', obj);
-  cb(null, obj);
+  User.findById(id, (err, user) => {
+    return cb(err, user)
+  })
 });
 
 module.exports = passport;

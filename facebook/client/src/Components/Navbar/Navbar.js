@@ -38,7 +38,7 @@ import { BsArrowLeft } from "react-icons/bs";
 import { CSSTransition } from "react-transition-group";
 import { Notification } from "..";
 
-const Navbar = ({ users, reloadUser, user }) => {
+const Navbar = ({reloadUser, user }) => {
   const location = useLocation();
   const history = useHistory();
 
@@ -52,12 +52,12 @@ const Navbar = ({ users, reloadUser, user }) => {
     return user.display_name || user.first_name + ' ' + user.last_name
   }
 
+  const [users, setUsers] = useState([]);
   const [menu, setMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchDropdown, setSearchDropdown] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-  const [usernames, setUsernames] = useState([])
   const [userDropdown, setUserDropdown] = useState(false);
   const [notificationDropdown, setNotificationDropdown] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -70,12 +70,19 @@ const Navbar = ({ users, reloadUser, user }) => {
   };
 
   useEffect(() => {
+    // Get Notification
     axios
-      .get(`/notifications`, config)
-      .then((res) => {
-        setNotifications(res.data);
-      })
-      .catch((err) => console.log(err));
+    .get(`/notifications`, config)
+    .then((res) => {
+      setNotifications(res.data);
+    })
+    .catch((err) => console.log(err));
+    
+      // Get Users
+    axios.get('/users')
+    .then(res => {
+      setUsers(res.data);
+    })
   }, []);
 
   useEffect(() => {

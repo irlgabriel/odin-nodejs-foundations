@@ -4,15 +4,14 @@ const jwt = require("jsonwebtoken");
 const { body, validationResult } = require("express-validator");
 const User = require("../models/users");
 
-exports.login = [
-  passport.authenticate("local", { session: false }),
-];
+exports.login = passport.authenticate("local");
 
 exports.checkAuth = (req, res, next) => {
+  //console.log(req.user);
   if(req.user) {
     res.json({user_id: req.user_id});
   } else {
-    res.sendStatus(403);
+    res.sendStatus(401);
   }
 }
 
@@ -20,11 +19,12 @@ exports.facebook_callback = (req, res, next) => {
   passport.authenticate('facebook', (err, user, info) => {
     if(err) return next(err);
     if(!user) return res.redirect(process.env.FRONTEND_URL)
-    req.logIn(user, (err) => {
+    req.logIn(user, err => {
       if(err) return next(err);
       jwt.sign(user.toJSON(), process.env.JWT_SECRET, (err, token) => {
         if(err) next(err);
-        return res.json({user, token});
+        //console.log(token);
+        res.redirect(process.env.FRONTEND_URL);
       })
     })
   })(req, res, next);

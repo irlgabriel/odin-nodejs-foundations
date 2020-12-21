@@ -2,26 +2,13 @@ import { Button } from 'reactstrap';
 import axios  from 'axios';
  
 
-const LoginFacebook = ({user, setUser}) => {
-
-  const config = {
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    }
-  }
-
-  const responseFacebook = () => {
-    axios.get('/auth/facebook/callback', config)
-    .then(res => console.log(res));
-  }
-
-  const componentClicked = () => {
-    console.log('Facebook btn clicked');
-  }
+const LoginFacebook = () => {
   
   return(
     <div className='text-center mt-2'>
-      <Button onClick={() => responseFacebook()} color='primary'>Login with Facebook</Button>
+      <a href='http://localhost:5000/auth/facebook'>
+        <Button color='primary'>Login with Facebook</Button>
+      </a>
     </div>
   );
 }
