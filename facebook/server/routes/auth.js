@@ -5,7 +5,7 @@ const passport = require("passport");
 const authController = require('../controllers/auth');
 
 /* Login */
-router.post("/login",  authController.login, (req, res) => res.send(req.user));
+router.post("/login",  authController.login);
 
 /* Register */
 router.post("/register", authController.register);

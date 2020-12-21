@@ -71,7 +71,7 @@ passport.use(
           bcrypt.compare(password, user.password, (err, match) => {
             if (err) return done(err, false);
             if (!match) return done(null, false);
-            console.log(user);
+            //console.log(user);
             return done(null, user);
           });
         });

@@ -4,12 +4,14 @@ const jwt = require("jsonwebtoken");
 const { body, validationResult } = require("express-validator");
 const User = require("../models/users");
 
-exports.login = passport.authenticate("local");
+exports.login = passport.authenticate("local", (err, user, info) => {
+
+});
 
 exports.checkAuth = (req, res, next) => {
-  //console.log(req.user);
+  console.log('checkauth: ', req.user);
   if(req.user) {
-    res.json({user_id: req.user_id});
+    res.json({user_id: req.user._id});
   } else {
     res.sendStatus(401);
   }
