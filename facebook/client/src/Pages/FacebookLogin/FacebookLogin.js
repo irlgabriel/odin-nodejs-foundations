@@ -1,16 +1,22 @@
-import { Button } from 'reactstrap';
-import axios  from 'axios';
- 
+import React from 'react';
+import FacebookLogin from 'react-facebook-login';
 
-const LoginFacebook = () => {
-  
-  return(
-    <div className='text-center mt-2'>
-      <a href='http://localhost:5000/auth/facebook'>
-        <Button color='primary'>Login with Facebook</Button>
-      </a>
-    </div>
-  );
+class MyComponent extends React.Component {
+  responseFacebook(response) {
+    console.log(response);
+  }
+
+  render() {
+    return (
+      <FacebookLogin
+        appId="423370868700467"
+        autoLoad={false}
+        fields="name,email,picture"
+        scope="public_profile"
+        callback={this.responseFacebook}
+      />
+    )
+  }
 }
 
-export default LoginFacebook;
+export default MyComponent;

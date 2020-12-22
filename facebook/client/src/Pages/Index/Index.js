@@ -57,7 +57,11 @@ const Index = ({reloadUser, user, }) => {
             </Button>
           </FormGroup>
         </Form>
-        <hr />
+        <div className='d-flex align-items-center justify-content-between'>
+          <hr className='w-100'/>
+          <p className='mb-1 mx-2'>or</p>
+          <hr className='w-100'/>
+        </div>
         <Container className="w-75">
           <Link to="/register">
             <Button className="w-100 py-2 font-weight-bold" color="success">
@@ -65,7 +69,11 @@ const Index = ({reloadUser, user, }) => {
             </Button>
           </Link>
         </Container>
-        <hr className='my-2' />
+        <div className='d-flex align-items-center justify-content-between'>
+          <hr className='w-100'/>
+          <p className='mb-1 mx-2'>or</p>
+          <hr className='w-100'/>
+        </div>
         <div class='text-center mt-2'>
           <a href='http://localhost:5000/auth/facebook'>
             <Button color='primary'>Login with Facebook</Button>

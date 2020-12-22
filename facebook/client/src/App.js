@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import { Container } from "reactstrap";
-import { Index, Home, Profile, Register, Friends, PostPage, ProtectedRoute, FacebookLogin } from "./Pages";
+import { Index, Home, Profile, Register, Friends, PostPage, ProtectedRoute } from "./Pages";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Axios from "axios";
 
@@ -9,21 +9,25 @@ function App() {
   const [user, setUser] = useState(undefined);
 
   const reloadUser = () => {
-    Axios.get(`/users/${user._id}`)
-    .then(res => {
-      setUser(res.data);
-    })
-    .catch(err => console.log(err))
+    if(user) {
+      Axios.get(`/users/${user._id}`)
+      .then(res => {
+        setUser(res.data);
+      })
+      .catch(err => console.log(err))
+    }
   } 
 
   // Check if user is logged in
   useEffect(() => {
     Axios.get('/checkAuth', {withCredentials: true})
     .then(res => {
-      const user_id = res.data.user_id;
-      Axios.get(`/users/${user_id}`)
+      // Get user based on session data
+      const token = document.cookie.split('=')[1];
+      if(token) localStorage.setItem('token', token);
+      Axios.get(`/users/${res.data.user_id}`)
       .then(res => {
-      setUser(res.data);
+        setUser(res.data);
       })
     })
     .catch(err => console.log(err));
@@ -49,7 +53,7 @@ function App() {
         <Route 
           path="/"
           exact
-          render={() => <Index {...props} />}
+          render={() => <Index setUser={setUser} {...props} />}
         ></Route>
         <ProtectedRoute
           path="/friends"
