@@ -2,19 +2,32 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, Row, Col } from "reactstrap";
 import { NavItem, RoundImage } from "./Home.components";
-import { Navbar, PostForm, Post } from "../../Components";
+import { Navbar, PostForm, Post, LoadingOverlay } from "../../Components";
+import { CSSTransition } from 'react-transition-group';
 import { FaUserFriends } from "react-icons/fa";
 
 const Home = ({ reloadUser, user }) => {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios.get('/posts')
-    .then(res => setPosts(res.data))
+    .then(res => {
+      setLoading(false);
+      setPosts(res.data);
+    })
   }, [])
 
   return (
     <Container fluid className="px-0">
+      <CSSTransition
+        in={loading}
+        timeout={300}
+        classNames='fade'
+        unmountOnExit
+      >
+        <LoadingOverlay />
+      </CSSTransition>
       <Navbar key="home" posts={posts} reloadUser={reloadUser} setPosts={setPosts} user={user} />
       <Row className="mx-0">
         <Col id="left-col" className="p-2 d-sm-none d-lg-block" sm="3" lg="3">

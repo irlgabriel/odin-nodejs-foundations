@@ -67,7 +67,7 @@ const Navbar = ({reloadUser, user }) => {
   const logoutHandler = () => {
     axios.get('/logout')
     .then(res => {
-      reloadUser();
+      
     })
   };
 

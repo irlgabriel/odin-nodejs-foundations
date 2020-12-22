@@ -16,9 +16,7 @@ function App() {
         setUser(res.data);
       })
       .catch(err => console.log(err))
-    } else {
-      localStorage.removeItem('token');
-    }
+    } 
   } 
 
   // Check if user is logged in
@@ -33,7 +31,7 @@ function App() {
         setUser(res.data);
       })
     })
-    .catch(err => console.log(err));
+    .catch(() => setUser(undefined));
   }, [])
 
   const props = { user, reloadUser };
@@ -41,7 +39,6 @@ function App() {
   return (
     <Router>
       <Container fluid className="p-0">
-        {/* Loading overlay */}
         {/* Page routes */}
         <ProtectedRoute exact path='/home' {...props} component={Home}/>
         <ProtectedRoute

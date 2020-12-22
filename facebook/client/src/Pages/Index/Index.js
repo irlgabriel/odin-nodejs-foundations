@@ -74,7 +74,7 @@ const Index = ({reloadUser, user, }) => {
           <p className='mb-1 mx-2'>or</p>
           <hr className='w-100'/>
         </div>
-        <div class='text-center mt-2'>
+        <div className='text-center mt-2'>
           <a href='http://localhost:5000/auth/facebook'>
             <Button color='primary'>Login with Facebook</Button>
           </a>

@@ -4,7 +4,10 @@ import { Spinner } from "reactstrap";
 const LoadingOverlay = () => {
   return (
     <AbsoluteContainer>
-      <Spinner size={128} style={{ zIndex: "5" }} color="royalblue" />
+      <div className='text-center'>
+        <h3>Loading...</h3>
+        <Spinner size="128" style={{ zIndex: "5" }} color="royalblue" />
+      </div>
     </AbsoluteContainer>
   );
 };

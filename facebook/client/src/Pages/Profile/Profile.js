@@ -25,6 +25,7 @@ import async from 'async'
 import { useParams } from 'react-router-dom';
 
 const Profile = ({
+  profileUser = undefined,
   showNav = true,
   user,
   reloadUser,
@@ -113,11 +114,16 @@ const Profile = ({
 
   
   useEffect(() => {
-    // Set current user based on url
-    Axios.get(`/users/${user_id}`)
-    .then(res => {
-      setCurrentUser(res.data);
-    })
+    // Set profile user
+    if(profileUser) {
+      setCurrentUser(profileUser);
+    } else {
+      // Set current user based on url
+      Axios.get(`/users/${user_id}`)
+      .then(res => {
+        setCurrentUser(res.data);
+      })
+    }
     // Fetch posts
     Axios.get('/posts')
     .then(res => {

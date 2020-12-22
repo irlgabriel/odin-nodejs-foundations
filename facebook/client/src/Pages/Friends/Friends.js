@@ -139,7 +139,7 @@ const Friends = ({reloadUser, user }) => {
               user={user}
               posts={previewUserPosts}
               setPosts={setPreviewUserPosts}
-              currentUser={previewUser}
+              profileUser={previewUser}
               requests={requests}
               setRequests={setRequests}
               reloadUser={reloadUser}
