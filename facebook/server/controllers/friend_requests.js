@@ -7,7 +7,7 @@ exports.get_friends_recommendations = (req, res, next) => {
   // user has already sent friend requests.
 
   // Find requests that this user sent.
-  FriendRequest.find({ from: req.user._id }, (err, pendingSent) => {
+  FriendRequest.find({ from: req.user.user_id }, (err, pendingSent) => {
     if (err) return console.log(err);//res.status(400).json(err);
     // filtering array
     let pending = [];
@@ -15,15 +15,15 @@ exports.get_friends_recommendations = (req, res, next) => {
     pending.push(...pendingSent.map((p) => p.to));
 
     // Find requests that this user received.
-    FriendRequest.find({ to: req.user._id }, (err, pendingReceived) => {
+    FriendRequest.find({ to: req.user.user_id }, (err, pendingReceived) => {
       if (err) return res.status(400).json(err);
       // create an array of ids of users who sent request to the user
       pending.push(...pendingReceived.map((p) => p.from));
       console.log(pending);
       User.find(
         {
-          friends: { $ne: req.user._id },
-          _id: { $ne: req.user._id, $nin: pending },
+          friends: { $ne: req.user.user_id },
+          _id: { $ne: req.user.user_id, $nin: pending },
         },
         (err, reqs) => {
           if (err) return res.status(400).json(err);
@@ -35,7 +35,7 @@ exports.get_friends_recommendations = (req, res, next) => {
 };
 
 exports.get_friends_requests = (req, res, next) => {
-  FriendRequest.find({ $or: [{ to: req.user._id }, { from: req.user._id }] })
+  FriendRequest.find({ $or: [{ to: req.user.user_id }, { from: req.user.user_id }] })
     .populate("to")
     .populate("from")
     .exec((err, requests) => {
@@ -46,18 +46,18 @@ exports.get_friends_requests = (req, res, next) => {
 
 exports.send_friend_request = (req, res, next) => {
   FriendRequest.create(
-    { from: req.user._id, to: req.params.user_id },
+    { from: req.user.user_id, to: req.params.user_id },
     async (err, request) => {
       if (err) return res.status(400).json(err);
 
-      const from = await User.findById(req.user._id);
+      const from = await User.findById(req.user.user_id);
       const to = await User.findById(req.params.user_id);
 
       await Notification.create({
         from,
         to,
         type: "friend_request",
-        url: `/users/${req.user._id}`,
+        url: `/users/${req.user.user_id}`,
       });
       request
         .populate("from")
@@ -117,7 +117,7 @@ exports.delete_friend = (req, res, next) => {
     })
   })
   */
-  const user1 = req.user._id;
+  const user1 = req.user.user_id;
   const user2 = req.params.user_id;
   console.log(user1, user2);
   User.findOneAndUpdate({_id: user1}, {$pull: {friends: user2}}, {}, (err) => {

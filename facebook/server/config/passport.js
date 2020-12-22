@@ -80,14 +80,12 @@ passport.use(
 );
 
 passport.serializeUser(function (user, cb) {
-  cb(null, user._id);
+  cb(null, user);
 });
 
-passport.deserializeUser(function (id, cb) {
+passport.deserializeUser(function (user, cb) {
   //console.log('user before deserializing: ', obj);
-  User.findById(id, (err, user) => {
-    return cb(err, user)
-  })
+  cb(null, user);
 });
 
 module.exports = passport;
