@@ -44,7 +44,8 @@ exports.getUserToken = [
 
 exports.logout = (req, res, next) => {
   req.logOut();
-  res.redirect(process.env.FRONTEND_URL)
+  res.sendStatus(200);
+  //res.redirect(process.env.FRONTEND_URL)
 }
 
 exports.facebook_callback = 

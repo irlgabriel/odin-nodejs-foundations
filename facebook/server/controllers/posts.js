@@ -16,7 +16,15 @@ const storage = multer.memoryStorage({
   },
 });
 
-const upload = multer({ storage: storage }).single("image");
+const fileFilter = (req, file, callback) => {
+  var ext = path.extname(file.originalname);
+  if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+      return callback(new Error('Only images are allowed'))
+  }
+  callback(null, true)
+}
+
+const upload = multer({ storage: storage, fileFilter: fileFilter, limits: 5* 1024 * 1024 }).single("image");
 
 exports.get_posts = (req, res, next) => {
   Post.find()
