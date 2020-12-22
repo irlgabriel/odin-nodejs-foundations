@@ -17,7 +17,7 @@ const PostForm = ({ user, setPosts, posts }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const token = JSON.parse(localStorage.getItem("user")).token;
+    const token = localStorage.getItem("user");
 
     const formData = new FormData();
     formData.append("content", content);

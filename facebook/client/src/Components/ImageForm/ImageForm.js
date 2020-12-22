@@ -15,11 +15,12 @@ const ImageForm = ({
 }) => {
   const [file, setFile] = useState(null);
 
-  const config = {
+  const config = localStorage.getItem('token') &&  {
     headers: {
-      Authorization: `bearer ${JSON.parse(localStorage.getItem("user")).token}`,
+      Authorization: "bearer " + localStorage.getItem("token"),
     },
   };
+
 
   const onSubmitHandler = (e) => {
     e.preventDefault();

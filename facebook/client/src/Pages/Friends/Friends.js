@@ -19,9 +19,9 @@ const Friends = ({reloadUser, user }) => {
   const [sentRequests, setSentRequests] = useState([])
   const [receivedRequests, setReceivedRequests] = useState([])
 
-  const config = localStorage.getItem('user') &&  {
+  const config = localStorage.getItem('token') &&  {
     headers: {
-      Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
+      Authorization: "bearer " + localStorage.getItem("token"),
     },
   };
 

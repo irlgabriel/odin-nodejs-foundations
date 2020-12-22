@@ -45,11 +45,12 @@ const Profile = ({
   const [isSameUser, setSameUser] = useState(false);
   const [collapse, setCollapse] = useState(false);
 
-  const config = localStorage.getItem('user') && {
+  const config = localStorage.getItem('token') &&  {
     headers: {
-      Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
+      Authorization: "bearer " + localStorage.getItem("token"),
     },
   };
+
 
   const checkIsFriend = () => {
     const userFriendsIDs = user.friends.map(friend => friend._id)

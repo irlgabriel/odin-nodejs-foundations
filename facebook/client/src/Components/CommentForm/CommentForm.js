@@ -20,7 +20,7 @@ const CommentForm = ({ post, user, comments, setComments }) => {
     Axios.post(`/posts/${post._id}/comments`, formData, {
       headers: {
         Authorization:
-          "bearer " + JSON.parse(localStorage.getItem("user")).token,
+          "bearer " + localStorage.getItem("token"),
       },
     })
       .then((res) => {

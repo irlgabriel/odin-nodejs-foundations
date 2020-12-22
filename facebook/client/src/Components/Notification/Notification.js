@@ -9,9 +9,9 @@ import axios from "axios";
 const Notification = ({ notification, notifications, setNotifications }) => {
   const history = useHistory();
 
-  const config = {
+  const config = localStorage.getItem('token') &&  {
     headers: {
-      Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
+      Authorization: "bearer " + localStorage.getItem("token"),
     },
   };
 

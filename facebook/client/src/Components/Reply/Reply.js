@@ -29,11 +29,12 @@ const Reply = ({
   const [content, setContent] = useState(reply.content);
   const [showEdit, setEdit] = useState(false);
 
-  const config = localStorage.getItem('user') && {
+  const config = localStorage.getItem('token') &&  {
     headers: {
-      Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
+      Authorization: "bearer " + localStorage.getItem("token"),
     },
   };
+
 
   const deleteHandler = () => {
     window.confirm(

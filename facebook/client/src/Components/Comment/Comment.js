@@ -26,11 +26,12 @@ const Comment = ({ level = 0, comments, comment, setComments, user, post }) => {
   const [content, setContent] = useState(comment.content);
   const [showEdit, setEdit] = useState(false);
 
-  const config = {
-    headers: localStorage.getItem('user') &&  {
-      Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
+  const config = localStorage.getItem('token') &&  {
+    headers: {
+      Authorization: "bearer " + localStorage.getItem("token"),
     },
   };
+
 
   const deleteHandler = () => {
     window.confirm(

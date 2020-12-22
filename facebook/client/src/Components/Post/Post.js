@@ -19,7 +19,7 @@ import {
   ClickDiv,
   FunctionalItem,
 } from "./Post.components";
-import { Comment, CommentForm, UserList } from "..";
+import { Comment, CommentForm } from "..";
 import {
   AiFillLike,
   AiOutlineLike,
@@ -37,9 +37,9 @@ const Post = ({ user, posts, post, setPosts }) => {
   const [settingsDropdown, setSettingsDropdown] = useState(false);
   const [commentsDropdown, setCommentsDropdown] = useState(false);
 
-  const config = localStorage.getItem('user') &&  {
+  const config = localStorage.getItem('token') &&  {
     headers: {
-      Authorization: "bearer " + JSON.parse(localStorage.getItem("user")).token,
+      Authorization: "bearer " + localStorage.getItem("token"),
     },
   };
 
@@ -70,12 +70,11 @@ const Post = ({ user, posts, post, setPosts }) => {
   };
 
   const likePost = () => {
-    const token = JSON.parse(localStorage.getItem("user")).token;
     axios
       .post(
         `/posts/${post._id}/like`,
         {},
-        { headers: { Authorization: `bearer ${token}` } }
+        config
       )
       .then((res) => {
         setPosts(

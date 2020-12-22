@@ -42,11 +42,12 @@ const Navbar = ({reloadUser, user }) => {
   const location = useLocation();
   const history = useHistory();
 
-  const config = localStorage.getItem('user') && {
+  const config = localStorage.getItem('token') &&  {
     headers: {
-      Authorization: `bearer ${JSON.parse(localStorage.getItem("user")).token}`,
+      Authorization: "bearer " + localStorage.getItem("token"),
     },
   };
+
 
   const fullname = (user) => {
     return user.display_name || user.first_name + ' ' + user.last_name
@@ -66,7 +67,7 @@ const Navbar = ({reloadUser, user }) => {
   const logoutHandler = () => {
     axios.get('/logout')
     .then(res => {
-        
+      reloadUser();
     })
   };
 

@@ -9,12 +9,15 @@ function App() {
   const [user, setUser] = useState(undefined);
 
   const reloadUser = () => {
+    // GET the full user object based on its id;
     if(user) {
       Axios.get(`/users/${user._id}`)
       .then(res => {
         setUser(res.data);
       })
       .catch(err => console.log(err))
+    } else {
+      localStorage.removeItem('token');
     }
   } 
 
