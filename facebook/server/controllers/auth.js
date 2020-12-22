@@ -1,12 +1,28 @@
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const generateJWT = require('../middlewares/token');
 const { body, validationResult } = require("express-validator");
+const async = require('async');
 const User = require("../models/users");
 
-exports.login = passport.authenticate("local", (err, user, info) => {
+exports.login = 
+[
+  (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+      if(err) next(err);
+      if(!user) res.redirect(process.env.FRONTEND_URL);
+      req.logIn(user, err => {
+        if(err) next(err);
+        jwt.sign({user_id: user._id}, process.env.JWT_SECRET, (err, token) => {
+          res.cookie('token', token);
+          res.sendStatus(200);
+        })
+      })
+    })(req, res, next);
+  },
 
-});
+]
 
 exports.checkAuth = (req, res, next) => {
   console.log('checkauth: ', req.user);
@@ -17,16 +33,30 @@ exports.checkAuth = (req, res, next) => {
   }
 }
 
-exports.facebook_callback = (req, res, next) => {
+
+exports.getUserToken = [
+  passport.authenticate('jwt'),
+  (req, res, next) => {
+    if(req.user) res.json(req.user);
+    else res.redirect(process.env.FRONTEND_URL);
+  }
+]
+
+exports.logout = (req, res, next) => {
+  req.logOut();
+  res.redirect(process.env.FRONTEND_URL)
+}
+
+exports.facebook_callback = 
+(req, res, next) => {
   passport.authenticate('facebook', (err, user, info) => {
     if(err) return next(err);
     if(!user) return res.redirect(process.env.FRONTEND_URL)
     req.logIn(user, err => {
       if(err) return next(err);
-      jwt.sign(user.toJSON(), process.env.JWT_SECRET, (err, token) => {
-        if(err) next(err);
-        //console.log(token);
-        res.redirect(process.env.FRONTEND_URL);
+      jwt.sign({user_id: user._id}, process.env.JWT_SECRET, (err, token) => {
+        res.cookie('token', token);
+        res.redirect(process.env.FRONTEND_URL)
       })
     })
   })(req, res, next);
@@ -51,19 +81,20 @@ exports.register = [
     User.findOne({ email: email })
       .populate("friends")
       .exec((err, user) => {
-        if (err) return res.status(400).json(err);
+        if (err) return next(err);
         if (user) return res.status(400).json({ msg: "Email already in use" });
 
         bcrypt.hash(password, 10, (err, hash) => {
-          if (err) return res.status(400).json(err);
+          if (err) return next(err);
           User.create(
             { email, first_name, last_name, password: hash },
             (err, registeredUser) => {
-              if (err) return res.status(400).json(err);
+              if (err) return next(err);
               req.logIn(registeredUser, err => {
-                if (err) return res.status(400).json(err);
-                jwt.sign({ user: registeredUser }, process.env.JWT_SECRET, (err, token) => {
-                  if (err) return res.status(400).json(err);
+                if (err) return next(err);
+                jwt.sign({user_id: user._id}, process.env.JWT_SECRET, (err, token) => {
+                  res.cookie('token', token);
+                  res.sendStatus(200);
                 })
               });
             }
@@ -71,4 +102,4 @@ exports.register = [
         });
       });
   },
-];
+]

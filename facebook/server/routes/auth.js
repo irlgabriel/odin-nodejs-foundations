@@ -24,13 +24,12 @@ router.get(
  );
 
  /* Logout */
-router.get("/logout", (req, res, next) => {
-  req.logout();
-  res.redirect(process.env.FRONTEND_URL);
-});
+router.get("/logout", authController.logout);
 
-/* check if user is logged in */
-
+/* Check if user is logged in */
 router.get('/checkAuth', authController.checkAuth);
+
+/* Send back token based on user session */
+router.get('/getToken', authController.getUserToken);
 
 module.exports = router;
