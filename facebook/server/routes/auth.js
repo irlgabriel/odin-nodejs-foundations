@@ -19,7 +19,7 @@ router.get("/auth/facebook/callback", authController.facebook_callback);
 router.get("/logout", authController.logout);
 
 /* Check if user is logged in */
-router.get('/checkAuth', authController.checkAuth);
+router.get('/isLoggedIn', passport.authenticate('jwt'), authController.isLoggedIn);
 
 /* Send back token based on user session */
 router.get('/getToken', authController.getUserToken);

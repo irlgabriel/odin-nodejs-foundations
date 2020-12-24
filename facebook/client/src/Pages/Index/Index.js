@@ -13,7 +13,8 @@ const Index = ({setUser, reloadUser, user, }) => {
     e.preventDefault();
     Axios.post("/login", { email, password })
       .then((res) => {
-        setUser(res.data.user);
+        console.log(res);
+        localStorage.setItem('token', res.data.token);
       })
       .catch((err) => console.log(err));
   };

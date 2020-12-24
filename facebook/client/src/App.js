@@ -21,18 +21,16 @@ function App() {
 
   // Check if user is logged in
   useEffect(() => {
-    Axios.get('/checkAuth', {withCredentials: true})
-    .then(res => {
-      // Get user based on session data
-      const token = document.cookie.split('=')[1];
-      if(token) localStorage.setItem('token', token);
-      Axios.get(`/users/${res.data.user_id}`)
+    const token = localStorage.getItem('token');
+    if(token) {
+      // user is signed up
+      const config = {headers: {Authorization: `bearer ${token}`}}
+      Axios.get('/isLoggedIn', config)
       .then(res => {
         setUser(res.data);
       })
-    })
-    .catch(() => setUser(undefined));
-  }, [])
+    }
+  }, [localStorage])
 
   const props = { user, reloadUser };
 
