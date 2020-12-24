@@ -65,10 +65,8 @@ const Navbar = ({reloadUser, user }) => {
   const [newNotifications, setNewNotifications] = useState([]);
 
   const logoutHandler = () => {
-    axios.get('/logout')
-    .then(res => {
-      
-    })
+    localStorage.removeItem('token');
+    history.push('/');
   };
 
   useEffect(() => {

@@ -24,7 +24,7 @@ exports.login =
 exports.isLoggedIn = (req, res, next) => {
   console.log('checkauth: ', req.user);
   if(req.user) {
-    res.json({user_id: req.user._id});
+    res.json({user_id: req.user.user_id});
   } else {
     res.sendStatus(401);
   }

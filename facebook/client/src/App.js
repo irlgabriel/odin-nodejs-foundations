@@ -20,17 +20,20 @@ function App() {
   } 
 
   // Check if user is logged in
-  useEffect(() => {
+  window.addEventListener('storage', () => {
+    console.log('storage eventListener popped');
     const token = localStorage.getItem('token');
     if(token) {
       // user is signed up
       const config = {headers: {Authorization: `bearer ${token}`}}
       Axios.get('/isLoggedIn', config)
       .then(res => {
-        setUser(res.data);
+        Axios.get(`/users/${res.data.user_id}`)
+        .then(res => setUser(res.data))
       })
     }
-  }, [localStorage])
+  })
+
 
   const props = { user, reloadUser };
 
