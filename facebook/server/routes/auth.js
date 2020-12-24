@@ -13,7 +13,7 @@ router.post("/register", authController.register);
 /* Facebook auth */
 router.get("/auth/facebook", passport.authenticate("facebook"));
 
-router.get("/auth/facebook/callback",authController.facebook_callback);
+router.get("/auth/facebook/callback", authController.facebook_callback);
 
 /* Logout */
 router.get("/logout", authController.logout);

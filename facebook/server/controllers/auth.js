@@ -12,12 +12,9 @@ exports.login =
     passport.authenticate("local", (err, user, info) => {
       if(err) next(err);
       if(!user) res.redirect(process.env.FRONTEND_URL);
-      req.logIn(user, err => {
-        if(err) next(err);
-        jwt.sign({user_id: user._id}, process.env.JWT_SECRET, (err, token) => {
-          res.cookie('token', token);
-          res.sendStatus(200);
-        })
+      jwt.sign({user_id: user._id}, process.env.JWT_SECRET, (err, token) => {
+        res.cookie('token', token);
+        res.json({user, token});
       })
     })(req, res, next);
   },
@@ -43,9 +40,9 @@ exports.getUserToken = [
 ]
 
 exports.logout = (req, res, next) => {
-  req.logOut();
-  res.sendStatus(200);
-  //res.redirect(process.env.FRONTEND_URL)
+  req.session.destroy(function (err) {
+    res.sendStatus(200);
+  });
 }
 
 exports.facebook_callback = 

@@ -63,7 +63,7 @@ passport.use(
     },
     (email, password, done) => {
       User.findOne({ email: email })
-        //.populate("friends")
+        .populate("friends")
         .exec((err, user) => {
           if (err) return done(err);
           if (!user) return done(null, false);

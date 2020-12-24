@@ -47,23 +47,24 @@ exports.get_friends_requests = (req, res, next) => {
 exports.send_friend_request = (req, res, next) => {
   FriendRequest.create(
     { from: req.user.user_id, to: req.params.user_id },
-    async (err, request) => {
+     (err, request) => {
       if (err) return res.status(400).json(err);
 
-      const from = await User.findById(req.user.user_id);
-      const to = await User.findById(req.params.user_id);
+      const from = req.user.user_id;
+      const to = req.params.user_id;
 
-      await Notification.create({
+      Notification.create({
         from,
         to,
         type: "friend_request",
-        url: `/users/${req.user.user_id}`,
-      });
-      request
+        url: `/users/${from}`,
+      }, (err, notif) => {
+        request
         .populate("from")
         .populate("to")
         .execPopulate()
         .then((req) => res.json(req));
+      });
     }
   );
 };
