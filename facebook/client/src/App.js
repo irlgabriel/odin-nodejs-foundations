@@ -20,7 +20,7 @@ function App() {
   } 
 
   // Check if user is logged in
-  window.addEventListener('storage', () => {
+  useEffect(() => {
     console.log('storage eventListener popped');
     const token = localStorage.getItem('token');
     if(token) {
@@ -32,7 +32,7 @@ function App() {
         .then(res => setUser(res.data))
       })
     }
-  })
+  }, [])
 
 
   const props = { user, reloadUser };
