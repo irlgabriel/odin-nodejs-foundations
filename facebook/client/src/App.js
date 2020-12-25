@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import { Container } from "reactstrap";
 import { Index, Home, Profile, Register, Friends, PostPage, ProtectedRoute } from "./Pages";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Axios from "axios";
 
 function App() {
@@ -19,19 +19,23 @@ function App() {
     } 
   } 
 
+  const getUser = (token) => {
+    const config = {headers: {Authorization: `bearer ${token}`}}
+    Axios.get('/isLoggedIn', config)
+    .then(res => {
+      Axios.get(`/users/${res.data.user_id}`)
+      .then(res => setUser(res.data))
+    })
+  }
+
   // Check if user is logged in
   useEffect(() => {
-    console.log('storage eventListener popped');
-    const token = localStorage.getItem('token');
+    // check if there's a token in cookie(fb-auth) or localStorage(local-auth)
+    const token = localStorage.getItem('token') || document.cookie.split('=')[1];
     if(token) {
-      // user is signed up
-      const config = {headers: {Authorization: `bearer ${token}`}}
-      Axios.get('/isLoggedIn', config)
-      .then(res => {
-        Axios.get(`/users/${res.data.user_id}`)
-        .then(res => setUser(res.data))
-      })
-    }
+      localStorage.setItem('token', token);
+      getUser(token);
+    } 
   }, [])
 
 
@@ -63,11 +67,13 @@ function App() {
           component={Friends}
         ></ProtectedRoute>
         <ProtectedRoute
+          exact
           path={`/posts/:post_id`}
           {...props}
           component={PostPage}
         ></ProtectedRoute>
         <ProtectedRoute
+          exact
           path={`/users/:user_id}`}
           {...props} 
           component={Profile}
