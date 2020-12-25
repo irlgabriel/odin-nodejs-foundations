@@ -5,11 +5,12 @@ const generateJWT = require('../middlewares/token');
 const { body, validationResult } = require("express-validator");
 const async = require('async');
 const User = require("../models/users");
+const { session } = require("passport");
 
 exports.login = 
 [
   (req, res, next) => {
-    passport.authenticate("local", (err, user, info) => {
+    passport.authenticate("local", {session: false}, (err, user, info) => {
       if(err) next(err);
       if(!user) res.redirect(process.env.FRONTEND_URL);
       jwt.sign({user_id: user._id}, process.env.JWT_SECRET, (err, token) => {
@@ -32,7 +33,7 @@ exports.isLoggedIn = (req, res, next) => {
 
 
 exports.getUserToken = [
-  passport.authenticate('jwt'),
+  passport.authenticate('jwt', {session: false}),
   (req, res, next) => {
     if(req.user) res.json(req.user);
     else res.redirect(process.env.FRONTEND_URL);
@@ -47,7 +48,7 @@ exports.logout = (req, res, next) => {
 
 exports.facebook_callback = 
 (req, res, next) => {
-  passport.authenticate('facebook', (err, user, info) => {
+  passport.authenticate('facebook', {session: false}, (err, user, info) => {
     if(err) return next(err);
     if(!user) return res.redirect(process.env.FRONTEND_URL)
     req.logIn(user, err => {
