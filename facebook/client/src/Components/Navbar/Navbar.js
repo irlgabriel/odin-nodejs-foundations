@@ -188,7 +188,7 @@ const Navbar = ({reloadUser, user }) => {
             className="mr-1"
           >
             <TopRightUserImg src={user.profile_photo} className="mr-2" />
-            <p className="mb-0">{user.display_name || user.first_name}</p>
+            <p className="mb-0">{user.first_name || user.display_name ? user.display_name.split(' ')[0] : ''}</p>
           </RoundedUserDiv>
         </RegularLink>
         <RoundWrapper className="mr-2">
