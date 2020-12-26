@@ -58,7 +58,7 @@ function App() {
         <Route 
           path="/"
           exact
-          render={() => <Index setUser={setUser} {...props} />}
+          render={() => <Index getUser={getUser} {...props} />}
         ></Route>
         <ProtectedRoute
           path="/friends"

@@ -65,7 +65,10 @@ const Navbar = ({reloadUser, user }) => {
   const [newNotifications, setNewNotifications] = useState([]);
 
   const logoutHandler = () => {
+    // delete the token
     localStorage.removeItem('token');
+    // delete the cookie if there's any
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     history.push('/');
   };
 
@@ -188,7 +191,7 @@ const Navbar = ({reloadUser, user }) => {
             className="mr-1"
           >
             <TopRightUserImg src={user.profile_photo} className="mr-2" />
-            <p className="mb-0">{user.first_name || user.display_name ? user.display_name.split(' ')[0] : ''}</p>
+            <p className="mb-0">{user.first_name ? user.first_name : user.display_name ? user.display_name.split(' ')[0] : ''}</p>
           </RoundedUserDiv>
         </RegularLink>
         <RoundWrapper className="mr-2">
