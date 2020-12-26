@@ -32,7 +32,6 @@ const Profile = ({
   users,
 }) => {
   const { user_id } = useParams();
-  console.log(user_id);
 
   const [currentUser, setCurrentUser] = useState(profileUser || user)
   const [requests, setRequests] = useState([])
@@ -41,6 +40,7 @@ const Profile = ({
   const [profilePhotoForm, setProfilePhotoForm] = useState(false);
   const [collapse, setCollapse] = useState(false);
 
+  // Friendship status state
   const [sameUser, setSameUser] = useState(false);
   const [isFriends, setIsFriends] = useState(false);
   const [sentRequest, setSentRequest] = useState(undefined)
@@ -56,6 +56,7 @@ const Profile = ({
 
   const checkIsFriend = () => {
     const userFriendsIDs = user.friends.map(friend => friend._id)
+    console.log(userFriendsIDs);
     return (userFriendsIDs.includes(currentUser._id));
   }
 
@@ -72,6 +73,10 @@ const Profile = ({
     //const _id = e.target.getAttribute('data-id');
     Axios.post(`/friend_requests/${_id}/accept`).then((res) => {
       reloadUser();
+      const updatedUser = currentUser;
+      updatedUser.friends.push(user);
+      setCurrentUser(updatedUser);
+      setReceivedRequest(undefined);
     });
   };
 
@@ -79,6 +84,7 @@ const Profile = ({
     //const _id = e.target.getAttribute('data-id');
     Axios.post(`/friend_requests/${_id}/decline`).then((res) => {
       setRequests(requests.filter((request) => request._id !== res.data._id));
+      setReceivedRequest(undefined);
     });
   };
 
@@ -124,7 +130,6 @@ const Profile = ({
     // Fetch posts
     Axios.get('/posts')
     .then(res => {
-      console.log(currentUser);
       setPosts(res.data.filter(post => post.user._id === currentUser._id));
     })
     // Fetch requests
@@ -139,7 +144,7 @@ const Profile = ({
     setSameUser(currentUser._id === user._id);
     // Establish friendship status
     setIsFriends(checkIsFriend())
-  }, [currentUser])
+  }, [currentUser, user])
 
   return (
     <Container fluid className="p-0">
