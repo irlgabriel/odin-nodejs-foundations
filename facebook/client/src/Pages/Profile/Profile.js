@@ -32,18 +32,20 @@ const Profile = ({
   users,
 }) => {
   const { user_id } = useParams();
+  console.log(user_id);
 
-  const [currentUser, setCurrentUser] = useState(user)
+  const [currentUser, setCurrentUser] = useState(profileUser || user)
   const [requests, setRequests] = useState([])
   const [posts, setPosts] = useState([]);
   const [coverPhotoForm, setCoverPhotoForm] = useState(false);
   const [profilePhotoForm, setProfilePhotoForm] = useState(false);
+  const [collapse, setCollapse] = useState(false);
+
+  const [sameUser, setSameUser] = useState(false);
   const [isFriends, setIsFriends] = useState(false);
-  const [sentRequests, setSentRequests] = useState([])
-  const [receivedRequests, setReceivedRequests] = useState([])
   const [sentRequest, setSentRequest] = useState(undefined)
   const [receivedRequest, setReceivedRequest] = useState(undefined)
-  const [collapse, setCollapse] = useState(false);
+  
 
   const config = localStorage.getItem('token') &&  {
     headers: {
@@ -105,8 +107,6 @@ const Profile = ({
     ], (err, results) => {
       setSentRequest(results[0].find(req => req.to._id === currentUser._id));
       setReceivedRequest(results[1].find(req => req.from._id === currentUser._id));
-      setSentRequests(results[1]);
-      setReceivedRequests(results[0]);
     })
     
   }, [requests])
@@ -114,35 +114,32 @@ const Profile = ({
   
   useEffect(() => {
     // Set profile user
-    async.series([
-      function(callback) {
-        if(profileUser) {
-          setCurrentUser(profileUser);
-          callback(null, null);
-        } else {
-          // Set current user based on url
-          Axios.get(`/users/${user_id}`)
-          .then(res => {
-            setCurrentUser(res.data);
-            callback(null, null);
-          })
-        }
-      }
-    ], function(err, results){
-      // Fetch posts
-      Axios.get('/posts')
+    if(user_id) {
+      // Set current user based on url
+      Axios.get(`/users/${user_id}`)
       .then(res => {
-        setPosts(res.data.filter(post => post.user._id === currentUser._id));
+        setCurrentUser(res.data);
       })
-      // Fetch requests
-      Axios.get('/friend_requests', config)
-      .then(res => {
-        setRequests(res.data);
-      })
-      // Establish friendship status
-      setIsFriends(checkIsFriend())
+    }
+    // Fetch posts
+    Axios.get('/posts')
+    .then(res => {
+      console.log(currentUser);
+      setPosts(res.data.filter(post => post.user._id === currentUser._id));
     })
+    // Fetch requests
+    Axios.get('/friend_requests', config)
+    .then(res => {
+      setRequests(res.data);
+    })
+    
   }, [])
+
+  useEffect(() => {
+    setSameUser(currentUser._id === user._id);
+    // Establish friendship status
+    setIsFriends(checkIsFriend())
+  }, [currentUser])
 
   return (
     <Container fluid className="p-0">
@@ -172,7 +169,7 @@ const Profile = ({
           ) : (
             <DefaultCoverPhoto></DefaultCoverPhoto>
           )}
-          {currentUser._id === user._id && (
+          {sameUser && (
             <GrayHoverDiv onClick={() => setCoverPhotoForm(true)}>
               <p className="mb-0">Change Cover Photo</p>
             </GrayHoverDiv>
@@ -218,7 +215,7 @@ const Profile = ({
               </p>
             </GrayHoverDiv>
           )}
-          {!sentRequest && !receivedRequest && !currentUser._id !== user._id && !isFriends && (
+          {!sentRequest && !receivedRequest && !sameUser && !isFriends && (
             <GrayHoverDiv onClick={() => sendRequest(currentUser._id)}>
               <p className="mb-0">Send Friend Request</p>
             </GrayHoverDiv>
