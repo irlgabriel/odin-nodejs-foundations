@@ -130,6 +130,7 @@ const Navbar = ({reloadUser, user }) => {
               style={{ borderRadius: "21px" }}
               type="text"
               className="py-2"
+              style={{width: '90%'}}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search Facebook"

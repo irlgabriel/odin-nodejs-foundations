@@ -43,7 +43,6 @@ const Profile = ({
   const [receivedRequests, setReceivedRequests] = useState([])
   const [sentRequest, setSentRequest] = useState(undefined)
   const [receivedRequest, setReceivedRequest] = useState(undefined)
-  const [isSameUser, setSameUser] = useState(false);
   const [collapse, setCollapse] = useState(false);
 
   const config = localStorage.getItem('token') &&  {
@@ -115,40 +114,35 @@ const Profile = ({
   
   useEffect(() => {
     // Set profile user
-    if(profileUser) {
-      setCurrentUser(profileUser);
-    } else {
-      // Set current user based on url
-      Axios.get(`/users/${user_id}`)
+    async.series([
+      function(callback) {
+        if(profileUser) {
+          setCurrentUser(profileUser);
+          callback(null, null);
+        } else {
+          // Set current user based on url
+          Axios.get(`/users/${user_id}`)
+          .then(res => {
+            setCurrentUser(res.data);
+            callback(null, null);
+          })
+        }
+      }
+    ], function(err, results){
+      // Fetch posts
+      Axios.get('/posts')
       .then(res => {
-        setCurrentUser(res.data);
+        setPosts(res.data.filter(post => post.user._id === currentUser._id));
       })
-    }
-    // Fetch posts
-    Axios.get('/posts')
-    .then(res => {
-      setPosts(res.data.filter(post => post.user._id === currentUser._id));
-    })
-    // Fetch requests
-    Axios.get('/friend_requests', config)
-    .then(res => {
-      setRequests(res.data);
+      // Fetch requests
+      Axios.get('/friend_requests', config)
+      .then(res => {
+        setRequests(res.data);
+      })
+      // Establish friendship status
+      setIsFriends(checkIsFriend())
     })
   }, [])
-
-  // get friends requests of the logged in user(user) - both sent and received to determine
-  // state of friendship. (sent friend request/received/friends/neither)
-  useEffect(() => {
-    if(currentUser._id !== user._id) {
-
-      // this runs before the useEffect above;
-      if(sentRequests.length) console.log(sentRequests[0].to._id, currentUser._id)
-      
-      setIsFriends(checkIsFriend());
-  } else {
-    setSameUser(true);
-  }
-  }, [currentUser, requests]);
 
   return (
     <Container fluid className="p-0">
@@ -178,7 +172,7 @@ const Profile = ({
           ) : (
             <DefaultCoverPhoto></DefaultCoverPhoto>
           )}
-          {isSameUser && (
+          {currentUser._id === user._id && (
             <GrayHoverDiv onClick={() => setCoverPhotoForm(true)}>
               <p className="mb-0">Change Cover Photo</p>
             </GrayHoverDiv>
@@ -224,7 +218,7 @@ const Profile = ({
               </p>
             </GrayHoverDiv>
           )}
-          {!sentRequest && !receivedRequest && !isSameUser && !isFriends && (
+          {!sentRequest && !receivedRequest && !currentUser._id !== user._id && !isFriends && (
             <GrayHoverDiv onClick={() => sendRequest(currentUser._id)}>
               <p className="mb-0">Send Friend Request</p>
             </GrayHoverDiv>

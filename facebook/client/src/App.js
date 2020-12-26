@@ -68,13 +68,13 @@ function App() {
         ></ProtectedRoute>
         <ProtectedRoute
           exact
-          path={`/posts/:post_id`}
+          path='/posts/:post_id'
           {...props}
           component={PostPage}
         ></ProtectedRoute>
         <ProtectedRoute
           exact
-          path={`/users/:user_id}`}
+          path='/users/:user_id'
           {...props} 
           component={Profile}
         ></ProtectedRoute>

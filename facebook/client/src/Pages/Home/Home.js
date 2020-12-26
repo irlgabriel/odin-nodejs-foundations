@@ -65,7 +65,7 @@ const Home = ({ reloadUser, user }) => {
             <NavItem to={`/users/${friend._id}`}>
               <RoundImage src={friend.profile_photo} />
               &nbsp;
-              {friend.displayName || friend.first_name + " " + friend.last_name}
+              {friend.display_name || friend.first_name + " " + friend.last_name}
             </NavItem>
           ))}
         </Col>
