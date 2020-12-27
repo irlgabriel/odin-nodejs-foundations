@@ -40,6 +40,16 @@ exports.get_posts = (req, res, next) => {
     });
 };
 
+exports.get_post = (req, res, next) => {
+  Post.findById(req.params.post_id)
+  .populate('user')
+  .populate('likes')
+  .exec((err, post) => {
+    if(err) next(err);
+    res.json(post);
+  })
+}
+
 exports.create_post = [
   body("content").trim().isLength({ min: 1 }).escape(),
   upload,

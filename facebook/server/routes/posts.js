@@ -4,8 +4,11 @@ const passport = require("passport");
 
 const postController = require("../controllers/posts");
 
-// GET retrieve post
+// GET retrieve all posts
 router.get("/", postController.get_posts);
+
+// GET a post by id
+router.get('/:post_id', postController.get_post);
 
 // POST create post
 router.post(
