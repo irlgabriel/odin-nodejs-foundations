@@ -3,7 +3,7 @@ import Axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import { Container, Form, Input, Label, Button, FormGroup } from "reactstrap";
 
-const Index = ({setUser, reloadUser, user, }) => {
+const Index = ({getUser, reloadUser, user, }) => {
   const location = useHistory();
 
   const [email, setEmail] = useState("");
@@ -15,12 +15,13 @@ const Index = ({setUser, reloadUser, user, }) => {
       .then((res) => {
         console.log(res);
         localStorage.setItem('token', res.data.token);
+        getUser(res.data.token);
       })
       .catch((err) => console.log(err));
   };
 
   useEffect(() => {
-    if (user) location.push("/home");
+    if (user && localStorage.getItem('token')) location.push("/home");
   }, [user]);
 
   return (

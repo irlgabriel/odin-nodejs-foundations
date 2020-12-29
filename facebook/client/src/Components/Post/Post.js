@@ -31,7 +31,7 @@ import { VscComment } from "react-icons/vsc";
 import { Link } from "react-router-dom";
 
 const Post = ({ user, posts, post, setPosts }) => {
-  const [content, setContent] = useState(post.content);
+  const [content, setContent] = useState('');
   const [edit, setEdit] = useState(false);
   const [comments, setComments] = useState([]);
   const [settingsDropdown, setSettingsDropdown] = useState(false);
@@ -102,13 +102,14 @@ const Post = ({ user, posts, post, setPosts }) => {
   };
 
   useEffect(() => {
-    // GET Components
+    // GET Comments
     axios
       .get(`/posts/${post._id}/comments`)
       .then((res) => {
         setComments(res.data);
       })
       .catch((err) => console.log(err));
+    //
   }, []);
 
   useEffect(() => {

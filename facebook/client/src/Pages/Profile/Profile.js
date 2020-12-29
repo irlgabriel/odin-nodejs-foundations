@@ -33,18 +33,19 @@ const Profile = ({
 }) => {
   const { user_id } = useParams();
 
-  const [currentUser, setCurrentUser] = useState(user)
+  const [currentUser, setCurrentUser] = useState(profileUser || user)
   const [requests, setRequests] = useState([])
   const [posts, setPosts] = useState([]);
   const [coverPhotoForm, setCoverPhotoForm] = useState(false);
   const [profilePhotoForm, setProfilePhotoForm] = useState(false);
+  const [collapse, setCollapse] = useState(false);
+
+  // Friendship status state
+  const [sameUser, setSameUser] = useState(false);
   const [isFriends, setIsFriends] = useState(false);
-  const [sentRequests, setSentRequests] = useState([])
-  const [receivedRequests, setReceivedRequests] = useState([])
   const [sentRequest, setSentRequest] = useState(undefined)
   const [receivedRequest, setReceivedRequest] = useState(undefined)
-  const [isSameUser, setSameUser] = useState(false);
-  const [collapse, setCollapse] = useState(false);
+  
 
   const config = localStorage.getItem('token') &&  {
     headers: {
@@ -55,6 +56,7 @@ const Profile = ({
 
   const checkIsFriend = () => {
     const userFriendsIDs = user.friends.map(friend => friend._id)
+    console.log(userFriendsIDs);
     return (userFriendsIDs.includes(currentUser._id));
   }
 
@@ -71,6 +73,10 @@ const Profile = ({
     //const _id = e.target.getAttribute('data-id');
     Axios.post(`/friend_requests/${_id}/accept`).then((res) => {
       reloadUser();
+      const updatedUser = currentUser;
+      updatedUser.friends.push(user);
+      setCurrentUser(updatedUser);
+      setReceivedRequest(undefined);
     });
   };
 
@@ -78,6 +84,7 @@ const Profile = ({
     //const _id = e.target.getAttribute('data-id');
     Axios.post(`/friend_requests/${_id}/decline`).then((res) => {
       setRequests(requests.filter((request) => request._id !== res.data._id));
+      setReceivedRequest(undefined);
     });
   };
 
@@ -106,8 +113,6 @@ const Profile = ({
     ], (err, results) => {
       setSentRequest(results[0].find(req => req.to._id === currentUser._id));
       setReceivedRequest(results[1].find(req => req.from._id === currentUser._id));
-      setSentRequests(results[1]);
-      setReceivedRequests(results[0]);
     })
     
   }, [requests])
@@ -115,9 +120,7 @@ const Profile = ({
   
   useEffect(() => {
     // Set profile user
-    if(profileUser) {
-      setCurrentUser(profileUser);
-    } else {
+    if(user_id) {
       // Set current user based on url
       Axios.get(`/users/${user_id}`)
       .then(res => {
@@ -134,21 +137,14 @@ const Profile = ({
     .then(res => {
       setRequests(res.data);
     })
+    
   }, [])
 
-  // get friends requests of the logged in user(user) - both sent and received to determine
-  // state of friendship. (sent friend request/received/friends/neither)
   useEffect(() => {
-    if(currentUser._id !== user._id) {
-
-      // this runs before the useEffect above;
-      if(sentRequests.length) console.log(sentRequests[0].to._id, currentUser._id)
-      
-      setIsFriends(checkIsFriend());
-  } else {
-    setSameUser(true);
-  }
-  }, [currentUser, requests]);
+    setSameUser(currentUser._id === user._id);
+    // Establish friendship status
+    setIsFriends(checkIsFriend())
+  }, [currentUser, user])
 
   return (
     <Container fluid className="p-0">
@@ -178,7 +174,7 @@ const Profile = ({
           ) : (
             <DefaultCoverPhoto></DefaultCoverPhoto>
           )}
-          {isSameUser && (
+          {sameUser && (
             <GrayHoverDiv onClick={() => setCoverPhotoForm(true)}>
               <p className="mb-0">Change Cover Photo</p>
             </GrayHoverDiv>
@@ -224,7 +220,7 @@ const Profile = ({
               </p>
             </GrayHoverDiv>
           )}
-          {!sentRequest && !receivedRequest && !isSameUser && !isFriends && (
+          {!sentRequest && !receivedRequest && !sameUser && !isFriends && (
             <GrayHoverDiv onClick={() => sendRequest(currentUser._id)}>
               <p className="mb-0">Send Friend Request</p>
             </GrayHoverDiv>

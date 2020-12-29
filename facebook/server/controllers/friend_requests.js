@@ -86,6 +86,7 @@ exports.accept_friend_request = (req, res, next) => {
             if (err) return res.status(400).json(err);
             request.remove((err, doc) => {
               if (err) return res.status(400).json(err);
+              request.remove();
               res.json(doc);
             });
           }
