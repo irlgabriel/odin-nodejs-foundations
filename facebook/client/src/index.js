@@ -12,7 +12,11 @@ $(function () {
   $("[data-toggle=tooltip]").tooltip({ html: true });
 });
 
-axios.defaults.baseURL = "http://localhost:5000/";
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  axios.defaults.baseURL = "http://localhost:5000/";
+} else {
+  axios.defaults.baseURL = 'https://jovial-rosalind-bfd298.netlify.app/'
+}
 
 ReactDOM.render(
   <React.StrictMode>
