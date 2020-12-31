@@ -17,7 +17,6 @@ import { BsArrow90DegDown } from "react-icons/bs";
 import { ReplyForm } from "..";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { FcRotateCamera } from "react-icons/fc";
 
 const Comment = ({ level = 0, comments, comment, setComments, user, post }) => {
   const [showReplyForm, setShowReply] = useState(false);
@@ -99,7 +98,7 @@ const Comment = ({ level = 0, comments, comment, setComments, user, post }) => {
       setReplies(
         comments.filter(
           (comm) =>
-            comm.hasOwnProperty("comment") && comm.comment._id === comment._id
+            /*comm.hasOwnProperty("comment")*/ comm.comment && comm.comment._id === comment._id
         )
       );
     }

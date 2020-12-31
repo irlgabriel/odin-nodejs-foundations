@@ -8,8 +8,6 @@ const PostPage = (props) => {
   
   const { post_id } = useParams();
 
-  console.log(post_id)
-
   const [post, setPost] = useState(undefined)
   const [posts, setPosts] = useState([]);
 
@@ -30,7 +28,7 @@ const PostPage = (props) => {
     <Container fluid className="m-0 p-0">
       <Navbar key="posts" {...props} />
       <Container className="mt-2">
-        <Post {...props} post={post} posts={posts} setPosts={setPosts} />
+        {post && <Post {...props} post={post} posts={posts} setPosts={setPosts} />}
       </Container>
     </Container>
   );

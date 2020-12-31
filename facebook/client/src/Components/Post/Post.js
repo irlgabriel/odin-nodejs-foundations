@@ -31,6 +31,8 @@ import { VscComment } from "react-icons/vsc";
 import { Link } from "react-router-dom";
 
 const Post = ({ user, posts, post, setPosts }) => {
+
+  console.log(user);
   const [content, setContent] = useState('');
   const [edit, setEdit] = useState(false);
   const [comments, setComments] = useState([]);
@@ -141,13 +143,13 @@ const Post = ({ user, posts, post, setPosts }) => {
           <div>
             <h4 className="mb-0">
               {post.user.display_name ||
-                post.user.first_name + " " + post.user.last_name}
+                (post.user.first_name + " " + post.user.last_name)}
             </h4>
             <p style={{ fontSize: "13px" }} className="mb-0 text-muted">
               {moment(post.createdAt).fromNow()}
             </p>
           </div>
-          {user._id === post.user._id && (
+          {(user._id === post.user._id) && (
             <RoundedWrapper
               onClick={() => setSettingsDropdown(!settingsDropdown)}
             >
@@ -182,7 +184,7 @@ const Post = ({ user, posts, post, setPosts }) => {
             className="mb-1"
             dangerouslySetInnerHTML={{ __html: post.content }}
           ></p>
-          {post.image && post.image.url && (
+          {(post.image && post.image.url) && (
             <img className="mb-2" width="100%" src={post.image.url} />
           )}
         </Body>
@@ -227,7 +229,7 @@ const Post = ({ user, posts, post, setPosts }) => {
               <AiFillLike
                 data-toggle="tooltip"
                 data-html="true"
-                title={<em>asd</em>}
+                title={<em></em>}
                 size={12}
                 fill="white"
               />

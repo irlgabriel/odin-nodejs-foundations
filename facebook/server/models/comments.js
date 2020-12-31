@@ -15,4 +15,10 @@ const commentSchema = new Schema(
   { timestamps: true }
 );
 
+// delete dependent comments
+commentSchema.post('remove', function(){
+  console.log('post middleware for comment delete run:', this)
+  Comment.deleteMany({comment: this._id});
+})
+
 module.exports = mongoose.model("Comment", commentSchema);
