@@ -30,7 +30,7 @@ const Home = ({setUser, reloadUser, user }) => {
       </CSSTransition>
       <Navbar key="home" setUser={setUser} posts={posts} reloadUser={reloadUser} setPosts={setPosts} user={user} />
       <Row className="mx-0">
-        <Col id="left-col" className="p-2 d-sm-none d-lg-block" sm="3" lg="3">
+        <Col id="left-col" className="p-2 d-xs-none d-sm-none d-lg-block" sm="3" lg="3">
           <NavItem to="/profile">
             <RoundImage src={user.profile_photo} />
             &nbsp;{user.display_name || user.first_name + " " + user.last_name}
