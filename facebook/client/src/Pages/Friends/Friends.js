@@ -25,10 +25,9 @@ const Friends = ({reloadUser, user }) => {
     },
   };
 
-  const clickHandler = (e) => {
+  const clickHandler = (id) => {
     //e.stopPropagation();
-    const user_id = e.target.getAttribute("data-id");
-    Axios.get(`/users/${user_id}`).then((res) => {
+    Axios.get(`/users/${id}`).then((res) => {
       setPreviewUser(res.data);
     });
   };

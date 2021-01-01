@@ -56,7 +56,6 @@ const Profile = ({
 
   const checkIsFriend = () => {
     const userFriendsIDs = user.friends.map(friend => friend._id)
-    console.log(userFriendsIDs);
     return (userFriendsIDs.includes(currentUser._id));
   }
 

@@ -13,7 +13,7 @@ const FriendRequest = ({
   _id,
 }) => {
   return (
-    <FriendsContainer onClick={(e) => onClick(e)} data-id={from._id}>
+    <FriendsContainer onClick={() => onClick(from._id)} data-id={from._id}>
       <RoundImage src={from.profile_photo} />
       <FriendInfo>
         <h4>{from.display_name || from.first_name + " " + from.last_name}</h4>

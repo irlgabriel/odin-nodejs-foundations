@@ -7,7 +7,7 @@ import {
 
 const FriendSuggestion = ({ onClick, sendRequest, to }) => {
   return (
-    <FriendsContainer data-id={to._id} onClick={(e) => onClick(e)}>
+    <FriendsContainer data-id={to._id} onClick={() => onClick(to._id)}>
       <RoundImage src={to.profile_photo} />
       <FriendInfo>
         <h4>{to.display_name || to.first_name + " " + to.last_name}</h4>
