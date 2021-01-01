@@ -32,7 +32,6 @@ import { Link } from "react-router-dom";
 
 const Post = ({ user, posts, post, setPosts }) => {
 
-  console.log(user);
   const [content, setContent] = useState('');
   const [edit, setEdit] = useState(false);
   const [comments, setComments] = useState([]);
@@ -246,11 +245,16 @@ const Post = ({ user, posts, post, setPosts }) => {
         <BottomFooter>
           <FooterItem onClick={() => likePost()}>
             {!post.likes.some((e) => e._id === user._id) ? (
-              <AiOutlineLike size={20} />
+              <div style={{display: 'flex', alignItems: 'center'}}>
+                <AiOutlineLike size={20} />
+                <span>&nbsp;Like</span>
+              </div>
             ) : (
-              <AiFillLike size={20} fill="royalblue" />
+              <div style={{display: 'flex', alignItems: 'center'}}>
+                <AiFillLike size={20} fill="royalblue" />
+                <span style={{color: 'royalblue'}}>&nbsp;Liked</span>
+              </div>
             )}
-            &nbsp;Like
           </FooterItem>
           <FooterItem onClick={() => setCommentsDropdown(!commentsDropdown)}>
             <VscComment size={20} />

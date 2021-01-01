@@ -25,7 +25,6 @@ const Reply = ({
   user,
   post,
 }) => {
-  const [showReplyForm, setShowReply] = useState(false);
   const [content, setContent] = useState(reply.content);
   const [showEdit, setEdit] = useState(false);
 
@@ -111,10 +110,13 @@ const Reply = ({
               reply.user.first_name + " " + reply.user.last_name}
           </h6>
           {!showEdit ? (
-            <p
-              className="mb-0"
-              dangerouslySetInnerHTML={{ __html: reply.content }}
-            ></p>
+            <div>
+              <p
+                className="mb-0"
+                dangerouslySetInnerHTML={{ __html: reply.content }}
+              ></p>
+              {reply.image && <img  width="100%" src={reply.image.url} />}
+            </div>
           ) : (
             <Form onSubmit={(e) => editHandler(e)} className="w-100">
               <FormGroup>

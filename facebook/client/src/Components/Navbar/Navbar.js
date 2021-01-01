@@ -16,7 +16,8 @@ import {
   MenuIcon,
   SearchContainer,
   SearchResult,
-  SmallRoundImg
+  SmallRoundImg,
+  Menu
 } from "./Navbar.components";
 /* React Icons */
 import {
@@ -110,7 +111,7 @@ const Navbar = ({setUser, reloadUser, user }) => {
     <Nav className="sticky-top px-1">
       <Col className="align-items-center d-flex position-relative">
         {!showSearch && (
-          <Link to="/home">
+          <Link className='d-none d-md-block' to="/home">
             <FaFacebook className="mr-2" fill="royalblue" size={40} />
           </Link>
         )}
@@ -182,8 +183,19 @@ const Navbar = ({setUser, reloadUser, user }) => {
         </NavMidItem>
       </Col>
       {/** <768px */}
-      <Col className="align-items-center d-sm-flex d-md-none">
-        <MenuIcon onClick={() => setMenu(true)} />
+      <Col className="position-relative align-items-center d-flex d-md-none">
+        <MenuIcon onClick={() => setMenu(!menu)} />
+        <CSSTransition
+          in={menu}
+          timeout={300}
+          classNames="fade"
+          unmountOnExit
+        >
+          <Menu>
+            <GrayHover><LinkGreyHover to='/home'>Home</LinkGreyHover></GrayHover>
+            <GrayHover><LinkGreyHover to='/friends'>Friends</LinkGreyHover></GrayHover>
+          </Menu>
+        </CSSTransition>
       </Col>
 
       <Col className="d-flex justify-content-end align-items-center">
@@ -196,10 +208,10 @@ const Navbar = ({setUser, reloadUser, user }) => {
             <p className="mb-0">{user.first_name ? user.first_name : user.display_name ? user.display_name.split(' ')[0] : ''}</p>
           </RoundedUserDiv>
         </RegularLink>
-        <RoundWrapper className="mr-2">
+        <RoundWrapper className="d-xs-none d-md-flex mr-2">
           <GrAdd size={16} fill="black" />
         </RoundWrapper>
-        <RoundWrapper className="mr-2">
+        <RoundWrapper className="d-xs-none d-md-flex mr-2">
           <FaFacebookMessenger size={16} fill="black" />
         </RoundWrapper>
         <RoundWrapper

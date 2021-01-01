@@ -2,6 +2,8 @@ import Axios from "axios";
 import { useState } from "react";
 import { Form, Input, FormGroup, Button } from "reactstrap";
 import { RoundImage, PhotoImage } from "./ReplyForm.components";
+import { CSSTransition } from 'react-transition-group';
+import { ImageForm } from '../';
 
 const ReplyForm = ({
   post,
@@ -11,8 +13,10 @@ const ReplyForm = ({
   replies,
   setReplies,
 }) => {
+  const [file, setFile] = useState(null);
   const [content, setContent] = useState("");
   const [showSubmit, setShowSubmit] = useState(false);
+  const [imageForm, setImageForm] = useState(false);
 
   const config = localStorage.getItem('token') &&  {
     headers: {
@@ -23,9 +27,13 @@ const ReplyForm = ({
 
   const submitHandler = (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("content", content);
+    formData.append('comment', comment._id);
+    if (file) formData.append("image", file);
     Axios.post(
       `/posts/${post._id}/comments/`,
-      { content, comment: comment._id },
+      formData,
       config
     )
       .then((res) => {
@@ -70,8 +78,23 @@ const ReplyForm = ({
           style={{ borderRadius: "16px", paddingRight: "3rem" }}
           type="textarea"
         />
-        <PhotoImage size={24} fill="green" />
+        <PhotoImage size={24} fill="green" onClick={() => setImageForm(!imageForm)}/>
       </FormGroup>
+      <CSSTransition
+          in={imageForm}
+          timeout={300}
+          classNames="fade"
+          unmountOnExit
+        >
+          <FormGroup style={{ marginLeft: "48px" }}>
+            <Input
+              onChange={(e) => setFile(e.target.files[0])}
+              type="file"
+              name="image"
+            />
+            <em>Max 5MB (Accepted formats: jpg, jpeg, png)</em>
+          </FormGroup>
+        </CSSTransition>
       {showSubmit && (
         <FormGroup className="mb-0 text-right">
           <Button type="submit" size="sm">

@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { Form, Input, FormGroup, Button } from "reactstrap";
 import { UserImage, PhotoImage } from "./CommentForm.components";
 import { ImageForm } from "..";
-import autosize from "autosize";
+import { CSSTransition } from 'react-transition-group';
 
 const CommentForm = ({ post, user, comments, setComments }) => {
   const [file, setFile] = useState(null);
@@ -70,13 +70,21 @@ const CommentForm = ({ post, user, comments, setComments }) => {
           />
         </FormGroup>
       </div>
-      {imageForm && (
-        <Input
-          onChange={(e) => setFile(e.target.files[0])}
-          type="file"
-          name="image"
-        />
-      )}
+      <CSSTransition
+          in={imageForm}
+          timeout={300}
+          classNames="fade"
+          unmountOnExit
+        >
+          <FormGroup style={{ marginLeft: "48px" }}>
+            <Input
+              onChange={(e) => setFile(e.target.files[0])}
+              type="file"
+              name="image"
+            />
+            <em>Max 5MB (Accepted formats: jpg, jpeg, png)</em>
+          </FormGroup>
+        </CSSTransition>
       {showSubmit && (
         <FormGroup className="text-right">
           <Button type="submit" color="primary" size="sm">

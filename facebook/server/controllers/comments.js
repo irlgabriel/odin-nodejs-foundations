@@ -2,7 +2,7 @@ const { body, validationResult } = require("express-validator");
 const multer = require("multer");
 const AWS = require("aws-sdk");
 const async = require("async");
-
+const path = require('path');
 const Comment = require("../models/comments");
 const Notification = require("../models/notifications");
 const User = require("../models/users");

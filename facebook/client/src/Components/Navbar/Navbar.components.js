@@ -70,10 +70,10 @@ export const GrayHover = styled.div`
   display: flex;
   align-items: center;
   padding: 0.5rem;
-  background: white;
+  //background: white;
   border-radius: 6px;
   &:hover {
-    background: #f0f2f5;
+    background: #f0f2f5 !important;
     cursor: pointer;
   }
 `;
@@ -152,4 +152,12 @@ export const SearchResult = styled.div`
     background: lightgray;
     cursor: pointer;
   }
+`
+
+export const Menu = styled.div`
+  position: absolute;
+  bottom: -100px;
+  padding: .5rem;
+  background: white;
+  border-radius: 5px;
 `
