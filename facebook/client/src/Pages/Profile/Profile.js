@@ -138,7 +138,7 @@ const Profile = ({
       setRequests(res.data);
     })
     
-  }, [])
+  }, [currentUser])
 
   useEffect(() => {
     setSameUser(currentUser._id === user._id);
