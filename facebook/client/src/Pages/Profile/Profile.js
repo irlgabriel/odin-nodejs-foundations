@@ -247,7 +247,7 @@ const Profile = ({
         </ProfileHeader>
       </div>
       <Main>
-        <Col className="d-md-none" sm="5">
+        <Col className="pt-3 d-none d-lg-block" sm="5">
           Photos
         </Col>
         <Col className="pt-3">
