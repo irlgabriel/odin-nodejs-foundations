@@ -2,30 +2,48 @@ import { useState, useEffect } from "react";
 import Axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import { Container, Form, Input, Label, Button, FormGroup } from "reactstrap";
+import { FlashMessage } from './Index.components'
+import { CSSTransition } from 'react-transition-group';
 
-const Index = ({getUser, user, }) => {
+const Index = ({getUser, user }) => {
   const location = useHistory();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState(undefined)
 
   const submitHandler = (e) => {
     e.preventDefault();
     Axios.post("/login", { email, password })
       .then((res) => {
-        console.log(res);
         localStorage.setItem('token', res.data.token);
         getUser(res.data.token);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => setMessage(err.response.data.message));
   };
 
   useEffect(() => {
     if (user && localStorage.getItem('token')) location.push("/home");
   }, [user]);
 
+  useEffect(() => {
+    if(message) {
+      setTimeout(() => {
+        setMessage(undefined);
+      }, 3000)
+    }
+  }, [message])
+
   return (
     <Container id="index-main">
+      <CSSTransition
+        in={message}
+        timeout={300}
+        classNames='fade'
+        unmountOnExit
+      >
+        <FlashMessage>{message}</FlashMessage>
+      </CSSTransition>
       <div id="facebook-story">
         <img
           id="fb-logo"

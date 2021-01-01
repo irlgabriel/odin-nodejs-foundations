@@ -11,7 +11,7 @@ exports.login =
 [
   (req, res, next) => {
     passport.authenticate("local", {session: false}, (err, user, info) => {
-      if(err) next(err);
+      if(err) return res.status(400).json(err);
       if(!user) res.redirect(process.env.FRONTEND_URL);
       jwt.sign({user_id: user._id}, process.env.JWT_SECRET, (err, token) => {
         res.cookie('token', token);
@@ -81,7 +81,7 @@ exports.register = [
       .populate("friends")
       .exec((err, user) => {
         if (err) return next(err);
-        if (user) return res.status(400).json({ msg: "Email already in use" });
+        if (user) return res.status(400).json({ message: "Email already in use" });
 
         bcrypt.hash(password, 10, (err, hash) => {
           if (err) return next(err);

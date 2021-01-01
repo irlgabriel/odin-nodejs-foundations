@@ -66,11 +66,11 @@ passport.use(
         .populate("friends")
         .exec((err, user) => {
           if (err) return done(err);
-          if (!user) return done(null, false);
+          if (!user) return done({message: 'Email not found!'}, false);
           //check for password match
           bcrypt.compare(password, user.password, (err, match) => {
             if (err) return done(err, false);
-            if (!match) return done(null, false);
+            if (!match) return done({message: 'Password incorrect!'}, false);
             //console.log(user);
             return done(null, user);
           });

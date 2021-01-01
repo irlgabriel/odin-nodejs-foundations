@@ -33,6 +33,7 @@ const Register = ({ user, reloadUser }) => {
       })
       .catch((err) => {
         console.log(err);
+        setMessage(err.response.data.message);
       });
   };
 
