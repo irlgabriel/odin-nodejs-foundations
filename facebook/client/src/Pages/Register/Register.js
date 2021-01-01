@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { Container, Form, Input, Label, FormGroup, Button } from "reactstrap";
+import { FlashMessage } from "./Register.components";
+import { CSSTransition } from 'react-transition-group';
+import { Link } from 'react-router-dom';
 
 const Register = ({ user, reloadUser }) => {
   const location = useHistory();
@@ -10,9 +13,14 @@ const Register = ({ user, reloadUser }) => {
   const [confirmPass, setConfirmPass] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [message, setMessage] = useState(undefined);
 
   const submitHandler = (e) => {
     e.preventDefault();
+    if (password !== confirmPass) {
+      setMessage('Passwords do not match');
+      return;
+    }
     axios
       .post("/register", {
         email,
@@ -32,9 +40,26 @@ const Register = ({ user, reloadUser }) => {
     if (user) location.push("/home");
   }, [user]);
 
+  // Clear message after 3s
+  useEffect(() => {
+    setTimeout(() => {
+      if(message) setMessage(undefined);
+    }, 3000)
+    
+  }, [message])
+
   return (
-    <Container style={{ width: "600px", paddingTop: "60px" }}>
+    <Container style={{ width: "600px", paddingTop: "60px", minHeight: '100vh' }}>
+      <Link to='/'>Back</Link>
       <h3 className="text-center">Register</h3>
+      <CSSTransition
+        in={message}
+        timeout={300}
+        classNames='fade'
+        unmountOnExit
+      >
+        <FlashMessage>{message}</FlashMessage>
+      </CSSTransition>
       <Form onSubmit={(e) => submitHandler(e)}>
         <FormGroup>
           <Label for="email">Email</Label>

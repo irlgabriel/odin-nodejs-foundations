@@ -43,7 +43,7 @@ function App() {
 
   return (
     <Router>
-      <Container fluid className="p-0">
+      <Container style={{minHeight: '100vh'}} fluid className="p-0">
         {/* Page routes */}
         <ProtectedRoute exact path='/home' {...props} component={Home}/>
         <ProtectedRoute
