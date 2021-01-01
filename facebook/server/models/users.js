@@ -6,7 +6,7 @@ const UserSchema = new Schema(
     email: String,
     profile_photo: {
       type: String,
-      default: "http://localhost:5000/images/no_pic.jpg",
+      default: "https://mernfb.herokuapp.com/images/no_pic.jpg",
     },
     cover_photo: { type: String },
     password: String,

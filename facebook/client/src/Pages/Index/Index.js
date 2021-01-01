@@ -95,7 +95,7 @@ const Index = ({getUser, user }) => {
           <hr className='w-100'/>
         </div>
         <div className='text-center mt-2'>
-          <a href='http://localhost:5000/auth/facebook'>
+          <a href='https://mernfb.herokuapp.com/auth/facebook'>
             <Button color='primary'>Login with Facebook</Button>
           </a>
         </div>
