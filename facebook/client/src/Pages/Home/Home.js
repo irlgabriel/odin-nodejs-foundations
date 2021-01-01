@@ -6,7 +6,7 @@ import { Navbar, PostForm, Post, LoadingOverlay } from "../../Components";
 import { CSSTransition } from 'react-transition-group';
 import { FaUserFriends } from "react-icons/fa";
 
-const Home = ({ reloadUser, user }) => {
+const Home = ({setUser, reloadUser, user }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -28,7 +28,7 @@ const Home = ({ reloadUser, user }) => {
       >
         <LoadingOverlay />
       </CSSTransition>
-      <Navbar key="home" posts={posts} reloadUser={reloadUser} setPosts={setPosts} user={user} />
+      <Navbar key="home" setUser={setUser} posts={posts} reloadUser={reloadUser} setPosts={setPosts} user={user} />
       <Row className="mx-0">
         <Col id="left-col" className="p-2 d-sm-none d-lg-block" sm="3" lg="3">
           <NavItem to="/profile">

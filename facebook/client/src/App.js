@@ -45,7 +45,7 @@ function App() {
     <Router>
       <Container style={{minHeight: '100vh'}} fluid className="p-0">
         {/* Page routes */}
-        <ProtectedRoute exact path='/home' {...props} component={Home}/>
+        <ProtectedRoute exact path='/home'  setUser={setUser} {...props} component={Home}/>
         <ProtectedRoute
           path="/profile"
           {...props}

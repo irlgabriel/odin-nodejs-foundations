@@ -38,7 +38,7 @@ import { BsArrowLeft } from "react-icons/bs";
 import { CSSTransition } from "react-transition-group";
 import { Notification } from "..";
 
-const Navbar = ({reloadUser, user }) => {
+const Navbar = ({setUser, reloadUser, user }) => {
   const location = useLocation();
   const history = useHistory();
 
@@ -67,6 +67,7 @@ const Navbar = ({reloadUser, user }) => {
   const logoutHandler = () => {
     // delete the token
     localStorage.removeItem('token');
+    setUser(undefined);
     // delete the cookie if there's any
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     history.push('/');

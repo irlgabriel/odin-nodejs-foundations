@@ -3,7 +3,7 @@ import Axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import { Container, Form, Input, Label, Button, FormGroup } from "reactstrap";
 
-const Index = ({getUser, reloadUser, user, }) => {
+const Index = ({getUser, user, }) => {
   const location = useHistory();
 
   const [email, setEmail] = useState("");
