@@ -19,6 +19,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Comment = ({ level = 0, comments, comment, setComments, user, post }) => {
+
+  const [file, setFile] = useState(post.image);
   const [showReplyForm, setShowReply] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   const [replies, setReplies] = useState([]);
@@ -62,8 +64,12 @@ const Comment = ({ level = 0, comments, comment, setComments, user, post }) => {
 
   const editHandler = (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('content', content);
+    if(file) formData.append('image', file);
     axios
-      .put(`/posts/${post._id}/comments/${comment._id}`, { content }, config)
+      .put(`/posts/${post._id}/comments/${comment._id}`, formData, config)
       .then((res) => {
         setComments(
           comments.map((comment) =>
@@ -145,6 +151,7 @@ const Comment = ({ level = 0, comments, comment, setComments, user, post }) => {
               <FormGroup>
                 <Input
                   type="textarea"
+                  placeholder="Content..."
                   value={content}
                   onChange={(e) => {
                     setContent(e.target.value);
@@ -152,11 +159,21 @@ const Comment = ({ level = 0, comments, comment, setComments, user, post }) => {
                   }}
                 />
               </FormGroup>
+              <FormGroup style={{ marginLeft: "12px" }}>
+                <Input
+                  onChange={(e) => setFile(e.target.files[0])}
+                  type="file"
+                  name="image"
+                />
+                <em>Max 5MB (Accepted formats: jpg, jpeg, png)</em>
+              </FormGroup>
               <FormGroup className="text-right mb-1">
                 <Button color="primary" type="submit" size="sm">
                   Edit
                 </Button>
+                <Button onClick={() => setEdit(false)} type='button' size='sm' className='ml-2' color='danger'>Cancel</Button>
               </FormGroup>
+              
             </Form>
           )}
           {!showEdit && (

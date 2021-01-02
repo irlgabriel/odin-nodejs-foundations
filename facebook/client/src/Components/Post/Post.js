@@ -32,6 +32,7 @@ import { Link } from "react-router-dom";
 
 const Post = ({ user, posts, post, setPosts }) => {
 
+  const [file, setFile] = useState(post.image);
   const [content, setContent] = useState('');
   const [edit, setEdit] = useState(false);
   const [comments, setComments] = useState([]);
@@ -192,6 +193,7 @@ const Post = ({ user, posts, post, setPosts }) => {
         <Form onSubmit={(e) => editHandler(e)}>
           <FormGroup>
             <Input
+              placeholder='Content...'
               type="textarea"
               onFocus={(e) => onChangeHandler(e)}
               value={content}
@@ -200,6 +202,14 @@ const Post = ({ user, posts, post, setPosts }) => {
                 onChangeHandler(e);
               }}
             />
+          </FormGroup>
+          <FormGroup style={{ marginLeft: "12px" }}>
+            <Input
+              onChange={(e) => setFile(e.target.files[0])}
+              type="file"
+              name="image"
+            />
+            <em>Max 5MB (Accepted formats: jpg, jpeg, png)</em>
           </FormGroup>
           <FormGroup className="d-flex align-items-center">
             <Button

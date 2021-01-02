@@ -97,6 +97,7 @@ module.exports.create_comment = [
                   .populate("user")
                   .populate("comment")
                   .populate("post")
+                  .populate('likes')
                   .execPopulate()
                   .then((comment) => res.json(comment));
               }
@@ -108,6 +109,7 @@ module.exports.create_comment = [
           .populate("user")
           .populate("comment")
           .populate("post")
+          .populate('likes')
           .execPopulate()
           .then((comment) => res.json(comment));
       }
@@ -116,28 +118,81 @@ module.exports.create_comment = [
 ];
 
 module.exports.edit_comment = [
-  body("content").trim().isLength({ min: 1 }).escape(),
+  upload,
+  //body("content").trim().isLength({ min: 1 }).escape(),
   (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) return res.status(400).json(errors.array());
 
     const { content } = req.body;
+    console.log(req.file);
 
-    Comment.findOneAndUpdate(
-      { _id: req.params.comment_id },
-      { content },
-      { new: true }
-    )
-      .populate("user")
-      .populate("post")
-      .populate("comment")
-      .populate("likes")
-      .exec((err, comment) => {
-        if (err) return res.status(400).json(err);
-        res.json(comment);
-      });
-  },
+
+    Comment.findById(req.params.comment_id, (err, comment) => {
+      // if a file is sent with the request then we update it as well and upload it to s3!
+      if(err) return res.status(400).json(err);
+      // Delete image from AWS if there's any
+      /*
+      if (comment.image) {
+        const params = {
+          Bucket: process.env.AWS_BUCKET,
+          Key: comment.image.id,
+        };
+        S3.deleteObject(params, (err, data) => {
+          if (err) next(err);
+        });
+      }
+      */
+
+      if (req.file) {
+        const originalName = req.file.originalname.split(".");
+        const format = originalName[originalName.length - 1];
+
+        const params = {
+          Bucket: process.env.AWS_BUCKET,
+          Key: `${comment._id}.${format}`,
+          Body: req.file.buffer,
+        };
+
+        S3.upload(params, (err, data) => {
+          if (err)  return res.status(400).json(err);
+          Comment.findOneAndUpdate(
+            { _id: comment._id },
+            {
+              image: {
+                url: data.Location,
+                id: comment._id.toString() + "." + format,
+              },
+              content,
+            },
+            { new: true },
+            (err, comment) => {
+              if (err) console.log(err);
+              comment
+                .populate("user")
+                .populate("comment")
+                .populate("post")
+                .populate('likes')
+                .execPopulate()
+                .then((comment) => res.json(comment));
+            }
+          );
+        });
+      } else {
+        Comment.findOneAndUpdate({_id: req.params.comment_id}, {content}, {new: true}, (err, comment) => {
+          if(err) return res.status(400).json(err);
+          comment
+          .populate("user")
+          .populate("comment")
+          .populate("post")
+          .populate('likes')
+          .execPopulate()
+          .then((comment) => res.json(comment));
+        }
+      )}
+    },
+  )}
 ];
 
 module.exports.like_comment = (req, res, next) => {
