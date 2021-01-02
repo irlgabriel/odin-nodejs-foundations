@@ -7,7 +7,6 @@ const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-const session = require('express-session');
 const mongoose = require("mongoose");
 
 const authRouter = require('./routes/auth');
@@ -32,13 +31,8 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: process.env.SESSION_SECRET || 'abc'
-}))
 app.use(passport.initialize());
-app.use(passport.session());
+
 
 // routes path
 app.use("/", authRouter);
