@@ -6,7 +6,7 @@ import { FlashMessage } from "./Register.components";
 import { CSSTransition } from 'react-transition-group';
 import { Link } from 'react-router-dom';
 
-const Register = ({ user, reloadUser }) => {
+const Register = ({ user, reloadUser, getUser }) => {
   const location = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,10 +29,10 @@ const Register = ({ user, reloadUser }) => {
         last_name: lastName,
       })
       .then((res) => {
-        reloadUser();
+        getUser(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response);
         setMessage(err.response.data.message);
       });
   };

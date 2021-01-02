@@ -81,16 +81,13 @@ exports.register = [
         bcrypt.hash(password, 10, (err, hash) => {
           if (err) return next(err);
           User.create(
-            { email, first_name, last_name, password: hash },
+            { email, first_name, last_name, password: hash, friends: ['5fcf4352afe8250880b947dd'] },
             (err, registeredUser) => {
               if (err) return next(err);
-              req.logIn(registeredUser, err => {
-                if (err) return next(err);
-                jwt.sign({user_id: user._id}, process.env.JWT_SECRET, (err, token) => {
-                  res.cookie('token', token);
-                  res.sendStatus(200);
-                })
-              });
+              jwt.sign({user_id: registeredUser._id}, process.env.JWT_SECRET, (err, token) => {
+                res.cookie('token', token);
+                res.json(token);
+              })
             }
           );
         });

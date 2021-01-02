@@ -54,7 +54,7 @@ function App() {
         ></ProtectedRoute>
         <Route
           path="/register"
-          render={() => <Register {...props} />}
+          render={() => <Register getUser={getUser} {...props} />}
         ></Route>
         <Route 
           path="/"
