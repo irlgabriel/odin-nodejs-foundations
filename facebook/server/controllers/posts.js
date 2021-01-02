@@ -1,7 +1,7 @@
 const { body, validationResult } = require("express-validator");
 const multer = require("multer");
-const { v4: uuidv4 } = require("uuid");
 const AWS = require("aws-sdk");
+const path = require('path');
 
 const Post = require("../models/posts");
 const Notification = require("../models/notifications");

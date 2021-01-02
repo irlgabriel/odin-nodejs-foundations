@@ -1,9 +1,8 @@
-const passport = require("passport");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+
 const { body, validationResult } = require("express-validator");
 const multer = require("multer");
 const AWS = require("aws-sdk");
+const path = require('path');
 
 const User = require("../models/users");
 

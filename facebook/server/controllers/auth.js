@@ -5,7 +5,6 @@ const generateJWT = require('../middlewares/token');
 const { body, validationResult } = require("express-validator");
 const async = require('async');
 const User = require("../models/users");
-const { session } = require("passport");
 
 exports.login = 
 [
