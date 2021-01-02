@@ -47,8 +47,11 @@ const Post = ({ user, posts, post, setPosts }) => {
 
   const editHandler = (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('content', content);
+    if(file) formData.append('image', file);
     axios
-      .put(`/posts/${post._id}`, { content: content }, config)
+      .put(`/posts/${post._id}`, formData, config)
       .then((res) => {
         setPosts(
           posts.map((post) => (post._id === res.data._id ? res.data : post))

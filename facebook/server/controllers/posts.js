@@ -117,21 +117,57 @@ exports.create_post = [
 ];
 
 exports.edit_post = [
-  body("content").trim().isLength({ min: 1 }).escape(),
+  upload,
+  //body("content").trim().isLength({ min: 1 }).escape(),
   (req, res, next) => {
     const { content } = req.body;
-    Post.findOneAndUpdate(
-      { _id: req.params.post_id },
-      { content },
-      { new: true }
-    )
-      .populate("user")
-      .populate("likes")
-      .exec((err, post) => {
-        if (err) return res.status(400).json(err);
-        res.json(post);
-      });
-  },
+
+    Post.findById(req.params.post_id, (err, post) => {
+      if(err) res.status(400).json(err);
+      if(req.file) {
+        //upload it to s3
+        const originalName = req.file.originalname.split(".");
+        const format = originalName[originalName.length - 1];
+
+        const params = {
+          Bucket: process.env.AWS_BUCKET,
+          Key: `${post._id}.${format}`,
+          Body: req.file.buffer,
+        };
+        S3.upload(params, (err, data) => {
+          if (err) console.log(err);
+          Post.findOneAndUpdate(
+            {_id: req.params.post_id}, 
+            {
+              image: {
+                url: data.Location,
+                id: post._id.toString() + "." + format,
+              },
+              content,
+            },
+            {new: true})
+            .populate('user')
+            .populate('likes')
+            .exec((err, post) => {
+              if(err) res.status(400).json(err);
+              res.json(post);
+            })
+        })
+    } else {
+      Post.findOneAndUpdate(
+        { _id: req.params.post_id },
+        { content },
+        { new: true }
+      )
+        .populate("user")
+        .populate("likes")
+        .exec((err, post) => {
+          if (err) return res.status(400).json(err);
+          res.json(post);
+        });
+      }
+    })
+  }
 ];
 
 exports.like_post = (req, res, next) => {
