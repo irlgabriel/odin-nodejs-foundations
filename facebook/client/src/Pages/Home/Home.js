@@ -63,7 +63,7 @@ const Home = ({setUser, reloadUser, user }) => {
           <hr className="my-2" style={{ backgroundColor: "lightgray" }}></hr>
           {user.friends.map((friend) => (
             <NavItem to={`/users/${friend._id}`}>
-              <RoundImage style={{zIndex: '-1'}} src={friend.profile_photo} />
+              <RoundImage src={friend.profile_photo} />
               &nbsp;
               {friend.display_name || friend.first_name + " " + friend.last_name}
             </NavItem>
