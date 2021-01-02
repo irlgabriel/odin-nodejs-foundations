@@ -290,6 +290,7 @@ const Navbar = ({setUser, reloadUser, user }) => {
           <p className="mb-1">New</p>
           {notifications.map((notification) => (
             <Notification
+              key={notification._id}
               notification={notification}
               notifications={notifications}
               setNotifications={setNotifications}

@@ -17,7 +17,7 @@ const PostForm = ({ user, setPosts, posts }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
 
     const formData = new FormData();
     formData.append("content", content);
@@ -74,6 +74,7 @@ const PostForm = ({ user, setPosts, posts }) => {
             />
           </Link>
           <Input
+            id='post_input_form'
             onFocus={() => setExpandForm(true)}
             style={{ borderRadius: "24px" }}
             value={content}

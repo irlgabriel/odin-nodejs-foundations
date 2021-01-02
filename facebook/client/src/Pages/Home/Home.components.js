@@ -26,3 +26,22 @@ export const NavItem = styled(Link)`
     text-decoration: none;
   }
 `;
+
+export const NoPostsDiv = styled.div`
+  padding: .5rem;
+  width: 100%;
+  border-radius: 5px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const FakeLink = styled.div`
+  display: inline-block;
+  color: royalblue;
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`

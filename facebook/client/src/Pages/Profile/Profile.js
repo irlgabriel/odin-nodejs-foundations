@@ -31,6 +31,7 @@ const Profile = ({
   user,
   reloadUser,
   users,
+  setUser
 }) => {
   const { user_id } = useParams();
 
@@ -180,7 +181,7 @@ const Profile = ({
         />
       )}
       <div style={{ background: "white" }}>
-        {showNav && <Navbar key="profile" users={users} user={user} reloadUser={reloadUser}/>}
+        {showNav && <Navbar key="profile" setUser={setUser} users={users} user={user} reloadUser={reloadUser}/>}
         <ProfileSection className="px-0">
           {currentUser.cover_photo ? (
             <a href={user.cover_photo}>
