@@ -15,7 +15,7 @@ const Friends = ({reloadUser, user }) => {
   const [posts, setPosts] = useState([]);
   const [previewUserPosts, setPreviewUserPosts] = useState([]);
   const [previewUser, setPreviewUser] = useState(undefined);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [sentRequests, setSentRequests] = useState([])
   const [receivedRequests, setReceivedRequests] = useState([])
 
@@ -60,20 +60,18 @@ const Friends = ({reloadUser, user }) => {
   };
 
   useEffect(() => {
-    setLoading(false);
+    setLoading(true);
     Promise.all([
-      // Get friends recommendations
-      Axios.get("/friend_requests/recommendations", config).then((res) => {
-        setSuggestions(res.data);
-      }),
-      Axios.get('/friend_requests', config).then(res => {
-        setRequests(res.data);
-      }),
-      Axios.get('/posts').then(res => {
-        setPosts(res.data);
-      })
-
-    ]).then((results) => setLoading(false));
+      
+      Axios.get("/friend_requests/recommendations", config),
+      Axios.get('/friend_requests', config),
+      Axios.get('/posts')
+    ]).then((results) => {
+      setSuggestions(results[0].data);
+      setRequests(results[1].data);
+      setPosts(results[2].data);
+      setLoading(false)
+    });
   }, []);
 
   // when previewUser changes we change the posts to match theirs

@@ -4,22 +4,29 @@ import { Link, useHistory } from "react-router-dom";
 import { Container, Form, Input, Label, Button, FormGroup } from "reactstrap";
 import { FlashMessage } from './Index.components'
 import { CSSTransition } from 'react-transition-group';
+import { LoadingOverlay } from '../../Components';
 
 const Index = ({getUser, user }) => {
   const location = useHistory();
 
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(undefined)
 
   const submitHandler = (e) => {
     e.preventDefault();
+    setLoading(true);
     Axios.post("/login", { email, password })
       .then((res) => {
         localStorage.setItem('token', res.data.token);
         getUser(res.data.token);
+        setLoading(false);
       })
-      .catch((err) => setMessage(err.response.data.message));
+      .catch((err) => {
+        setMessage(err.response.data.message)
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -36,6 +43,14 @@ const Index = ({getUser, user }) => {
 
   return (
     <Container id="index-main">
+      <CSSTransition
+        in={loading}
+        timeout={300}
+        classNames='fade'
+        unmountOnExit
+      >
+        <LoadingOverlay />
+      </CSSTransition>
       <CSSTransition
         in={message}
         timeout={300}
@@ -95,7 +110,7 @@ const Index = ({getUser, user }) => {
           <hr className='w-100'/>
         </div>
         <div className='text-center mt-2'>
-          <a href='https://mernfb.herokuapp.com/auth/facebook'>
+          <a href={process.env.NODE_ENV === 'development' ? 'http://localhost:5000/auth/facebook' : 'https://mernfb.herokuapp.com/auth/facebook'}>
             <Button color='primary'>Login with Facebook</Button>
           </a>
         </div>

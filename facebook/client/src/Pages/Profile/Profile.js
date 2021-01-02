@@ -16,7 +16,8 @@ import {
   Option,
   CollapseDiv
 } from "./Profile.components";
-import { Post, PostForm, ImageForm } from "../../Components";
+import { Post, PostForm, ImageForm, LoadingOverlay } from "../../Components";
+import { CSSTransition } from 'react-transition-group';
 import { useEffect, useState } from "react";
 import { AiFillCamera } from "react-icons/ai";
 import Axios from  'axios';
@@ -39,6 +40,7 @@ const Profile = ({
   const [coverPhotoForm, setCoverPhotoForm] = useState(false);
   const [profilePhotoForm, setProfilePhotoForm] = useState(false);
   const [collapse, setCollapse] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Friendship status state
   const [sameUser, setSameUser] = useState(false);
@@ -118,25 +120,31 @@ const Profile = ({
 
   
   useEffect(() => {
+    setLoading(true);
     // Set profile user
     if(user_id) {
       // Set current user based on url
       Axios.get(`/users/${user_id}`)
       .then(res => {
-        setCurrentUser(res.data);
+        console.log(currentUser, res.data);
+        if(currentUser._id !== res.data._id) setCurrentUser(res.data);
       })
     }
+
     // Fetch posts
     Axios.get('/posts')
     .then(res => {
       setPosts(res.data.filter(post => post.user._id === currentUser._id));
+      setLoading(false);
+
     })
     // Fetch requests
     Axios.get('/friend_requests', config)
     .then(res => {
       setRequests(res.data);
+      setLoading(false);
     })
-    
+    .catch(err => console.log(err))
   }, [currentUser])
 
   useEffect(() => {
@@ -147,6 +155,14 @@ const Profile = ({
 
   return (
     <Container fluid className="p-0">
+      <CSSTransition
+        in={loading}
+        timeout={300}
+        classNames='fade'
+        unmountOnExit
+      >
+        <LoadingOverlay />
+      </CSSTransition>
       {profilePhotoForm && (
         <ImageForm
           path={`/${user._id}/profile_photo`}
@@ -255,7 +271,7 @@ const Profile = ({
             <PostForm posts={posts} setPosts={setPosts} user={user} />
           )}
           {posts.map((post) => (
-            <Post user={user} posts={posts} post={post} setPosts={setPosts} />
+            <Post key={post._id} user={user} posts={posts} post={post} setPosts={setPosts} />
           ))}
         </Col>
       </Main>
