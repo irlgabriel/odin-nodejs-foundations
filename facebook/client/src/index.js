@@ -6,11 +6,6 @@ import "bootstrap/dist/js/bootstrap.bundle";
 import "bootstrap/dist/css/bootstrap.css";
 import reportWebVitals from "./reportWebVitals";
 import axios from "axios";
-import $ from "jquery";
-
-$(function () {
-  $("[data-toggle=tooltip]").tooltip({ html: true });
-});
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = "http://localhost:5000/";
