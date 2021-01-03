@@ -8,7 +8,6 @@ export const RoundImage = styled.div`
   background-image: ${({ src }) => `url(${src})`};
   background-repeat: no-repeat;
   background-size: cover;
-  z-index: 2;
 `;
 
 export const NavItem = styled(Link)`
