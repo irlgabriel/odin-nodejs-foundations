@@ -186,7 +186,12 @@ const Navbar = ({setUser, reloadUser, user }) => {
       </Col>
       {/** <768px */}
       <Col className="position-relative align-items-center d-flex d-md-none">
-        <MenuIcon onClick={() => setMenu(!menu)} />
+        <MenuIcon onClick={() => {
+          setMenu(!menu);
+          setNotificationDropdown(false);
+          setUserDropdown(false);
+          }
+        }/>
         <CSSTransition
           in={menu}
           timeout={300}
@@ -224,7 +229,12 @@ const Navbar = ({setUser, reloadUser, user }) => {
         </RoundWrapper>
         <RoundWrapper
           active={notificationDropdown}
-          onClick={() => setNotificationDropdown(!notificationDropdown)}
+          onClick={() => {
+            setNotificationDropdown(!notificationDropdown)
+            setUserDropdown(false);
+            setMenu(false);
+          }
+          }
           className="mr-2"
         >
           <AiFillBell
@@ -241,7 +251,12 @@ const Navbar = ({setUser, reloadUser, user }) => {
             ""
           )}
         </RoundWrapper>
-        <RoundWrapper onClick={() => setUserDropdown(!userDropdown)}>
+        <RoundWrapper onClick={() => {
+          setUserDropdown(!userDropdown)
+          setMenu(false);
+          setNotificationDropdown(false);
+        }
+        }>
           <GoTriangleDown
             style={{
               transition: ".3s ease-in-out",
@@ -257,8 +272,8 @@ const Navbar = ({setUser, reloadUser, user }) => {
       {/** Collapsable div for user profile */}
       <CSSTransition
         in={userDropdown}
-        timeout={500}
-        classNames="slide-from-top"
+        timeout={300}
+        classNames="fade"
         unmountOnExit
       >
         <CollapsableDiv>
@@ -286,11 +301,11 @@ const Navbar = ({setUser, reloadUser, user }) => {
         </CollapsableDiv>
       </CSSTransition>
 
-      {/** Collapsable div for notifications */}
+      {/* Collapsable div for notifications */}
       <CSSTransition
         in={notificationDropdown}
-        timeout={500}
-        classNames="slide-from-top"
+        timeout={300}
+        classNames="fade"
         unmountOnExit
       >
         <CollapsableDiv>

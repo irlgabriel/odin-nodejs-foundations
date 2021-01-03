@@ -67,6 +67,7 @@ export const CollapsableDiv = styled.div`
   right: 15px;
   width: 350px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+  z-index: 3;
 `;
 
 export const RoundImage = styled.img`
