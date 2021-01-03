@@ -26,7 +26,6 @@ mongoose.connection.on("open", () => console.log("Connected to mongoDB"));
 const app = express();
 
 const urls = [
-  "https://mernfb.herokuapp.com",
   "https://jovial-rosalind-bfd298.netlify.app",
   /\localhost/,
 ]
