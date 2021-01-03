@@ -15,6 +15,7 @@ const UserSchema = new Schema(
     first_name: String,
     last_name: String,
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    photos: [{ type: Object }]
   },
   { timestamps: true }
 );

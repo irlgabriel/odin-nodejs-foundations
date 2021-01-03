@@ -25,8 +25,17 @@ mongoose.connection.on("open", () => console.log("Connected to mongoDB"));
 
 const app = express();
 
+const urls = [
+  "https://mernfb.herokuapp.com",
+  /\localhost/,
+]
+
 app.use(express.static(path.join(__dirname, "public")));
-app.use(cors());
+app.use(cors({
+  origin: urls,
+  credentials: true,
+}));
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
