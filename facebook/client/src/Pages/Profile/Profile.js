@@ -14,9 +14,11 @@ import {
   GrayHoverDiv,
   FlexDivGray,
   Option,
-  CollapseDiv
+  CollapseDiv,
+  PhotosContainer
 } from "./Profile.components";
-import { Post, PostForm, ImageForm, LoadingOverlay } from "../../Components";
+import { Post, PostForm, ImageForm, LoadingOverlay, Photo } from "../../Components";
+import { Photos } from '../../Pages'
 import { CSSTransition } from 'react-transition-group';
 import { useEffect, useState } from "react";
 import { AiFillCamera } from "react-icons/ai";
@@ -33,8 +35,10 @@ const Profile = ({
   users,
   setUser
 }) => {
+
   const { user_id } = useParams();
 
+  const [subPage, setSubPage] = useState('main');
   const [currentUser, setCurrentUser] = useState(profileUser || user)
   const [requests, setRequests] = useState([])
   const [posts, setPosts] = useState([]);
@@ -42,6 +46,7 @@ const Profile = ({
   const [profilePhotoForm, setProfilePhotoForm] = useState(false);
   const [collapse, setCollapse] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [photos, setPhotos] = useState([]);
 
   // Friendship status state
   const [sameUser, setSameUser] = useState(false);
@@ -154,7 +159,17 @@ const Profile = ({
     setIsFriends(checkIsFriend())
   }, [currentUser, user])
 
-  return (
+  // Get posts with photos
+  useEffect(() => {
+    setPhotos(posts.map(post => post.image ? post : ''));
+  }, [posts])
+
+
+  useEffect(() => {
+    if(profileUser) setCurrentUser(profileUser);
+  }, [profileUser])
+
+  return currentUser && (
     <Container fluid className="p-0">
       <CSSTransition
         in={loading}
@@ -259,23 +274,36 @@ const Profile = ({
         <ProfileHeader>
           <hr className="my-2" />
           <ProfileNav>
-            <NavItem active>Posts</NavItem>
+            <NavItem onClick = {() => setSubPage('main')} active={subPage === 'main'}>Posts</NavItem>
+            <NavItem onClick = {() => setSubPage('photos')} active={subPage ==='photos'}>Photos</NavItem>
+            <NavItem onClick= {() => setSubPage('friends')} active={subPage ==='friends'}>Friends</NavItem>
           </ProfileNav>
         </ProfileHeader>
       </div>
-      <Main>
-        <Col className="pt-3 d-none d-lg-block" sm="5">
-          Photos
-        </Col>
-        <Col className="pt-3">
-          {currentUser._id === user._id && (
-            <PostForm posts={posts} setPosts={setPosts} user={user} />
-          )}
-          {posts.map((post) => (
-            <Post key={post._id} user={user} posts={posts} post={post} setPosts={setPosts} />
-          ))}
-        </Col>
-      </Main>
+      {
+        subPage === 'main' &&
+        <Main>
+          <Col className="pt-3 d-none d-lg-block" sm="5">
+            <p className='font-weight-bold mb-0'>Photos</p>
+            <Photos user={currentUser} photos={photos} />
+          </Col>
+          <Col className="pt-3">
+            {currentUser._id === user._id && (
+              <PostForm posts={posts} setPosts={setPosts} user={user} />
+            )}
+            {currentUser !== user && <p className='font-weight-bold mb-0'>Posts</p>}
+            {posts.map((post) => (
+              <Post key={post._id} user={user} posts={posts} post={post} setPosts={setPosts} />
+            ))}
+          </Col>
+        </Main>
+      }
+      {
+        subPage === 'photos' && 
+        <Photos user={currentUser} photos={photos} />
+      }
+
+      
     </Container>
   );
 };

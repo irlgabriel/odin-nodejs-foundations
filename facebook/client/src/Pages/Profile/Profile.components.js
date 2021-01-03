@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { Col } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 export const CoverPhoto = styled.div`
   width: 100%;
@@ -77,17 +79,19 @@ export const ProfileNav = styled.div`
   display: flex;
   align-items: center;
 `;
-export const NavItem = styled.div`
+export const NavItem = styled(Link)`
   padding: 1rem;
   background: white;
   transition: all 0.2s;
   font-weight: bold;
+  color: black;
   border-radius: ${({ active }) => (active ? "0" : "6px")};
-  border-bottom: ${({ active }) => (active ? "3px solid royalblue" : "")};
+  border-bottom: ${({ active }) => (active ? "3px solid royalblue" : "3px solid transparent")};
   color: ${({ active }) => (active ? "royalblue" : "black")};
   &:hover {
     cursor: pointer;
-    border-radius: 0;
+    color: black;
+    text-decoration: none;
     background: ${({ active }) => (active ? "white" : "#f0f2f5")};
   }
 `;
@@ -147,4 +151,17 @@ export const Option = styled.div`
     background: lightsalmon;
     cursor: pointer;
   }
+`
+
+export const PhotosContainer = styled(Col)`
+  background: white;
+  padding: .5rem;
+  border-radius: 5px;
+  display: flex;
+  min-height: 100px;
+  align-items: center;
+  a {
+    flex: 30%;
+  }
+
 `

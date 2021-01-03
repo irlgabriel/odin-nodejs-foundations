@@ -6,3 +6,5 @@ export { default as Friends } from "./Friends/Friends";
 export { default as PostPage } from "./PostPage/PostPage";
 export { default as ProtectedRoute } from './ProtectedRoute/ProtectedRoute';
 export { default as LoginFacebook } from './FacebookLogin/FacebookLogin'
+export { default as Photos } from "./Photos/Photos";
+export { default as ProfileFriends } from "./ProfileFriends/ProfileFriends";

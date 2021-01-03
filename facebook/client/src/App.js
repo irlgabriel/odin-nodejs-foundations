@@ -73,12 +73,15 @@ function App() {
           {...props}
           component={PostPage}
         ></ProtectedRoute>
+
+        {/* Users specific routes */}
         <ProtectedRoute
           exact
           path='/users/:user_id'
           {...props} 
           component={Profile}
         ></ProtectedRoute>
+
       </Container>
       
     </Router>
