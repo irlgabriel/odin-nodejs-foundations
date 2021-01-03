@@ -17,7 +17,8 @@ import {
   SearchContainer,
   SearchResult,
   SmallRoundImg,
-  Menu
+  Menu,
+  LockedOverlay
 } from "./Navbar.components";
 /* React Icons */
 import {
@@ -32,6 +33,7 @@ import {
   AiFillHome,
   AiOutlineHome,
   AiFillBell,
+  AiFillLock
 } from "react-icons/ai";
 import { GrAdd } from "react-icons/gr";
 import { GoTriangleDown } from "react-icons/go";
@@ -209,9 +211,15 @@ const Navbar = ({setUser, reloadUser, user }) => {
           </RoundedUserDiv>
         </RegularLink>
         <RoundWrapper className="d-xs-none d-md-flex mr-2">
+          <LockedOverlay>
+            <AiFillLock color='red' />
+          </LockedOverlay>
           <GrAdd size={16} fill="black" />
         </RoundWrapper>
         <RoundWrapper className="d-xs-none d-md-flex mr-2">
+          <LockedOverlay>
+            <AiFillLock color='red' />
+          </LockedOverlay>
           <FaFacebookMessenger size={16} fill="black" />
         </RoundWrapper>
         <RoundWrapper

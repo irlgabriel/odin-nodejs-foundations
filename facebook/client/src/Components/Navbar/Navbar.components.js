@@ -43,6 +43,21 @@ export const RoundWrapper = styled.div`
   }
 `;
 
+export const LockedOverlay = styled.div`
+  user-select: none;
+  cursor: not-allowed;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+
+  &:hover {
+    background: 'lightgray';
+  }
+`
+
 export const CollapsableDiv = styled.div`
   padding: 0.5rem;
   border-radius: 6px;
