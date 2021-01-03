@@ -51,7 +51,6 @@ exports.facebook_callback =
     if(!user) return res.redirect(process.env.FRONTEND_URL)
     jwt.sign({user_id: user._id}, process.env.JWT_SECRET, (err, token) => {
       res.cookie("token", token, {
-        httpOnly: true,
         secure: process.env.NODE_ENV === "PRODUCTION" ? false : true,
         sameSite: "None",
     })
