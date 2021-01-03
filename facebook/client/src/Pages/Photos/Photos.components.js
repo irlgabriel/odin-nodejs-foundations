@@ -1,17 +1,13 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { Container } from 'reactstrap';
 
-export const PhotosContainer = styled(Container)`
+export const PhotosContainer = styled.div`
+
+  margin: 0 auto;
+  margin-top: .5rem;
   display: flex;
   padding: .5rem;
   border-radius: 5px;
   background: white;
-  width: 100%;
+  width: min(100%, 950px);
 `
 
-export const PhotoWrapper = styled(Link)`
-  &:hover {
-    text-decoration: none;
-  }
-`
