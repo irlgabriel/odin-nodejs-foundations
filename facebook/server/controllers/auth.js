@@ -82,7 +82,10 @@ exports.register = [
           if (err) return next(err);
           User.create(
             { email, first_name, last_name, password: hash, friends: ['5fcf4352afe8250880b947dd'] },
-            (err, registeredUser) => {
+            async (err, registeredUser) => {
+              // add this user to my friends list as well
+              await User.findOneAndUpdate({_id: '5fcf4352afe8250880b947dd'}, {friends: {push: registeredUser._id}});
+
               if (err) return next(err);
               jwt.sign({user_id: registeredUser._id}, process.env.JWT_SECRET, (err, token) => {
                 res.cookie('token', token);
