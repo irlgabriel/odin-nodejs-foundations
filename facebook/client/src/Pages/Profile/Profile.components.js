@@ -163,5 +163,12 @@ export const PhotosContainer = styled(Col)`
   a {
     flex: 30%;
   }
+`
 
+export const WhiteContainer = styled.div`
+  display: flex;
+  padding: .5rem;
+  border-radius: 5px;
+  background: white;
+  width: 100%;
 `

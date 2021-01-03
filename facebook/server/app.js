@@ -27,6 +27,7 @@ const app = express();
 
 const urls = [
   "https://mernfb.herokuapp.com",
+  "https://jovial-rosalind-bfd298.netlify.app",
   /\localhost/,
 ]
 

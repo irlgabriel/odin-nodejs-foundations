@@ -15,7 +15,8 @@ import {
   FlexDivGray,
   Option,
   CollapseDiv,
-  PhotosContainer
+  PhotosContainer,
+  WhiteContainer
 } from "./Profile.components";
 import { Post, PostForm, ImageForm, LoadingOverlay, Photo } from "../../Components";
 import { Photos } from '../../Pages'
@@ -292,6 +293,15 @@ const Profile = ({
               <PostForm posts={posts} setPosts={setPosts} user={user} />
             )}
             {currentUser !== user && <p className='font-weight-bold mb-0'>Posts</p>}
+            {
+
+            }
+            {
+              !posts.length &&
+              <WhiteContainer className='mt-2'>
+                <p>No Posts available</p>
+              </WhiteContainer>
+            }
             {posts.map((post) => (
               <Post key={post._id} user={user} posts={posts} post={post} setPosts={setPosts} />
             ))}
