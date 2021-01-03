@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import moment from "moment";
 import { Form, Input, Button, FormGroup } from "reactstrap";
@@ -19,7 +19,7 @@ import {
   ClickDiv,
   FunctionalItem,
 } from "./Post.components";
-import { Comment, CommentForm } from "..";
+import { Comment, CommentForm, LikesModal } from "..";
 import {
   AiFillLike,
   AiOutlineLike,
@@ -29,6 +29,7 @@ import {
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { VscComment } from "react-icons/vsc";
 import { Link } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
 
 const Post = ({ user, posts, post, setPosts }) => {
 
@@ -38,6 +39,7 @@ const Post = ({ user, posts, post, setPosts }) => {
   const [comments, setComments] = useState([]);
   const [settingsDropdown, setSettingsDropdown] = useState(false);
   const [commentsDropdown, setCommentsDropdown] = useState(false);
+  const [likesModal, setLikesModal] = useState(false);
 
   const config = localStorage.getItem('token') &&  {
     headers: {
@@ -236,7 +238,7 @@ const Post = ({ user, posts, post, setPosts }) => {
       )}
       <Footer>
         <TopFooter>
-          <div className="d-flex">
+          <ClickDiv onClick={() => setLikesModal(true)} className="d-flex">
             <RoundWrapper className="mr-1" bgColor="royalblue">
               <AiFillLike
                 data-toggle="tooltip"
@@ -249,7 +251,7 @@ const Post = ({ user, posts, post, setPosts }) => {
             <p style={{ fontSize: "14px" }} className="mb-0">
               {post.likes.length}
             </p>
-          </div>
+          </ClickDiv>
           <ClickDiv onClick={() => setCommentsDropdown(!commentsDropdown)}>
             <p className="mb-0">{comments.length} Comments</p>
           </ClickDiv>
@@ -300,6 +302,16 @@ const Post = ({ user, posts, post, setPosts }) => {
           />
         </CommentsContainer>
       )}
+
+      {/* Likes Modal (absolutely positioned) */}
+      <CSSTransition
+        in={likesModal}
+        timeout={300}
+        classNames='fade'
+        unmountOnExit
+      >
+        <LikesModal setLikesModal={setLikesModal} likes={post.likes} />
+      </CSSTransition>
     </PostContainer>
   );
 };

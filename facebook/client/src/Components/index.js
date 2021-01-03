@@ -11,3 +11,4 @@ export { default as FriendRequest } from "./FriendRequest/FriendRequest";
 export { default as UserList } from "./UserList/UserList";
 export { default as Reply } from "./Reply/Reply";
 export { default as FriendSuggestion } from "./FriendSuggestion/FriendSuggestion";
+export { default as LikesModal } from './LikesModal/LikesModal'
