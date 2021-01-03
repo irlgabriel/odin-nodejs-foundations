@@ -18,7 +18,7 @@ import {
   PhotosContainer,
   WhiteContainer
 } from "./Profile.components";
-import { Post, PostForm, ImageForm, LoadingOverlay, Photo } from "../../Components";
+import { Post, PostForm, ImageForm, FriendsProfile, LoadingOverlay } from "../../Components";
 import { Photos } from '../../Pages'
 import { CSSTransition } from 'react-transition-group';
 import { useEffect, useState } from "react";
@@ -152,6 +152,9 @@ const Profile = ({
       setLoading(false);
     })
     .catch(err => console.log(err))
+
+    // Reload the page
+    setSubPage('main');
   }, [currentUser])
 
   useEffect(() => {
@@ -311,6 +314,10 @@ const Profile = ({
       {
         subPage === 'photos' && 
         <Photos user={currentUser} photos={photos} />
+      }
+      {
+        subPage === 'friends' && 
+        <FriendsProfile user={user} currentUser={currentUser} />
       }
 
       

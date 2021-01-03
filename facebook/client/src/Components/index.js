@@ -13,3 +13,4 @@ export { default as Reply } from "./Reply/Reply";
 export { default as FriendSuggestion } from "./FriendSuggestion/FriendSuggestion";
 export { default as LikesModal } from './LikesModal/LikesModal'
 export { default as Photo } from './Photo/Photo';
+export { default as FriendsProfile } from "./FriendsProfile/FriendsProfile";
