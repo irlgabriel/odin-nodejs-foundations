@@ -105,6 +105,17 @@ exports.update_cover_photo = [
   },
 ];
 
+exports.delete_user = (req, res, next) => {
+  User.findById(req.user.user_id, (err, user) => {
+    // delete user from all friends' lists
+    if(err) return(next(err));
+    user.remove((err, doc) => {
+      if(err) return next(err);
+      res.json(doc);
+    })
+  })
+}
+
 exports.get_users = (req, res, next) => {
   User.find((err, users) => {
     if (err) return res.status(400).json(err);

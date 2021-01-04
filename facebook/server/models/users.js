@@ -24,4 +24,12 @@ UserSchema.virtual("full_name").get(function () {
   return this.first_name + " " + this.last_name;
 });
 
+UserSchema.pre('remove', function(){
+  console.log('pre middleware this: ', this);
+  this.friends.forEach(friend => {
+    friend.update({$pull: {friends: this._id}}).exec();
+  })
+  return next();
+})
+
 module.exports = mongoose.model("User", UserSchema);

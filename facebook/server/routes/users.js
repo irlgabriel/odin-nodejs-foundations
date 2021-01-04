@@ -18,6 +18,7 @@ router.put("/:user_id/profile_photo", userController.update_profile_photo);
 /** Update Cover pic */
 router.put("/:user_id/cover_photo", userController.update_cover_photo);
 
-
+/* Delete account */
+router.delete('/', passport.authenticate('jwt'), userController.delete_user)
 
 module.exports = router;
