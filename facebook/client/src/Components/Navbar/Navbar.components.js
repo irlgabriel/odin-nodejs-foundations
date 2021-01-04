@@ -202,3 +202,6 @@ export const FlexDiv = styled.div`
   display: flex;
   align-items: center;
 `
+export const DeleteAccountDiv = styled(GrayHover)`
+  flex-direction: row-reverse;
+`

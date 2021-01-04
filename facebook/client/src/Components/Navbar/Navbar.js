@@ -21,6 +21,7 @@ import {
   LockedOverlay,
   NewFriendsNotifications,
   FlexDiv,
+  DeleteAccountDiv,
 } from "./Navbar.components";
 /* React Icons */
 import {
@@ -35,7 +36,10 @@ import {
   AiFillHome,
   AiOutlineHome,
   AiFillBell,
-  AiFillLock
+  AiFillLock,
+  AiFillDelete,
+  AiFillWarning
+
 } from "react-icons/ai";
 import { GrAdd } from "react-icons/gr";
 import { GoTriangleDown } from "react-icons/go";
@@ -73,8 +77,16 @@ const Navbar = ({setUser, reloadUser, user }) => {
   const clearNotifications = () => {
     axios.delete('/notifications', config)
     .then(res => {
-
       setNotifications([]);
+    })
+  }
+
+  const deleteAccount = () => {
+    window.confirm('Are you sure you want to delete your account? This action cannot be undone!') &&
+    axios.delete('/users', config)
+    .then(res => {
+      localStorage.removeItem('token');
+      setUser(undefined);
     })
   }
 
@@ -321,6 +333,14 @@ const Navbar = ({setUser, reloadUser, user }) => {
             </RoundWrapper>
             <p className="mb-0 font-weight-bold">Log Out</p>
           </GrayHover>
+          <div style={{userSelect: 'none'}} className='d-flex justify-content-end align-items-center'>
+            <AiFillWarning fill='orange' size={32}/>
+            <p style={{color: 'orange'}} className='mb-0'>Warning</p>
+          </div>
+          <DeleteAccountDiv onClick={() => deleteAccount()}>
+            <AiFillDelete color='red' size={16} className='mr-1'/>
+            <p style={{marginBottom: '0', fontSize: '14px', color: 'red', fontWeight: 'bold'}}>Delete Account</p>
+          </DeleteAccountDiv>
         </CollapsableDiv>
       </CSSTransition>
 
