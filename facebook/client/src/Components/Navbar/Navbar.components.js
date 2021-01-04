@@ -205,3 +205,13 @@ export const FlexDiv = styled.div`
 export const DeleteAccountDiv = styled(GrayHover)`
   flex-direction: row-reverse;
 `
+
+export const Warning = styled.div`
+
+  transition: all .2s ease-in-out;
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.02);
+
+  }
+`

@@ -22,6 +22,7 @@ import {
   NewFriendsNotifications,
   FlexDiv,
   DeleteAccountDiv,
+  Warning
 } from "./Navbar.components";
 /* React Icons */
 import {
@@ -29,7 +30,6 @@ import {
   FaUserFriends,
   FaFacebookMessenger,
   FaDoorOpen,
-  FaRoad,
 } from "react-icons/fa";
 import {
   AiOutlineSearch,
@@ -69,6 +69,7 @@ const Navbar = ({setUser, reloadUser, user }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [userDropdown, setUserDropdown] = useState(false);
+  const [warning, setWarning] = useState(false);
   const [notificationDropdown, setNotificationDropdown] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [newNotifications, setNewNotifications] = useState([]);
@@ -333,14 +334,21 @@ const Navbar = ({setUser, reloadUser, user }) => {
             </RoundWrapper>
             <p className="mb-0 font-weight-bold">Log Out</p>
           </GrayHover>
-          <div style={{userSelect: 'none'}} className='d-flex justify-content-end align-items-center'>
+          <Warning onClick={() => setWarning(!warning)} style={{userSelect: 'none'}} className='d-flex justify-content-end align-items-center'>
             <AiFillWarning fill='orange' size={32}/>
             <p style={{color: 'orange'}} className='mb-0'>Warning</p>
-          </div>
-          <DeleteAccountDiv onClick={() => deleteAccount()}>
-            <AiFillDelete color='red' size={16} className='mr-1'/>
-            <p style={{marginBottom: '0', fontSize: '14px', color: 'red', fontWeight: 'bold'}}>Delete Account</p>
-          </DeleteAccountDiv>
+          </Warning>
+          <CSSTransition
+            in={warning}
+            timeout={300}
+            classNames='fade'
+            unmountOnExit
+          >
+            <DeleteAccountDiv onClick={() => deleteAccount()}>
+              <AiFillDelete color='red' size={16} className='mr-1'/>
+              <p style={{marginBottom: '0', fontSize: '14px', color: 'red', fontWeight: 'bold'}}>Delete Account</p>
+            </DeleteAccountDiv>
+          </CSSTransition>
         </CollapsableDiv>
       </CSSTransition>
 
