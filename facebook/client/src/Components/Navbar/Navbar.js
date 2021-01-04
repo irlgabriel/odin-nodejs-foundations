@@ -111,7 +111,7 @@ const Navbar = ({setUser, reloadUser, user }) => {
       
       setNewRequests(res.data.filter(request => request.to._id === user._id))
     })
-  }, [newRequests])
+  }, [])
 
   useEffect(() => {
     setNewNotifications(
