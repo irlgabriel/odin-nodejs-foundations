@@ -11,6 +11,7 @@ function App() {
 
   const reloadUser = () => {
     // GET the full user object based on its id;
+    // I use this for when I need to update the user after some changes have been made to it - for example when I add/remove a friend;
     if(user) {
       Axios.get(`/users/${user._id}`)
       .then(res => {
@@ -73,8 +74,6 @@ function App() {
           {...props}
           component={PostPage}
         ></ProtectedRoute>
-
-        {/* Users specific routes */}
         <ProtectedRoute
           exact
           path='/users/:user_id'
