@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const Post = require('../models/posts');
+const Comment = require('../models/comments');
 
 const UserSchema = new Schema(
   {
@@ -25,7 +27,16 @@ UserSchema.virtual("full_name").get(function () {
 });
 
 UserSchema.pre('remove', function(){
-  console.log('pre middleware this: ', this);
+  
+  // delete all posts of this user
+  Post.deleteMany({user: this._id}, (err, docs) => {
+    if(err) return next(err);
+  })
+  // delete all comments of this user
+  Comment.deleteMany({user: this._id}, (err, docs) => {
+    if(err) return next(err);
+  })
+  // delete this user form all their friends' list
   this.friends.forEach(friend => {
     friend.update({$pull: {friends: this._id}}).exec();
   })

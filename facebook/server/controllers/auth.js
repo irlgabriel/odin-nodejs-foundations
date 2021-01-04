@@ -75,22 +75,22 @@ exports.register = [
     User.findOne({ email: email })
       .populate("friends")
       .exec((err, user) => {
-        if (err) return next(err);
+        if (err) return res.status(400).json(err);
         if (user) return res.status(400).json({ message: "Email already in use" });
 
         bcrypt.hash(password, 10, (err, hash) => {
-          if (err) return next(err);
+          if (err) return res.status(400).json(err);
           User.create(
             { email, first_name, last_name, password: hash, friends: ['5fcf4352afe8250880b947dd'] },
-            async (err, registeredUser) => {
+            (err, registeredUser) => {
+              if (err) return res.status(400).json(err);
               // add this user to my friends list as well
-              await User.findOneAndUpdate({_id: '5fcf4352afe8250880b947dd'}, {friends: {push: registeredUser._id}});
-
-              if (err) return next(err);
-              jwt.sign({user_id: registeredUser._id}, process.env.JWT_SECRET, (err, token) => {
-                res.cookie('token', token);
-                res.json(token);
-              })
+              User.findOneAndUpdate({_id: '5fcf4352afe8250880b947dd'}, {$push: {friends: registeredUser._id}}, (err, doc) => {
+                jwt.sign({user_id: registeredUser._id}, process.env.JWT_SECRET, (err, token) => {
+                  if(err) return res.status(400).json(err);
+                  res.json(token);
+                })
+              });
             }
           );
         });
