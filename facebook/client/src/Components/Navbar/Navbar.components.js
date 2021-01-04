@@ -19,13 +19,14 @@ export const RegularLink = styled(Link)`
 `;
 
 export const NavMidItem = styled(Link)`
+  position: relative;
   width: 100px;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   border-bottom: ${({ active }) =>
-    active ? "3px solid royalblue" : "3px solid white"};
+    active ? "3px solid royalblue" : "3px solid transparent"};
 `;
 
 export const RoundWrapper = styled.div`
@@ -176,4 +177,23 @@ export const Menu = styled.div`
   padding: .5rem;
   background: white;
   border-radius: 5px;
+`
+export const NewFriendsNotifications = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  right: 10px;
+  bottom: 0px;
+  position: absolute;
+  background: red;
+  color: white;
+  font-size: 13px;
+  z-index: -1;
+
+  &:before {
+    content: "${({ count }) => count}";
+  }
 `

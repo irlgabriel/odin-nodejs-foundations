@@ -18,7 +18,8 @@ import {
   SearchResult,
   SmallRoundImg,
   Menu,
-  LockedOverlay
+  LockedOverlay,
+  NewFriendsNotifications
 } from "./Navbar.components";
 /* React Icons */
 import {
@@ -66,6 +67,7 @@ const Navbar = ({setUser, reloadUser, user }) => {
   const [notificationDropdown, setNotificationDropdown] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [newNotifications, setNewNotifications] = useState([]);
+  const [newRequests, setNewRequests] = useState([])
 
   const logoutHandler = () => {
     // delete the token
@@ -85,12 +87,22 @@ const Navbar = ({setUser, reloadUser, user }) => {
     })
     .catch((err) => console.log(err));
     
-      // Get Users
+    // Get Users
     axios.get('/users')
     .then(res => {
       setUsers(res.data);
     })
+
   }, []);
+
+    useEffect(() => {
+    // Get new friend requests
+    axios.get('/friend_requests', config)
+    .then(res => {
+      
+      setNewRequests(res.data.filter(request => request.to._id === user._id))
+    })
+  }, [newRequests])
 
   useEffect(() => {
     setNewNotifications(
@@ -178,6 +190,8 @@ const Navbar = ({setUser, reloadUser, user }) => {
           active={location.pathname === "/friends"}
           className="mid-nav-item"
         >
+
+          {newRequests.length ? <NewFriendsNotifications count={newRequests.length} /> : ''}
           <FaUserFriends
             fill={location.pathname === "/friends" ? "royalblue" : "gray"}
             size={32}
