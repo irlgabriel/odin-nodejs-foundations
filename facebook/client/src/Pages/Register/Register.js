@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { Container, Form, Input, Label, FormGroup, Button } from "reactstrap";
 import { FlashMessage } from "./Register.components";
 import { CSSTransition } from 'react-transition-group';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const Register = ({ user, reloadUser, getUser }) => {
   const location = useHistory();
@@ -29,7 +28,9 @@ const Register = ({ user, reloadUser, getUser }) => {
         last_name: lastName,
       })
       .then((res) => {
+        localStorage.setItem('token', res.data);
         getUser(res.data);
+        location.push('/');
       })
       .catch((err) => {
         console.log(err.response);
