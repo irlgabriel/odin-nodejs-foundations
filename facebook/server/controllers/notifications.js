@@ -21,6 +21,13 @@ exports.delete_notification = (req, res, next) => {
   );
 };
 
+exports.delete_all = (req, res, next) => {
+  Notification.deleteMany({}, {new: true}, (err, data) => {
+    if(err) return next(err);
+    res.json(data);
+  })
+}
+
 exports.read_notification = (req, res, next) => {
   Notification.findOneAndUpdate(
     { _id: req.params.notification_id },

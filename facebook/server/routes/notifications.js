@@ -27,4 +27,8 @@ router.delete(
   notificationsController.delete_notification
 );
 
+router.delete('/',
+  passport.authenticate('jwt'),
+  notificationsController.delete_all
+)
 module.exports = router;

@@ -197,3 +197,8 @@ export const NewFriendsNotifications = styled.div`
     content: "${({ count }) => count}";
   }
 `
+
+export const FlexDiv = styled.div`
+  display: flex;
+  align-items: center;
+`

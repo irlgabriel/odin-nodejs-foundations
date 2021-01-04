@@ -19,7 +19,8 @@ import {
   SmallRoundImg,
   Menu,
   LockedOverlay,
-  NewFriendsNotifications
+  NewFriendsNotifications,
+  FlexDiv,
 } from "./Navbar.components";
 /* React Icons */
 import {
@@ -68,6 +69,14 @@ const Navbar = ({setUser, reloadUser, user }) => {
   const [notifications, setNotifications] = useState([]);
   const [newNotifications, setNewNotifications] = useState([]);
   const [newRequests, setNewRequests] = useState([])
+
+  const clearNotifications = () => {
+    axios.delete('/notifications', config)
+    .then(res => {
+
+      setNotifications([]);
+    })
+  }
 
   const logoutHandler = () => {
     // delete the token
@@ -324,7 +333,10 @@ const Navbar = ({setUser, reloadUser, user }) => {
       >
         <CollapsableDiv>
           <h3>Notifications</h3>
-          <p className="mb-1">New</p>
+          <FlexDiv className='px-2'>
+            {notifications.length ? <p className="mb-1">New</p> : <p>No notifications</p>}
+            {notifications.length ?  <Button onClick={() => clearNotifications()} className='ml-auto' outline='light'>Clear all</Button> : ''}
+          </FlexDiv>
           {notifications.map((notification) => (
             <Notification
               key={notification._id}
