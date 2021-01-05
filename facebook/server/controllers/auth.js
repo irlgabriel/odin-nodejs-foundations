@@ -50,7 +50,8 @@ exports.facebook_callback =
     if(err) return next(err);
     if(!user) return res.redirect(process.env.FRONTEND_URL)
     jwt.sign({user_id: user._id}, process.env.JWT_SECRET, (err, token) => {
-      res.cookie("token", token, {httpOnly: true, secure: true, sameSite: 'none'});
+      //res.cookie("token", token, {httpOnly: true, secure: true, sameSite: 'none'});
+      res.set(`Set-Cookie: token=${token}; SameSite=None; Secure`);
       return res.redirect(process.env.FRONTEND_URL);
     })
   })(req, res, next);
