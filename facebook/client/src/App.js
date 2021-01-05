@@ -2,7 +2,7 @@ import { useState, useEffect} from "react";
 import "./App.css";
 import { Container } from "reactstrap";
 import { Index, Home, Profile, Register, Friends, PostPage, ProtectedRoute } from "./Pages";
-import { HashRouter as Router, Route } from "react-router-dom";
+import { Route, HashRouter as Router } from "react-router-dom";
 import Axios from "axios";
 
 function App() {
@@ -80,6 +80,13 @@ function App() {
           {...props} 
           component={Profile}
         ></ProtectedRoute>
+
+        {/* Necessary for facebook oauth in development */}
+        <Route 
+          path="/_=_"
+          exact
+          render={() => <Index getUser={getUser} {...props} />}
+        ></Route>
 
       </Container>
       
