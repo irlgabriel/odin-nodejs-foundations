@@ -185,7 +185,7 @@ const Profile = ({
       </CSSTransition>
       {profilePhotoForm && (
         <ImageForm
-          path={`/${user._id}/profile_photo`}
+          path={`/users/${user._id}/profile_photo`}
           reloadUser={reloadUser}
           resources={user}
           setImageForm={setProfilePhotoForm}
@@ -193,7 +193,7 @@ const Profile = ({
       )}
       {coverPhotoForm && (
         <ImageForm
-          path={`/${user._id}/cover_photo`}
+          path={`/users/${user._id}/cover_photo`}
           reloadUser={reloadUser}
           resources={user}
           setImageForm={setCoverPhotoForm}
