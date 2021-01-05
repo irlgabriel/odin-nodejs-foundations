@@ -47,6 +47,7 @@ app.use(passport.initialize());
 
 // routes path
 app.use("/", authRouter);
+app.use('/', (req, res, next) => res.sendStatus(200));
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 app.use("/posts/:post_id/comments", commentsRouter);
