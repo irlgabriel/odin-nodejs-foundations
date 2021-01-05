@@ -32,8 +32,10 @@ const urls = [
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors({
-  origin: urls,
-  credentials: true,
+  origin: function (origin, callback) {
+    callback(null, origin);
+  },
+  credentials: true
 }));
 
 app.use(logger("dev"));

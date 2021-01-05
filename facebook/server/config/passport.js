@@ -27,7 +27,7 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
-      callbackURL: process.env.NODE_ENV === 'development' ? '/auth/facebook/callback' : 'https://mernfb.herokuapp.com/auth/facebook/callback',
+      callbackURL: process.env.NODE_ENV === 'development' ? 'http://localhost:5000/auth/facebook/callback' : 'https://mernfb.herokuapp.com/auth/facebook/callback',
       //passReqToCallback: true,
       profileFields: ['displayName', 'photos', 'email']
     },
