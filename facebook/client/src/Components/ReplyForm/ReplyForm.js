@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Form, Input, FormGroup, Button } from "reactstrap";
 import { RoundImage, PhotoImage } from "./ReplyForm.components";
 import { CSSTransition } from 'react-transition-group';
-import { ImageForm } from '../';
 
 const ReplyForm = ({
   post,

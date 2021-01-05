@@ -6,8 +6,6 @@ import {
 
 const Photos = ({ photos }) => {
 
-  console.log('photos rendered')
-
   return (
     <PhotosContainer>
       {
