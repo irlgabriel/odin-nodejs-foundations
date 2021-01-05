@@ -16,7 +16,8 @@ import {
   Option,
   CollapseDiv,
   PhotosContainer,
-  WhiteContainer
+  WhiteContainer,
+  Description,
 } from "./Profile.components";
 import { Post, PostForm, ImageForm, FriendsProfile, LoadingOverlay } from "../../Components";
 import { Photos } from '../../Pages'
@@ -62,12 +63,6 @@ const Profile = ({
     },
   };
 
-
-  const checkIsFriend = () => {
-    const userFriendsIDs = user.friends.map(friend => friend._id)
-    return (userFriendsIDs.includes(currentUser._id));
-  }
-
   /* Friend request logic functions */
   const sendRequest = (to) => {
     //const to = e.target.getAttribute('data-id');
@@ -76,6 +71,11 @@ const Profile = ({
       setSentRequest(res.data._id);
     });
   };
+
+  const checkIsFriend = () => {
+    const userFriendsIDs = user.friends.map(friend => friend._id)
+    return (userFriendsIDs.includes(currentUser._id));
+  }
 
   const confirmFriend = (_id) => {
     //const _id = e.target.getAttribute('data-id');
@@ -275,6 +275,11 @@ const Profile = ({
           {currentUser.display_name ||
             currentUser.first_name + " " + currentUser.last_name}
         </h1>
+        {/* Small Description */}
+        {
+          currentUser.description.length && 
+          <Description href='https://github.com/irlgabriel' dangerouslySetInnerHTML={{ __html: currentUser.description}}></Description>
+        }
         <ProfileHeader>
           <hr className="my-2" />
           <ProfileNav>

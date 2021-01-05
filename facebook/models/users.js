@@ -11,6 +11,7 @@ const UserSchema = new Schema(
       default: "https://fcloneodin.herokuapp.com/images/no_pic.jpg",
     },
     cover_photo: { type: String },
+    description: {type: String, default: ''},
     password: String,
     facebookID: String,
     display_name: String,
