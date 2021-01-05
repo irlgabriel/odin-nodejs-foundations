@@ -30,7 +30,7 @@ const urls = [
   /\localhost/,
 ]
 
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.use(express.static(path.resolve(__dirname, 'client/build')));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors({
   origin: function (origin, callback) {
@@ -57,7 +57,7 @@ app.use("/friend_requests", friendRequestsRouter);
 
 if(process.env.NODE_ENV !== 'development') {
   app.get('*', function(request, response) {
-    response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+    response.sendFile(path.resolve(__dirname, 'client/build', 'index.html'));
   });
 }
 
