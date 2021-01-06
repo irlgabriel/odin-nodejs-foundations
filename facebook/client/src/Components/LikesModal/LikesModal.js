@@ -19,7 +19,7 @@ const LikesModal = ({setLikesModal, likes}) => {
         </Header>
         {likes.map(like =>
           <Like to={`/users/${like._id}`}>
-            <Image width="24px" src={like.profile_photo} />
+            <Image width="36px" height='36px' src={like.profile_photo} />
             <Paragraph>{like.display_name || like.first_name + ' ' + like.last_name}</Paragraph>
           </Like>
         )}
