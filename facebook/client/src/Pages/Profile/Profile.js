@@ -27,7 +27,7 @@ import { AiFillCamera } from "react-icons/ai";
 import Axios from  'axios';
 import { FaCheck } from "react-icons/fa";
 import async from 'async'
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 const Profile = ({
   profileUser = undefined,
@@ -38,6 +38,7 @@ const Profile = ({
   setUser
 }) => {
 
+  const location = useLocation();
   const { user_id } = useParams();
 
   const [subPage, setSubPage] = useState('main');
@@ -172,6 +173,17 @@ const Profile = ({
   useEffect(() => {
     if(profileUser) setCurrentUser(profileUser);
   }, [profileUser])
+
+  useEffect(() => {
+    if(user_id) {
+      // Set current user based on url
+      Axios.get(`/users/${user_id}`)
+      .then(res => {
+        console.log(currentUser, res.data);
+        if(currentUser._id !== res.data._id) setCurrentUser(res.data);
+      })
+    }
+  }, [location.pathname])
 
   return currentUser && (
     <Container fluid className="p-0">
