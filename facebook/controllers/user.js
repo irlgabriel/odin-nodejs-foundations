@@ -131,3 +131,21 @@ exports.get_user = (req, res, next) => {
     return res.json(user);
   });
 };
+
+// updates user's description field
+exports.update_desc = [
+  body('description').trim().isLength({min: 1, max: 150}).escape(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    console.log(req.params.user_id);
+    console.log(req.body)
+    if (!errors.isEmpty()) return res.status(400).json(errors.array());
+
+    User.findOneAndUpdate({_id: req.params.user_id}, {description: req.body.description}, {new: true}, (err, user) => {
+      if(err) return res.status(400).json(err);
+      res.json(user);
+    })
+
+  }
+]

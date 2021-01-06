@@ -25,11 +25,8 @@ mongoose.connection.on("open", () => console.log("Connected to mongoDB"));
 
 const app = express();
 
-const urls = [
-  "https://jovial-rosalind-bfd298.netlify.app",
-  /\localhost/,
-]
 
+app.use(express.static(path.resolve(__dirname, 'client/build')));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors({
   origin: function (origin, callback) {
@@ -47,12 +44,17 @@ app.use(passport.initialize());
 
 // routes path
 app.use("/", authRouter);
-app.use('/', (req, res, next) => res.sendStatus(200));
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 app.use("/posts/:post_id/comments", commentsRouter);
 app.use("/notifications", notificationsRouter);
 app.use("/friend_requests", friendRequestsRouter);
+
+if(process.env.NODE_ENV !== 'development') {
+  app.get('*', function(request, response) {
+    response.sendFile(path.resolve(__dirname, 'client/build', 'index.html'));
+  });
+}
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { Form, Input, FormGroup, Button } from "reactstrap";
 import { UserImage, PhotoImage } from "./CommentForm.components";
-import { ImageForm } from "..";
 import { CSSTransition } from 'react-transition-group';
 
 const CommentForm = ({ post, user, comments, setComments }) => {

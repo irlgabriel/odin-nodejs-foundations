@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { ImExit } from 'react-icons/im';
+import { AiFillCheckSquare } from 'react-icons/ai';
+
 
 export const CoverPhoto = styled.div`
   width: 100%;
@@ -171,4 +174,64 @@ export const WhiteContainer = styled.div`
   border-radius: 5px;
   background: white;
   width: 100%;
+`
+
+export const Description = styled.a`
+  min-width: 150px;
+  max-width: 270px;
+  display: block;
+  margin: 0 auto;
+  padding: .25rem;
+  color: black;
+  background: transparent;
+  border-radius: 5px;
+  transition: all .15s ease-in-out;
+  text-align: center;
+  &:hover {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    background: lightgray;
+  }
+`
+
+export const EditDescription = styled.textarea`
+  border-radius: 5px;
+  width: 100%;
+  padding-right: 60px;
+`
+
+export const Form = styled.form`
+  min-width: 150px;
+  max-width: 270px;
+  margin: 0 auto;
+  position: relative;
+`
+
+export const Exit = styled(ImExit)` 
+  position: absolute;
+  font-size: 24px;
+  top: 8px;
+  right: 5px;
+  transform: rotate(180);
+  color: rgba(200,0,15,.45);
+  transition: all .15s ease-in-out;
+  &:hover {
+    cursor: pointer;
+    color: red;
+    transform: scale(1.05);
+  }
+`
+
+export const Check = styled(AiFillCheckSquare)`
+  position: absolute;
+  font-size: 26px;
+  top: 6px;
+  right: 45px;
+  color: rgba(0,200,15,.65);
+  &:hover {
+    cursor: pointer;
+    color: rgba(0,200,15,1);
+    transform: scale(1.05);
+  }
 `

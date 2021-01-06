@@ -110,7 +110,7 @@ const Index = ({getUser, user }) => {
           <hr className='w-100'/>
         </div>
         <div className='text-center mt-2'>
-          <a href={process.env.NODE_ENV === 'development' ? 'http://localhost:5000/auth/facebook' : 'https://mernfb.herokuapp.com/auth/facebook'}>
+          <a href={process.env.NODE_ENV === 'development' ? 'http://localhost:5000/auth/facebook' : 'https://fcloneodin.herokuapp.com/auth/facebook'}>
             <Button color='primary'>Login with Facebook</Button>
           </a>
         </div>

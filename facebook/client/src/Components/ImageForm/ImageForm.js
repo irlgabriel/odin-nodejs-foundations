@@ -9,8 +9,6 @@ const ImageForm = ({
   content,
   path,
   setImageForm,
-  setResource,
-  resources,
   reloadUser,
 }) => {
   const [file, setFile] = useState(null);
@@ -32,17 +30,15 @@ const ImageForm = ({
       Axios.put(path, formData, config)
         .then((res) => {
           setImageForm(false);
-          typeof resources === "Array"
-            ? setResource([...resources, res.data])
-            : setResource(res.data);
+          reloadUser();
         })
         .catch((err) => console.log(err));
     } else {
-      Axios.post(path, formData, config).then((res) => {
+      Axios.post(path, formData, config)
+      .then((res) => {
         setImageForm(false);
-        typeof resources === "Array"
-        ? setResource([...resources, res.data])
-        : setResource(res.data);
+        reloadUser();
+
       });
     }
   };

@@ -56,6 +56,10 @@ exports.create_post = [
   (req, res, next) => {
     const { content } = req.body;
 
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) return res.status(400).json(errors.array());
+
     Post.create({ content, user: req.user.user_id }, (err, post) => {
       if (err) return res.status(400).json(err);
 
@@ -121,6 +125,10 @@ exports.edit_post = [
   //body("content").trim().isLength({ min: 1 }).escape(),
   (req, res, next) => {
     const { content } = req.body;
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) return res.status(400).json(errors.array());
 
     Post.findById(req.params.post_id, (err, post) => {
       if(err) res.status(400).json(err);

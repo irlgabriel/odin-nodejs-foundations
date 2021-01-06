@@ -1,16 +1,17 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Post = require('../models/posts');
-const Comment = require('../models/comments');
+const Post = require('./posts');
+const Comment = require('./comments');
 
 const UserSchema = new Schema(
   {
     email: String,
     profile_photo: {
       type: String,
-      default: "https://mernfb.herokuapp.com/images/no_pic.jpg",
+      default: "https://fcloneodin.herokuapp.com/images/no_pic.jpg",
     },
     cover_photo: { type: String },
+    description: {type: String, default: ''},
     password: String,
     facebookID: String,
     display_name: String,
