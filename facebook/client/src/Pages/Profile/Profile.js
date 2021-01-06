@@ -166,7 +166,7 @@ const Profile = ({
 
   // Get posts with photos
   useEffect(() => {
-    setPhotos(posts.map(post => post.image ? post : ''));
+    setPhotos(posts.map(post => post.image && post.image.url ? post : ''));
   }, [posts])
 
 
