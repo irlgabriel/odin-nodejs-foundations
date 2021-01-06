@@ -51,8 +51,8 @@ exports.get_post = (req, res, next) => {
 }
 
 exports.create_post = [
-  body("content").trim().isLength({ min: 1 }).escape(),
   upload,
+  //body("content").trim().isLength({ min: 1 }).escape(),
   (req, res, next) => {
     const { content } = req.body;
 
